@@ -19,9 +19,4 @@ public class Village :  IntersectionUnit {
         this.cityWall = false;
     }
 
-    public void upgradeToCity()
-    {
-        this.myKind = VillageKind.City;
-    }
-
 }
