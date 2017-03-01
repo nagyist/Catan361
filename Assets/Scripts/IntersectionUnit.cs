@@ -10,6 +10,6 @@ public abstract class IntersectionUnit : OwnableUnit, HexUnit {
     // Intersection was not set to private
     // changed intersection to attribute
     
-    Intersection intersection { get; set; };
+    Intersection intersection { get; set; }
 
 }
