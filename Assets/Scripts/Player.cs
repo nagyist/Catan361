@@ -20,11 +20,7 @@ namespace AssemblyCSharp
 		Dictionary<StealableType, int> ownedResources= new Dictionary<StealableType, int>();
 		// using list for holding owned progress cards
 		List<ProgressCardType> ownedProgressCards = new List<ProgressCardType>();
-
-		// using list for holding all owned units
-		// waiting on ownable units to be created before removing comment
-
-		//List<OwnableUnit> ownedUnits = new ListPriorityQueue<OwnableUnits>();
+		List<OwnableUnit> ownedUnits = new List<OwnableUnit>();
 
 		// NOTE: we can use the built-in methods for the list and dictionary to edit the values
 
