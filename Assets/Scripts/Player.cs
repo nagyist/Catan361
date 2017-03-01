@@ -33,7 +33,7 @@ namespace AssemblyCSharp
 		{
 			this.username = u;
 			this.password = p;
-			this.status = "Available";
+			this.status = PlayerStatus.Available;
 			this.defenderOfCatanVPs = 0;
 			this.defenderOfCatanVPs = 0;
 			this.gold = 0;

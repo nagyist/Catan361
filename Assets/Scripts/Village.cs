@@ -15,13 +15,13 @@ public class Village :  IntersectionUnit {
 
     public Village()
     {
-        this.myKind = Settlement;
+        this.myKind = VillageKind.Settlement;
         this.cityWall = false;
     }
 
     public void upgradeToCity()
     {
-        this.myKind = City;
+        this.myKind = VillageKind.City;
     }
 
 }
