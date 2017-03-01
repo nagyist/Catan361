@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Village :  IntersectionUnit {
 
-    private VillageKind myKind;
-    private bool cityWall;
+    VillageKind myKind {get; set;}
+    bool cityWall {get; set;}
 
     public Village(VillageKind myKind, bool cityWall)
     {
@@ -15,32 +15,13 @@ public class Village :  IntersectionUnit {
 
     public Village()
     {
-
-    }
-
-    public VillageKind getKind()
-    {
-        return this.VillageKind;
-    }
-
-    public VillageKind setKind(VillageKind myKind)
-    {
-         this.VillageKind = myKind;
-    }
-
-    public bool hasWall()
-    {
-        return this.cityWall;
-    }
-
-    public void setWall(bool cityWall)
-    {
-        this.cityWall = cityWall;
+        this.myKind = Settlement;
+        this.cityWall = false;
     }
 
     public void upgradeToCity()
     {
-        
+        this.myKind = City;
     }
 
 }

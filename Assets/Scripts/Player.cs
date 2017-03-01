@@ -9,8 +9,8 @@ namespace AssemblyCSharp
 	public class Player
 	{
 		// private username and password
-		string username { get; private set;}
-		string password { get; private set;}
+		string username;
+		string password;
 		// status, vps, gold, and longestRoad are simple c# attributes
 		PlayerStatus status { get; set; }
 		int defenderOfCatanVPs { get; set; }
