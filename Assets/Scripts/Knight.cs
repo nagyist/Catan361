@@ -14,10 +14,10 @@ public class Knight : MonoBehaviour {
 		
 	}
 
-	bool active {get; set;};
-	bool hasMovedThisTurn {get; set;};
-	int level {get; set;};
-	bool hasBeenPromotedThisTurn {get; set;};
+	bool active {get; set;}
+	bool hasMovedThisTurn {get; set;}
+	int level {get; set;}
+	bool hasBeenPromotedThisTurn {get; set;}
 
 	public Knight() {
 		this.active = false;

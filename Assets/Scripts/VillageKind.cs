@@ -1,14 +1,11 @@
 using System;
 
-namespace AssemblyCSharp
+public enum VillageKind
 {
-	public enum VillageKind
-	{
-		Settlement,
-        City,
-        TradeMetropole,
-        PoliticsMetropole,
-        ScienceMetropole
-	}
+	Settlement,
+    City,
+    TradeMetropole,
+    PoliticsMetropole,
+    ScienceMetropole
 }
 
