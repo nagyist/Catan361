@@ -9,7 +9,11 @@ public abstract class OwnableUnit
     // 1. abstract class doesn't need a constructor
     // 2. changed player attribute for well-formedness
     
+<<<<<<< HEAD
     Player player { get; set; }
+=======
+    Player owner { get; set; }
+>>>>>>> origin/master
     
 
 }

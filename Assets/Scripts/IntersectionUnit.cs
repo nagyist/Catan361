@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class IntersectionUnit : OwnableUnit, HexUnit {
+public abstract class IntersectionUnit : OwnableUnit {
 
 
     // changes made by Alex B:

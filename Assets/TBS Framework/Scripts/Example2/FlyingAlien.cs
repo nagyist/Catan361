@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FlyingAlien : Alien
 {
-    public void Initialize()
+    override public void Initialize()
     {
         base.Initialize();
         (Cell as MyOtherHexagon).IsSkyTaken = true;
