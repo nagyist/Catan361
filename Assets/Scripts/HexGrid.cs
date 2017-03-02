@@ -29,6 +29,7 @@ public class HexGrid : MonoBehaviour {
 	{
 		GameObject thisHex = (GameObject)Instantiate (Hex);
 		thisHex.transform.position = pos;
+		//thisHex.GetComponent<SpriteRenderer> ().color = new Color (5, 5, 1, 1);
 	}
 
 	public Vector3 calcUnityCoord(Vector2 gridPos)
@@ -50,6 +51,11 @@ public class HexGrid : MonoBehaviour {
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject) Instantiate(Hex);
+				if (x > 2 && x < 8 && y > 2 && y < 8) {
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (3, 3, 1);
+				} else {
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1);
+				}
 				Vector2 gridPos = new Vector2(x, y);
 				thisHex.transform.position = calcWorldCoord(gridPos);
 				thisHex.transform.parent = hexGridObject.transform;
