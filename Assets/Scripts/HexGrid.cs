@@ -12,6 +12,9 @@ public class HexGrid : MonoBehaviour {
 	private float hexWidth;
 	private float hexHeight;
 
+	//public int myNum1 = Random.Range(1,6);
+	//public int myNum2 = Random.Range(8,12);
+
 	void setHexSizes () 
 	{
 		hexWidth = Hex.GetComponent<Renderer> ().bounds.size.x;
@@ -51,8 +54,21 @@ public class HexGrid : MonoBehaviour {
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject) Instantiate(Hex);
+
 				if (x > 2 && x < 8 && y > 2 && y < 8) {
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (3, 3, 1);
+
+					if (x % 2 == 1) {
+						//thisHex.Find ("Hex");
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range(1,6);
+						//GameObject Canvas numForDisplay;
+					} else {
+						//thisHex.Find ("Hex");
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range(8,12);
+					}
+
 				} else {
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1);
 				}
