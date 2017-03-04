@@ -6,14 +6,11 @@ public class HexGrid : MonoBehaviour {
 
 	public GameObject Hex;
 	// Grid width in hexes
-	public int gridWidth = 11;
-	public int gridHeight = 11;
+	public int gridWidth = 10;
+	public int gridHeight = 9;
 
 	private float hexWidth;
 	private float hexHeight;
-
-	//public int myNum1 = Random.Range(1,6);
-	//public int myNum2 = Random.Range(8,12);
 
 	void setHexSizes () 
 	{
@@ -32,7 +29,6 @@ public class HexGrid : MonoBehaviour {
 	{
 		GameObject thisHex = (GameObject)Instantiate (Hex);
 		thisHex.transform.position = pos;
-		//thisHex.GetComponent<SpriteRenderer> ().color = new Color (5, 5, 1, 1);
 	}
 
 	public Vector3 calcUnityCoord(Vector2 gridPos)
@@ -53,25 +49,106 @@ public class HexGrid : MonoBehaviour {
 		{
 			for (int x = 0; x < gridWidth; x++) 
 			{
-				GameObject thisHex = (GameObject) Instantiate(Hex);
+				GameObject thisHex = (GameObject)Instantiate (Hex);
 
-				if (x > 2 && x < 8 && y > 2 && y < 8) {
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (3, 3, 1);
+				if (x == 3 && y > 2 && y < 6) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
 
-					if (x % 2 == 1) {
-						//thisHex.Find ("Hex");
+					if (x % 2 == 1) 
+					{
 						Hex hexScript = thisHex.GetComponent<Hex> ();
-						hexScript.selectedNum = Random.Range(1,6);
-						//GameObject Canvas numForDisplay;
+						hexScript.selectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 4 && y > 1 && y < 7) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+
+					if (y % 2 == 1) 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 5 && y > 1 && y < 7 && y != 4) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+
+					if (y % 2 == 1) 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 5 && y == 4) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					Hex hexScript = thisHex.GetComponent<Hex> ();
+					hexScript.selectedNum = 7;
+				} 
+				else if (x == 6 && y > 1 && y < 7) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+
+					if (y % 2 == 1) {
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (1, 6);
 					} else {
-						//thisHex.Find ("Hex");
 						Hex hexScript = thisHex.GetComponent<Hex> ();
-						hexScript.selectedNum = Random.Range(8,12);
+						hexScript.selectedNum = Random.Range (8, 12);
 					}
 
-				} else {
+				} 
+				else if (x == 6 && y > 3 && y < 7) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+
+					if (y % 2 == 1) {
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (1, 6);
+					} else {
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (8, 12);
+					}
+
+				} 
+				else if (x == 7 && y > 3 && y < 5) 
+				{
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+
+					if (y % 2 == 1) 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						Hex hexScript = thisHex.GetComponent<Hex> ();
+						hexScript.selectedNum = Random.Range (8, 12);
+					}
+
+				} 
+				else 
+				{
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1);
 				}
+
 				Vector2 gridPos = new Vector2(x, y);
 				thisHex.transform.position = calcWorldCoord(gridPos);
 				thisHex.transform.parent = hexGridObject.transform;
