@@ -24,8 +24,6 @@ public class EdgeCollection {
 		string key = (firstVal < secondVal ? flattenFirst + flattenSecond : flattenSecond + flattenFirst);
 		if (!Edges.ContainsKey (key)) {
 			Edges.Add (key, edgeToAdd);
-		} else {
-			Debug.Log ("test");
 		}
 	}
 
