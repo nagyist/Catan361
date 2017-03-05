@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : Singleton<GameManager> {
     private HexGrid gameBoard;
     private GamePlayer currentPlayer;
-    private GUIInterface gui;
-    
+	public GUIInterface gui;
+	private int roundNo = 0;
+
+	protected GameManager() { }
+
     void Awake () {
         gameBoard = GetComponent<HexGrid>();
         currentPlayer = GetComponent<GamePlayer>();

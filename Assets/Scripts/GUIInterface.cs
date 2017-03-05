@@ -16,11 +16,17 @@ public class GUIInterface : MonoBehaviour {
 		popupPanel.gameObject.SetActive (false);
     }
 
+	public void ShowHexActionWindow(Hex hexTile) {
+		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
+		actionPanel.GetComponent<RectTransform>().position = Input.mousePosition;
+		actionPanel.SetActive (true);
+	}
+
 	// Use this for initialization
 	void Start () {
         guiCanvas = GameObject.FindObjectOfType<Canvas>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		

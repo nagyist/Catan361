@@ -29,6 +29,10 @@ public class Hex : MonoBehaviour {
 		renderer.color = oldColor;
 	}
 
+	void OnMouseDown() {
+		GameManager.Instance.gui.ShowHexActionWindow (this);
+	}
+
 	void displayPosition() {
 		Hex hexTile = GetComponent<Hex> ();
 
@@ -44,11 +48,6 @@ public class Hex : MonoBehaviour {
 	void Start () {
 		renderer = GetComponent<SpriteRenderer> ();
 		oldColor = renderer.color;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 
 	public Vector3 getAdjacentHexPos(AdjHex adjHex) {
