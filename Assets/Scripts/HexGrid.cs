@@ -8,7 +8,9 @@ public class HexGrid : MonoBehaviour {
 
 	public int gridWidth = 10;
 	public int gridHeight = 9;
-	public GameObject[,] board;
+
+	public Dictionary<Vector3, GameObject> cubeHexes;
+	public EdgeCollection edges;
 
 	private float hexWidth;
 	private float hexHeight;
@@ -51,7 +53,8 @@ public class HexGrid : MonoBehaviour {
 
 	void createHexGrid()
 	{
-		this.board = new GameObject[gridWidth, gridHeight];
+		cubeHexes = new Dictionary<Vector3, GameObject> ();
+		edges = new EdgeCollection ();
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
@@ -153,7 +156,13 @@ public class HexGrid : MonoBehaviour {
 
 				hexScript.hexGridPosition = gridPos;
 				hexScript.hexGridCubePosition = offsetOddRToCubeCoordinate (gridPos);
-				this.board [x, y] = thisHex;
+
+				// add to cube board
+				cubeHexes.Add (hexScript.hexGridCubePosition, thisHex);
+				foreach (Vector3 adjHex in hexScript.getAdjacentHexesPos()) {
+					Edge newEdge = new Edge (hexScript.hexGridCubePosition, adjHex);
+					edges.addEdge (newEdge);
+				}
 			}
 		}
 	}
