@@ -13,32 +13,40 @@ public class HexGrid : MonoBehaviour {
 	private float hexWidth;
 	private float hexHeight;
 
-	void setHexSizes () 
+	private void setHexSizes () 
 	{
 		hexWidth = Hex.GetComponent<Renderer> ().bounds.size.x;
 		hexHeight = Hex.GetComponent<Renderer> ().bounds.size.y;
 	}
 
-	Vector3 calcInitialPos ()
+	private Vector3 calcInitialPos ()
 	{
 		Vector3 initialPos;
 		initialPos = new Vector3 (-hexWidth * gridWidth / 2f + hexWidth / 2, gridHeight / 2f * hexHeight / 2, 0);
 		return initialPos;
 	}
 
-	void createHex(Vector3 pos)
+	private void createHex(Vector3 pos)
 	{
 		GameObject thisHex = (GameObject)Instantiate (Hex);
 		thisHex.transform.position = pos;
 	}
 
-	public Vector3 calcUnityCoord(Vector2 gridPos)
+	private Vector3 calcUnityCoord(Vector2 gridPos)
 	{
 		//Position of the first tile
 		Vector3 initPos = calcInitialPos();
 		float x = initPos.x + gridPos.x * hexWidth;
 		float y = initPos.y - gridPos.y * hexHeight;
 		return new Vector3 (x, y, 0);
+	}
+
+	private Vector3 offsetOddRToCubeCoordinate(Vector2 oddR) {
+		float x = oddR.x - (oddR.y - (float)((int)oddR.y & 1)) / 2.0f;
+		float z = oddR.y;
+		float y = -x - z;
+
+		return new Vector3 (x, y, z);
 	}
 
 	void createHexGrid()
@@ -144,6 +152,7 @@ public class HexGrid : MonoBehaviour {
 				thisHex.transform.parent = hexGridObject.transform;
 
 				hexScript.hexGridPosition = gridPos;
+				hexScript.hexGridCubePosition = offsetOddRToCubeCoordinate (gridPos);
 				this.board [x, y] = thisHex;
 			}
 		}
