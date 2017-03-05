@@ -38,7 +38,6 @@ public class Hex : MonoBehaviour {
 
 		Vector2 oddR = hexTile.hexGridPosition;
 		Vector3 cubeCoords = hexTile.hexGridCubePosition;
-
 		Debug.Log ("Position = " +
 			"(" + oddR.x + ", " + oddR.y + ") - " +
 			"(" + cubeCoords.x + ", " + cubeCoords.y + ", " + cubeCoords.z + ")");

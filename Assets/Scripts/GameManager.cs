@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager> {
-    private HexGrid gameBoard;
-    private GamePlayer currentPlayer;
+    public HexGrid gameBoard;
+	public GamePlayer currentPlayer;
 	public GUIInterface gui;
 	private int roundNo = 0;
 

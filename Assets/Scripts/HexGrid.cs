@@ -160,10 +160,49 @@ public class HexGrid : MonoBehaviour {
 				// add to cube board
 				cubeHexes.Add (hexScript.hexGridCubePosition, thisHex);
 				foreach (Vector3 adjHex in hexScript.getAdjacentHexesPos()) {
-					Edge newEdge = new Edge (hexScript.hexGridCubePosition, adjHex);
-					edges.addEdge (newEdge);
+					edges.addEdge (hexScript.hexGridCubePosition, adjHex);
 				}
 			}
+		}
+
+		// attach edges to each hex tiles
+		foreach(Vector3 tilePos in cubeHexes.Keys) {
+			GameObject currentHexGameObj = cubeHexes [tilePos];
+			Hex currentHex = currentHexGameObj.GetComponent<Hex> ();
+			Vector3 currentCubePos = currentHex.hexGridCubePosition;
+
+			// get each edge instance 
+			Edge rightEdge = edges.getEdge(currentCubePos, currentHex.getAdjacentHexPos(global::Hex.AdjHex.LEFT));
+			Edge rightTopEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_TOP));
+			Edge leftTopEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP));
+			Edge leftEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT));
+			Edge leftBottomEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT_BOTTOM));
+			Edge rightBottomEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_BOTTOM));
+
+			// add each edge instance as a component to corresponding edge game object
+			GameObject rightEdgeGameObj = currentHexGameObj.transform.FindChild("REdge").gameObject;
+			UIEdge rightEdgeUi = rightEdgeGameObj.AddComponent<UIEdge> ();
+			rightEdgeUi.referencedEdge = rightEdge;
+
+			GameObject rightTopEdgeGameObj = currentHexGameObj.transform.FindChild("RTEdge").gameObject;
+			UIEdge rightTopEdgeUi = rightTopEdgeGameObj.AddComponent<UIEdge> ();
+			rightTopEdgeUi.referencedEdge = rightTopEdge;
+
+			GameObject leftTopEdgeGameObj = currentHexGameObj.transform.FindChild("LTEdge").gameObject;
+			UIEdge leftTopEdgeUi = leftTopEdgeGameObj.AddComponent<UIEdge> ();
+			leftTopEdgeUi.referencedEdge = leftTopEdge;
+
+			GameObject leftEdgeGameObj = currentHexGameObj.transform.FindChild("LEdge").gameObject;
+			UIEdge leftEdgeUi = leftEdgeGameObj.AddComponent<UIEdge> ();
+			leftEdgeUi.referencedEdge = leftEdge;
+
+			GameObject leftBottomEdgeGameObj = currentHexGameObj.transform.FindChild("LBEdge").gameObject;
+			UIEdge leftBottomEdgeUi = leftBottomEdgeGameObj.AddComponent<UIEdge> ();
+			leftBottomEdgeUi.referencedEdge = leftBottomEdge;
+
+			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
+			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();
+			rightBottomEdgeUi.referencedEdge = rightBottomEdge;
 		}
 	}
 
