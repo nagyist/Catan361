@@ -5,9 +5,10 @@ using UnityEngine;
 public class HexGrid : MonoBehaviour {
 
 	public GameObject Hex;
-	// Grid width in hexes
+
 	public int gridWidth = 10;
 	public int gridHeight = 9;
+	public GameObject[,] board;
 
 	private float hexWidth;
 	private float hexHeight;
@@ -42,6 +43,7 @@ public class HexGrid : MonoBehaviour {
 
 	void createHexGrid()
 	{
+		this.board = new GameObject[gridWidth, gridHeight];
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
@@ -50,19 +52,17 @@ public class HexGrid : MonoBehaviour {
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
-
+				Hex hexScript = thisHex.GetComponent<Hex> ();
 				if (x == 3 && y > 2 && y < 6) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
 
 					if (x % 2 == 1) 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} 
 					else 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 				} 
@@ -72,12 +72,10 @@ public class HexGrid : MonoBehaviour {
 
 					if (y % 2 == 1) 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} 
 					else 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 				} 
@@ -87,19 +85,16 @@ public class HexGrid : MonoBehaviour {
 
 					if (y % 2 == 1) 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} 
 					else 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 				} 
 				else if (x == 5 && y == 4) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
-					Hex hexScript = thisHex.GetComponent<Hex> ();
 					hexScript.selectedNum = 7;
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
@@ -107,10 +102,8 @@ public class HexGrid : MonoBehaviour {
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
 
 					if (y % 2 == 1) {
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} else {
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 
@@ -120,10 +113,8 @@ public class HexGrid : MonoBehaviour {
 					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
 
 					if (y % 2 == 1) {
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} else {
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 
@@ -134,12 +125,10 @@ public class HexGrid : MonoBehaviour {
 
 					if (y % 2 == 1) 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (1, 6);
 					} 
 					else 
 					{
-						Hex hexScript = thisHex.GetComponent<Hex> ();
 						hexScript.selectedNum = Random.Range (8, 12);
 					}
 
@@ -150,8 +139,12 @@ public class HexGrid : MonoBehaviour {
 				}
 
 				Vector2 gridPos = new Vector2(x, y);
+
 				thisHex.transform.position = calcWorldCoord(gridPos);
 				thisHex.transform.parent = hexGridObject.transform;
+
+				hexScript.hexGridPosition = gridPos;
+				this.board [x, y] = thisHex;
 			}
 		}
 	}

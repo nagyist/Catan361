@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hex : MonoBehaviour {
-
+	public Vector2 hexGridPosition;
 	public int selectedNum;
 
 	// Use this for initialization
