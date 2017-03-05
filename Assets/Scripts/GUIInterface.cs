@@ -17,9 +17,17 @@ public class GUIInterface : MonoBehaviour {
     }
 
 	public void ShowHexActionWindow(Hex hexTile) {
+		if (hasModalWindowOpened ()) { return; }
+
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
 		actionPanel.GetComponent<RectTransform>().position = Input.mousePosition;
 		actionPanel.SetActive (true);
+	}
+
+	private bool hasModalWindowOpened() {
+		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
+
+		return actionPanel.activeSelf;
 	}
 
 	// Use this for initialization
