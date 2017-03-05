@@ -7,11 +7,13 @@ public class GUIInterface : MonoBehaviour {
     private Canvas guiCanvas;
 
     public IEnumerator ShowMessage(string msg, float delay = 1.75f) {
-        Text guiText = guiCanvas.GetComponent<Text>();
-        guiText.text = msg;
-        guiText.enabled = true;
-        yield return new WaitForSeconds(delay);
-        guiText.enabled = false;
+		GameObject popupPanel = guiCanvas.transform.Find ("PanelPopup").gameObject;
+		GameObject popupPanelText = popupPanel.transform.FindChild ("Text").gameObject;
+
+		popupPanelText.GetComponent<Text> ().text = msg;
+		popupPanel.gameObject.SetActive (true);
+		yield return new WaitForSeconds (delay);
+		popupPanel.gameObject.SetActive (false);
     }
 
 	// Use this for initialization
