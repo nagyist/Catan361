@@ -11,6 +11,7 @@ public class HexGrid : MonoBehaviour {
 
 	public Dictionary<Vector3, GameObject> cubeHexes;
 	public EdgeCollection edges;
+	public IntersectionCollection intersections;
 
 	private float hexWidth;
 	private float hexHeight;
@@ -55,6 +56,8 @@ public class HexGrid : MonoBehaviour {
 	{
 		cubeHexes = new Dictionary<Vector3, GameObject> ();
 		edges = new EdgeCollection ();
+		intersections = new IntersectionCollection ();
+
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
@@ -159,18 +162,24 @@ public class HexGrid : MonoBehaviour {
 
 				// add to cube board
 				cubeHexes.Add (hexScript.hexGridCubePosition, thisHex);
+				// add edges
 				foreach (Vector3 adjHex in hexScript.getAdjacentHexesPos()) {
 					edges.addEdge (hexScript.hexGridCubePosition, adjHex);
+				}
+				// add intersections
+				foreach(List<Vector3> adjHexInIntersection in hexScript.getIntersectionsAdjacentPos()) {
+					intersections.addIntersection (adjHexInIntersection [0], adjHexInIntersection [1], adjHexInIntersection [2]);
 				}
 			}
 		}
 
-		// attach edges to each hex tiles
+		// attach edges and intersection to UI
 		foreach(Vector3 tilePos in cubeHexes.Keys) {
 			GameObject currentHexGameObj = cubeHexes [tilePos];
 			Hex currentHex = currentHexGameObj.GetComponent<Hex> ();
 			Vector3 currentCubePos = currentHex.hexGridCubePosition;
 
+			//edges
 			// get each edge instance 
 			Edge rightEdge = edges.getEdge(currentCubePos, currentHex.getAdjacentHexPos(global::Hex.AdjHex.LEFT));
 			Edge rightTopEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_TOP));
@@ -203,6 +212,40 @@ public class HexGrid : MonoBehaviour {
 			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
 			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();
 			rightBottomEdgeUi.referencedEdge = rightBottomEdge;
+
+			// intersections
+			// get each intersection instance
+			Intersection leftTopIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.LEFT_TOP));
+			Intersection topIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.TOP));
+			Intersection rightTopIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.RIGHT_TOP));
+			Intersection rightBottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.RIGHT_BOTTOM));
+			Intersection bottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.BOTTOM));
+			Intersection leftBottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.LEFT_BOTTOM));
+
+			// add each intersection instance as a component to corresponding intersection game object
+			GameObject leftTopGameObj = currentHexGameObj.transform.FindChild("LTIntersection").gameObject;
+			UIIntersection leftTopIntersectionUi = leftTopGameObj.AddComponent<UIIntersection> ();
+			leftTopIntersectionUi.referencedIntersection = leftTopIntersection;
+
+			GameObject topGameObj = currentHexGameObj.transform.FindChild("TIntersection").gameObject;
+			UIIntersection topIntersectionUi = topGameObj.AddComponent<UIIntersection> ();
+			topIntersectionUi.referencedIntersection = topIntersection;
+
+			GameObject rightTopGameObj = currentHexGameObj.transform.FindChild("RTIntersection").gameObject;
+			UIIntersection rightTopIntersectionUi = rightTopGameObj.AddComponent<UIIntersection> ();
+			rightTopIntersectionUi.referencedIntersection = rightTopIntersection;
+
+			GameObject rightBottomGameObj = currentHexGameObj.transform.FindChild("RBIntersection").gameObject;
+			UIIntersection rightBottomIntersectionUi = rightBottomGameObj.AddComponent<UIIntersection> ();
+			rightBottomIntersectionUi.referencedIntersection = rightBottomIntersection;
+
+			GameObject bottomGameObj = currentHexGameObj.transform.FindChild("BIntersection").gameObject;
+			UIIntersection bottomIntersectionUi = bottomGameObj.AddComponent<UIIntersection> ();
+			bottomIntersectionUi.referencedIntersection = bottomIntersection;
+
+			GameObject leftBottomGameObj = currentHexGameObj.transform.FindChild("LBIntersection").gameObject;
+			UIIntersection leftBottomIntersectionUi = leftBottomGameObj.AddComponent<UIIntersection> ();
+			leftBottomIntersectionUi.referencedIntersection = leftBottomIntersection;
 		}
 	}
 

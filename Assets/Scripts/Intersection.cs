@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Intersection : MonoBehaviour {
 
+	public Vector3 adjTile1;
+	public Vector3 adjTile2;
+	public Vector3 adjTile3;
+
 	// Use this for initialization
 	void Start () {
 		
