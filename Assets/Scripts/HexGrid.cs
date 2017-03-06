@@ -13,6 +13,26 @@ public class HexGrid : MonoBehaviour {
 	public EdgeCollection edges;
 	public IntersectionCollection intersections;
 
+	public Dictionary<int, Color> resourceColor = new Dictionary<int, Color>()
+	{
+		{1, new Color (0.255f, 0.255f, 0.205f, 1)},
+		{2, new Color (0, 1, 0, 1)},
+		{3, new Color (0.5f, 0.5f, 0.5f, 1)},
+		{4, new Color (1, 0, 0, 1)},
+		{5, new Color (1, 0.92f, 0.016f, 1)}
+	};
+
+
+	public Dictionary<int, StealableType> resourceType = new Dictionary<int, StealableType>()
+	{
+		{1, StealableType.Resource_Wool},
+		{2, StealableType.Resource_Lumber},
+		{3, StealableType.Resource_Ore},
+		{4, StealableType.Resource_Brick},
+		{5, StealableType.Resource_Grain}
+	};
+
+
 	private float hexWidth;
 	private float hexHeight;
 
@@ -61,15 +81,21 @@ public class HexGrid : MonoBehaviour {
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
+		//Texture2D testerTexture;
+		//testerTexture = (Texture2D)Resources.Load ("organic34.png");
+
 		for (int y = 0; y < gridHeight; y++) 
 		{
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
+				int resourceNum = Random.Range (1, 5);
 				Hex hexScript = thisHex.GetComponent<Hex> ();
 				if (x == 3 && y > 2 && y < 6) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					//thisHex.GetComponent<SpriteRenderer>().sprite = Resources.Load("organic34.png", ) as Sprite;
 
 					if (x % 2 == 1) 
 					{
@@ -82,7 +108,8 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 4 && y > 1 && y < 7) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
 
 					if (y % 2 == 1) 
 					{
@@ -95,7 +122,8 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
 
 					if (y % 2 == 1) 
 					{
@@ -113,7 +141,8 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
 
 					if (y % 2 == 1) {
 						hexScript.selectedNum = Random.Range (1, 6);
@@ -124,7 +153,8 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 6 && y > 3 && y < 7) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
 
 					if (y % 2 == 1) {
 						hexScript.selectedNum = Random.Range (1, 6);
@@ -135,7 +165,8 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 7 && y > 3 && y < 5) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					//thisHex.GetComponent<SpriteRenderer> ().color = new Color (Random.Range (0f, 1f), Random.Range (0f, 1f), Random.Range (0f, 1f), 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
 
 					if (y % 2 == 1) 
 					{
