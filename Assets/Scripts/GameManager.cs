@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager> {
-	const int CURRENT_PLAYER = 0;
 	const int MAX_PLAYER = 4;
 
+	public int currentPlayer = 0;
 	public GamePlayer[] players = new GamePlayer[MAX_PLAYER];
 	public HexGrid gameBoard;
 	public GUIInterface gui;
-	public int currentPlayerTurn = -1;
-	public int nextPlayerTurn = CURRENT_PLAYER;
-	public int roundNo = 0;
+	public GameTurn currentTurn { get; private set; }
 
 	protected GameManager() { }
 
     void Awake () {
         gameBoard = GetComponent<HexGrid>();
-		players[CURRENT_PLAYER] = GetComponent<GamePlayer>();
+		players[currentPlayer] = GetComponent<GamePlayer>();
         gui = GetComponent<GUIInterface>();
+		currentTurn = new GameTurn (MAX_PLAYER);
     }
 
     public void RollDice() {
@@ -27,22 +26,11 @@ public class GameManager : Singleton<GameManager> {
     }
 
 	public bool isInSetupPhase() {
-		return this.roundNo == 0;
-	}
-
-	public int startNextPlayerTurn() {
-		currentPlayerTurn = nextPlayerTurn;
-		nextPlayerTurn = nextPlayerTurn + 1 % MAX_PLAYER;
-		StartCoroutine(gui.ShowMessage("Starting turn for player " + currentPlayerTurn));
-		return currentPlayerTurn;
-	}
-
-	public bool isCurrentPlayerTurn() {
-		return currentPlayerTurn == CURRENT_PLAYER;
+		return true;
 	}
 
 	void Start () {
-		startNextPlayerTurn ();
+		
 	}
 	
 	// Update is called once per frame

@@ -17,7 +17,6 @@ public class GUIInterface : MonoBehaviour {
     }
 
 	public void ShowHexActionWindow(Hex hexTile) {
-		if (!GameManager.Instance.isCurrentPlayerTurn ()) { return; }
 		if (hasModalWindowOpened ()) { return; }
 
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
@@ -25,10 +24,32 @@ public class GUIInterface : MonoBehaviour {
 		actionPanel.SetActive (true);
 	}
 
+	public void ToggleCurrentPlayerTurnManagement() {
+		
+	}
+
 	private bool hasModalWindowOpened() {
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
 
 		return actionPanel.activeSelf;
+	}
+
+	private void updateTurnMgmtButton() {
+		GameObject turnMgmtButton = guiCanvas.transform.Find ("TurnMgmtButton").gameObject;
+		if (GameManager.Instance.currentTurn.IsPlayerAllowedToTakeTurn (GameManager.Instance.currentPlayer)) {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (true);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
+		} else if (GameManager.Instance.currentTurn.IsPlayerTurn (GameManager.Instance.currentPlayer) && GameManager.Instance.currentTurn.IsTurnTaken ()) {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (true);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
+		} else {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (true);
+			turnMgmtButton.GetComponent<Button> ().enabled = false;
+		}
 	}
 
 	// Use this for initialization
@@ -38,6 +59,6 @@ public class GUIInterface : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+		updateTurnMgmtButton ();
 	}
 }
