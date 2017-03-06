@@ -44,7 +44,22 @@ public class HexGrid : MonoBehaviour {
 		{2, StealableType.Resource_Lumber},
 		{3, StealableType.Resource_Ore},
 		{4, StealableType.Resource_Brick},
-		{5, StealableType.Resource_Grain}
+		{5, StealableType.Resource_Grain},
+		{6, StealableType.Resource_Wool},
+		{7, StealableType.Resource_Lumber},
+		{8, StealableType.Resource_Ore},
+		{9, StealableType.Resource_Brick},
+		{10, StealableType.Resource_Grain},
+		{11, StealableType.Resource_Wool},
+		{12, StealableType.Resource_Lumber},
+		{13, StealableType.Resource_Ore},
+		{14, StealableType.Resource_Brick},
+		{15, StealableType.Resource_Grain},
+		{16, StealableType.Resource_Wool},
+		{17, StealableType.Resource_Lumber},
+		{18, StealableType.Resource_Ore},
+		{19, StealableType.Resource_Brick},
+		{20, StealableType.Resource_Grain}
 	};
 
 
