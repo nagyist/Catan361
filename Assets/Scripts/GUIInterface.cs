@@ -25,7 +25,13 @@ public class GUIInterface : MonoBehaviour {
 	}
 
 	public void ToggleCurrentPlayerTurnManagement() {
-		
+		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn ()) {
+			// take turn
+			GameManager.Instance.currentPlayerTakeTurn();
+		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn () && GameManager.Instance.currentTurn.IsTurnTaken ()) { 
+			// end turn
+
+		}
 	}
 
 	private bool hasModalWindowOpened() {
@@ -36,11 +42,11 @@ public class GUIInterface : MonoBehaviour {
 
 	private void updateTurnMgmtButton() {
 		GameObject turnMgmtButton = guiCanvas.transform.Find ("TurnMgmtButton").gameObject;
-		if (GameManager.Instance.currentTurn.IsPlayerAllowedToTakeTurn (GameManager.Instance.currentPlayer)) {
+		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn()) {
 			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (true);
 			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
 			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
-		} else if (GameManager.Instance.currentTurn.IsPlayerTurn (GameManager.Instance.currentPlayer) && GameManager.Instance.currentTurn.IsTurnTaken ()) {
+		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn() && GameManager.Instance.currentTurn.IsTurnTaken ()) {
 			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
 			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (true);
 			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);

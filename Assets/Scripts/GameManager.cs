@@ -29,6 +29,12 @@ public class GameManager : Singleton<GameManager> {
 		return true;
 	}
 
+	public void currentPlayerTakeTurn() {
+		if (!currentTurn.TakeTurn ()) { return; }
+
+		StartCoroutine (gui.ShowMessage ("Player " + currentPlayer + " took turn!"));
+	}
+
 	void Start () {
 		
 	}

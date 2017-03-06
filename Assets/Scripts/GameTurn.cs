@@ -11,10 +11,10 @@ public class GameTurn
 		this.maxPlayer = maxPlayer;
 	}
 
-	public bool TakeTurn(int playerId) {
-		if (IsPlayerAllowedToTakeTurn(playerId)) {
-			currentPlayerEndedTurn = false;
+	public bool TakeTurn() {
+		if (IsCurrentPlayerAllowedToTakeTurn()) {
 			currentPlayerTurn = GetNextPlayerTurn ();
+			currentPlayerEndedTurn = false;
 			return true;
 		}
 
@@ -29,11 +29,11 @@ public class GameTurn
 		return !this.currentPlayerEndedTurn;
 	}
 
-	public bool IsPlayerAllowedToTakeTurn(int playerId) {
-		return GetNextPlayerTurn () == playerId && ! IsTurnTaken ();
+	public bool IsCurrentPlayerAllowedToTakeTurn() {
+		return GetNextPlayerTurn () == GameManager.Instance.currentPlayer && ! IsTurnTaken ();
 	}
 
-	public bool IsPlayerTurn(int playerId) {
-		return this.currentPlayerTurn == playerId && IsTurnTaken ();
+	public bool IsCurrentPlayerTurn() {
+		return this.currentPlayerTurn == GameManager.Instance.currentPlayer && IsTurnTaken ();
 	}
 }
