@@ -17,6 +17,7 @@ public class GUIInterface : MonoBehaviour {
     }
 
 	public void ShowHexActionWindow(Hex hexTile) {
+		if (!GameManager.Instance.isCurrentPlayerTurn ()) { return; }
 		if (hasModalWindowOpened ()) { return; }
 
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;

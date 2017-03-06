@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager> {
-    public HexGrid gameBoard;
-	public GamePlayer currentPlayer;
+	const int CURRENT_PLAYER = 0;
+	const int MAX_PLAYER = 4;
+
+	public GamePlayer[] players = new GamePlayer[MAX_PLAYER];
+	public HexGrid gameBoard;
 	public GUIInterface gui;
-	private int roundNo = 0;
+	public int currentPlayerTurn = -1;
+	public int nextPlayerTurn = CURRENT_PLAYER;
+	public int roundNo = 0;
 
 	protected GameManager() { }
 
     void Awake () {
         gameBoard = GetComponent<HexGrid>();
-        currentPlayer = GetComponent<GamePlayer>();
+		players[CURRENT_PLAYER] = GetComponent<GamePlayer>();
         gui = GetComponent<GUIInterface>();
     }
 
@@ -21,8 +26,23 @@ public class GameManager : Singleton<GameManager> {
         StartCoroutine(gui.ShowMessage("Player X rolled " + diceResult));
     }
 
+	public bool isInSetupPhase() {
+		return this.roundNo == 0;
+	}
+
+	public int startNextPlayerTurn() {
+		currentPlayerTurn = nextPlayerTurn;
+		nextPlayerTurn = nextPlayerTurn + 1 % MAX_PLAYER;
+		StartCoroutine(gui.ShowMessage("Starting turn for player " + currentPlayerTurn));
+		return currentPlayerTurn;
+	}
+
+	public bool isCurrentPlayerTurn() {
+		return currentPlayerTurn == CURRENT_PLAYER;
+	}
+
 	void Start () {
-		
+		startNextPlayerTurn ();
 	}
 	
 	// Update is called once per frame
