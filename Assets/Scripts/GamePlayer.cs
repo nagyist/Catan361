@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class GamePlayer : MonoBehaviour {
+public class GamePlayer : NetworkBehaviour {
 
+    public string myName = "";
+    public Color myColor = Color.white;
 
 	void Start () {
 		

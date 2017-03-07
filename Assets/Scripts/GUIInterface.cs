@@ -24,10 +24,48 @@ public class GUIInterface : MonoBehaviour {
 		actionPanel.SetActive (true);
 	}
 
+	public void ToggleCurrentPlayerTurnManagement() {
+		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn ()) {
+			// take turn
+				// roll dice
+				// trade
+				// build road / settlement
+			GameManager.Instance.currentPlayerTakeTurn();
+		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn () && GameManager.Instance.currentTurn.IsTurnTaken ()) { 
+			// end turn
+
+		}
+	}
+
 	private bool hasModalWindowOpened() {
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
 
 		return actionPanel.activeSelf;
+	}
+
+	private void updateTurnMgmtButton() {
+		GameObject turnMgmtButton = guiCanvas.transform.Find ("TurnMgmtButton").gameObject;
+		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn()) {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (true);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
+		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn() && GameManager.Instance.currentTurn.IsTurnTaken ()) {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (true);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
+		} else {
+			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
+			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (true);
+			turnMgmtButton.GetComponent<Button> ().enabled = false;
+		}
+	}
+
+	private void rollDiceButton () {
+		GameObject rollDiceButtonOne = guiCanvas.transform.Find ("RollDiceButton").gameObject;
+		if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn()) {
+			int diceNum = Random.Range (1, 7);
+		}
 	}
 
 	// Use this for initialization
@@ -37,6 +75,6 @@ public class GUIInterface : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+		updateTurnMgmtButton ();
 	}
 }
