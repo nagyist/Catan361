@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager> {
 	}
 
     public void RollDice() {
-        int diceResult = Random.Range(1, 7);
+        int diceResult = Random.Range(1, 15);
         StartCoroutine(gui.ShowMessage("Player X rolled " + diceResult));
     }
 

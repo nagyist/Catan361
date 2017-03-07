@@ -12,6 +12,7 @@ public class HexGrid : MonoBehaviour {
 	public Dictionary<Vector3, GameObject> cubeHexes;
 	public EdgeCollection edges;
 	public IntersectionCollection intersections;
+	public Dictionary<Edge, StealableType> harbours;
 
 	public Dictionary<int, Color> resourceColor = new Dictionary<int, Color>()
 	{
@@ -363,6 +364,93 @@ public class HexGrid : MonoBehaviour {
 		yoffset = 0.85f;
 		float y = initPos.y - gridPos.y * hexHeight * yoffset;
 		return new Vector3(x, y, 0);
+	}
+
+	public void buildHarbours () {
+		Vector3 hex1 = new Vector3 (3, -5, 2);
+		GameObject currentHexGameObj1 = cubeHexes [new Vector3(3, -5, 2)];
+		Hex hexScript1 = currentHexGameObj1.GetComponent<Hex> ();
+		Vector3 hex2 = hexScript1.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
+		Edge harbouredEdge1 = edges.getEdge (hex1, hex2);
+		harbours.Add (harbouredEdge1, StealableType.Resource_Brick);
+
+		Vector3 hex3 = new Vector3 (4, -6, 2);
+		GameObject currentHexGameObj2 = cubeHexes [hex3];
+		Hex hexScript2 = currentHexGameObj2.GetComponent<Hex> ();
+		Vector3 hex4 = hexScript2.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
+		Edge harbouredEdge2 = edges.getEdge (hex3, hex4);
+		harbours.Add (harbouredEdge2, StealableType.Resource_Grain);
+
+		Vector3 hex5 = new Vector3 (5, -7, 2);
+		GameObject currentHexGameObj3 = cubeHexes [hex5];
+		Hex hexScript3 = currentHexGameObj3.GetComponent<Hex> ();
+		Vector3 hex6 = hexScript3.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
+		Edge harbouredEdge3 = edges.getEdge (hex5, hex6);
+		harbours.Add (harbouredEdge3, StealableType.Resource_Lumber);
+
+		Vector3 hex7 = new Vector3 (5, -8, 3);
+		GameObject currentHexGameObj4 = cubeHexes [hex7];
+		Hex hexScript4 = currentHexGameObj4.GetComponent<Hex> ();
+		Vector3 hex8 = hexScript4.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_TOP);
+		Edge harbouredEdge4 = edges.getEdge (hex7, hex8);
+		harbours.Add (harbouredEdge4, StealableType.Resource_Ore);
+
+		Vector3 hex9 = new Vector3 (5, -9, 4);
+		GameObject currentHexGameObj5 = cubeHexes [hex9];
+		Hex hexScript5 = currentHexGameObj5.GetComponent<Hex> ();
+		Vector3 hex10 = hexScript5.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_TOP);
+		Edge harbouredEdge5 = edges.getEdge (hex9, hex10);
+		harbours.Add (harbouredEdge5, StealableType.Resource_Wool);
+
+		Vector3 hex11 = new Vector3 (4, -9, 5);
+		GameObject currentHexGameObj6 = cubeHexes [hex11];
+		Hex hexScript6 = currentHexGameObj6.GetComponent<Hex> ();
+		Vector3 hex12 = hexScript6.getAdjacentHexPos (global::Hex.AdjHex.RIGHT);
+		Edge harbouredEdge6 = edges.getEdge (hex11, hex12);
+		harbours.Add (harbouredEdge6, StealableType.Resource_Brick);
+
+		Vector3 hex13 = new Vector3 (3, -9, 6);
+		GameObject currentHexGameObj7 = cubeHexes [hex13];
+		Hex hexScript7 = currentHexGameObj7.GetComponent<Hex> ();
+		Vector3 hex14 = hexScript7.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_BOTTOM);
+		Edge harbouredEdge7 = edges.getEdge (hex13, hex14);
+		harbours.Add (harbouredEdge7, StealableType.Resource_Grain);
+
+		Vector3 hex15 = new Vector3 (2, -8, 6);
+		GameObject currentHexGameObj8 = cubeHexes [hex15];
+		Hex hexScript8 = currentHexGameObj8.GetComponent<Hex> ();
+		Vector3 hex16 = hexScript8.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_BOTTOM);
+		Edge harbouredEdge8 = edges.getEdge (hex15, hex16);
+		harbours.Add (harbouredEdge8, StealableType.Resource_Lumber);
+
+		Vector3 hex17 = new Vector3 (1, -7, 6);
+		GameObject currentHexGameObj9 = cubeHexes [hex17];
+		Hex hexScript9 = currentHexGameObj9.GetComponent<Hex> ();
+		Vector3 hex18 = hexScript9.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_BOTTOM);
+		Edge harbouredEdge9 = edges.getEdge (hex17, hex18);
+		harbours.Add (harbouredEdge9, StealableType.Resource_Ore);
+
+		Vector3 hex19 = new Vector3 (1, -6, 5);
+		GameObject currentHexGameObj10 = cubeHexes [hex19];
+		Hex hexScript10 = currentHexGameObj10.GetComponent<Hex> ();
+		Vector3 hex20 = hexScript10.getAdjacentHexPos (global::Hex.AdjHex.LEFT_BOTTOM);
+		Edge harbouredEdge10 = edges.getEdge (hex19, hex20);
+		harbours.Add (harbouredEdge10, StealableType.Resource_Wool);
+
+		Vector3 hex21 = new Vector3 (1, -5, 4);
+		GameObject currentHexGameObj11 = cubeHexes [hex21];
+		Hex hexScript11 = currentHexGameObj11.GetComponent<Hex> ();
+		Vector3 hex22 = hexScript11.getAdjacentHexPos (global::Hex.AdjHex.LEFT_BOTTOM);
+		Edge harbouredEdge11 = edges.getEdge (hex21, hex22);
+		harbours.Add (harbouredEdge11, StealableType.Resource_Brick);
+
+		Vector3 hex23 = new Vector3 (2, -5, 3);
+		GameObject currentHexGameObj12 = cubeHexes [hex23];
+		Hex hexScript12 = currentHexGameObj12.GetComponent<Hex> ();
+		Vector3 hex24 = hexScript12.getAdjacentHexPos (global::Hex.AdjHex.LEFT);
+		Edge harbouredEdge12 = edges.getEdge (hex23, hex24);
+		harbours.Add (harbouredEdge12, StealableType.Resource_Grain);
+
 	}
 
 	// Use this for initialization
