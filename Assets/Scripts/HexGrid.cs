@@ -59,7 +59,8 @@ public class HexGrid : MonoBehaviour {
 		{17, StealableType.Resource_Lumber},
 		{18, StealableType.Resource_Ore},
 		{19, StealableType.Resource_Brick},
-		{20, StealableType.Resource_Grain}
+		{20, StealableType.Resource_Grain},
+
 	};
 
 
@@ -111,12 +112,57 @@ public class HexGrid : MonoBehaviour {
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
+		int oneCount = 0;
+		int twoCount = 0;
+		int threeCount = 0;
+		int fourCount = 0;
+		int fiveCount = 0;
+
 		for (int y = 0; y < gridHeight; y++) 
 		{
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
 				int resourceNum = Random.Range (1, 20);
+
+				/*
+				if (resourceNum == 1) 
+				{
+					oneCount++;
+					if (oneCount > 3)
+					{
+						resourceNum = Random.Range (1, 6);
+					}
+				} else if (resourceNum == 2) 
+				{
+					twoCount++;
+					if (twoCount > 3) {
+						resourceNum = Random.Range (1, 6);
+					}
+				} else if (resourceNum == 3) 
+				{
+					threeCount++;
+					if (threeCount > 3) 
+					{
+						resourceNum = Random.Range (1, 6);
+					}
+				} else if (resourceNum == 4) 
+				{
+					fourCount++;
+					if (fourCount > 3) 
+					{
+						resourceNum = Random.Range(1, 6);
+					}
+				} else if (resourceNum == 5)
+				{
+					fiveCount++;
+					if (fiveCount > 3) 
+					{
+						resourceNum = Random.Range (1, 6);
+					}
+				}
+				*/
+
 
 				Hex hexScript = thisHex.GetComponent<Hex> ();
 				if (x == 3 && y > 2 && y < 6) 
