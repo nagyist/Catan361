@@ -5,23 +5,42 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager> {
 	const int MAX_PLAYER = 4;
 
-	public int currentPlayer = 0;
-	public GamePlayer[] players = new GamePlayer[MAX_PLAYER];
+	public int MockedCurrentPlayer = 0;
+	public GameObject localPlayer { get; private set; }
+	public List<GameObject> connectedPlayers { get; private set; }
 	public HexGrid gameBoard;
 	public GUIInterface gui;
 	public GameTurn currentTurn { get; private set; }
 
-	protected GameManager() { }
+	protected GameManager() {
+		connectedPlayers = new List<GameObject> ();
+	}
 
     void Awake () {
         gameBoard = GetComponent<HexGrid>();
-		players[currentPlayer] = GetComponent<GamePlayer>();
         gui = GetComponent<GUIInterface>();
-		currentTurn = new GameTurn (MAX_PLAYER);
+		currentTurn = GetComponent<GameTurn> ();
     }
 
+	public void PlayerConnected(GameObject player) {
+		connectedPlayers.Add (player);
+	}
+
+	public void SetLocalPlayer(GameObject player) {
+		localPlayer = player;
+	}
+
+	public int GetPlayerIndex(GameObject player) {
+		return connectedPlayers.IndexOf (player);
+	}
+
+	public int GetLocalPlayerIndex() {
+		return MockedCurrentPlayer;
+		//return GetPlayerIndex (localPlayer);
+	}
+
     public void RollDice() {
-        int diceResult = Random.Range(1, 6);
+        int diceResult = Random.Range(1, 7);
         StartCoroutine(gui.ShowMessage("Player X rolled " + diceResult));
     }
 
@@ -30,13 +49,16 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	public void currentPlayerTakeTurn() {
-		if (!currentTurn.TakeTurn ()) { return; }
+		if (!currentTurn.LocalPlayerTakeTurn()) { return; }
+	}
 
-		StartCoroutine (gui.ShowMessage ("Player " + currentPlayer + " took turn!"));
+	public void currentPlayerEndTurn() {
+		if (!currentTurn.LocalPlayerEndTurn()) { return; }
 	}
 
 	void Start () {
-		
+		currentTurn.MaximumPlayer = connectedPlayers.Count;
+		//currentTurn.MaximumPlayer = 2;
 	}
 	
 	// Update is called once per frame

@@ -1,39 +1,49 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class GameTurn
+public class GameTurn : MonoBehaviour
 {
-	private int maxPlayer = 0;
-	private int currentPlayerTurn = -1;
-	private bool currentPlayerEndedTurn = true;
+	public int MaximumPlayer = 0;
+	public int CurrentPlayerIndex { get; private set; }
+	public bool CurrentTurnEnded { get; private set; }
 
-	public GameTurn (int maxPlayer)
-	{
-		this.maxPlayer = maxPlayer;
+	public GameTurn () { 
+		CurrentPlayerIndex = -1;
+		CurrentTurnEnded = true;
 	}
 
-	public bool TakeTurn() {
-		if (IsCurrentPlayerAllowedToTakeTurn()) {
-			currentPlayerTurn = GetNextPlayerTurn ();
-			currentPlayerEndedTurn = false;
+	public bool LocalPlayerTakeTurn() {
+		if (IsLocalPlayerAllowedToTakeTurn()) {
+			CurrentPlayerIndex = GetNextPlayerTurn ();
+			CurrentTurnEnded = false;
 			return true;
 		}
 
 		return false;
 	}
 
+	public bool LocalPlayerEndTurn() {
+		if (IsLocalPlayerTurn ()) {
+			CurrentTurnEnded = true;
+		}
+
+		return false;
+	}
+
 	public int GetNextPlayerTurn() {
-		return currentPlayerTurn + 1 % maxPlayer;
+		return (CurrentPlayerIndex + 1) % MaximumPlayer;
 	}
 
 	public bool IsTurnTaken() {
-		return !this.currentPlayerEndedTurn;
+		return this.CurrentTurnEnded == false;
 	}
 
-	public bool IsCurrentPlayerAllowedToTakeTurn() {
-		return GetNextPlayerTurn () == GameManager.Instance.currentPlayer && ! IsTurnTaken ();
+	public bool IsLocalPlayerAllowedToTakeTurn() {
+		return GetNextPlayerTurn () == GameManager.Instance.GetLocalPlayerIndex() && ! IsTurnTaken ();
 	}
 
-	public bool IsCurrentPlayerTurn() {
-		return this.currentPlayerTurn == GameManager.Instance.currentPlayer && IsTurnTaken ();
+	public bool IsLocalPlayerTurn() {
+		return CurrentPlayerIndex == GameManager.Instance.GetLocalPlayerIndex () && IsTurnTaken ();
 	}
 }
