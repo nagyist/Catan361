@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class GameManager : Singleton<GameManager> {
 	const int MAX_PLAYER = 4;
+	public static GameManager Instance = new GameManager ();
 
 	public int MockedCurrentPlayer = 0;
 	public GameObject localPlayer { get; private set; }

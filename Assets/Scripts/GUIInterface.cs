@@ -67,6 +67,6 @@ public class GUIInterface : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		updateTurnMgmtButton ();
+		//updateTurnMgmtButton ();
 	}
 }
