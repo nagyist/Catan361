@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class GUIInterface : MonoBehaviour {
-    private Canvas guiCanvas;
+	private GameObject guiCanvas;
 
     public IEnumerator ShowMessage(string msg, float delay = 1.75f) {
 		GameObject popupPanel = guiCanvas.transform.Find ("PanelPopup").gameObject;
@@ -25,12 +25,12 @@ public class GUIInterface : MonoBehaviour {
 	}
 
 	public void ToggleCurrentPlayerTurnManagement() {
-		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn ()) {
+		if (GameManager.Instance.currentTurn.IsLocalPlayerAllowedToTakeTurn ()) {
 			// take turn
 			GameManager.Instance.currentPlayerTakeTurn();
-		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn () && GameManager.Instance.currentTurn.IsTurnTaken ()) { 
+		} else if (GameManager.Instance.currentTurn.IsLocalPlayerTurn()) { 
 			// end turn
-
+			GameManager.Instance.currentPlayerEndTurn();
 		}
 	}
 
@@ -41,15 +41,17 @@ public class GUIInterface : MonoBehaviour {
 	}
 
 	private void updateTurnMgmtButton() {
-		GameObject turnMgmtButton = guiCanvas.transform.Find ("TurnMgmtButton").gameObject;
-		if (GameManager.Instance.currentTurn.IsCurrentPlayerAllowedToTakeTurn()) {
+		GameObject turnMgmtButton = guiCanvas.transform.FindChild ("TurnMgmtButton").gameObject;
+		if (GameManager.Instance.currentTurn.IsLocalPlayerAllowedToTakeTurn()) {
 			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (true);
 			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
 			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
-		} else if (GameManager.Instance.currentTurn.IsCurrentPlayerTurn() && GameManager.Instance.currentTurn.IsTurnTaken ()) {
+			turnMgmtButton.GetComponent<Button> ().enabled = true;
+		} else if (GameManager.Instance.currentTurn.IsLocalPlayerTurn()) {
 			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
 			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (true);
 			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
+			turnMgmtButton.GetComponent<Button> ().enabled = true;
 		} else {
 			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
 			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
@@ -60,7 +62,7 @@ public class GUIInterface : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        guiCanvas = GameObject.FindObjectOfType<Canvas>();
+		guiCanvas = GameObject.FindGameObjectWithTag ("GameCanvas");
 	}
 
 	// Update is called once per frame
