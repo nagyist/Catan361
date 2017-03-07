@@ -5,6 +5,7 @@ using UnityEngine;
 public class HexGrid : MonoBehaviour {
 
 	public GameObject Hex;
+	public GameObject Harbour;
 
 	public int gridWidth = 10;
 	public int gridHeight = 9;
@@ -373,6 +374,9 @@ public class HexGrid : MonoBehaviour {
 		Vector3 hex2 = hexScript1.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
 		Edge harbouredEdge1 = edges.getEdge (hex1, hex2);
 		harbours.Add (harbouredEdge1, StealableType.Resource_Brick);
+		// add an icon or a button here for the harbour...
+		GameObject newHarbour = (GameObject) Instantiate (Harbour);
+		newHarbour.transform.position = hex1;
 
 		Vector3 hex3 = new Vector3 (4, -6, 2);
 		GameObject currentHexGameObj2 = cubeHexes [hex3];
@@ -380,6 +384,8 @@ public class HexGrid : MonoBehaviour {
 		Vector3 hex4 = hexScript2.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
 		Edge harbouredEdge2 = edges.getEdge (hex3, hex4);
 		harbours.Add (harbouredEdge2, StealableType.Resource_Grain);
+		GameObject newHarbour2 = (GameObject)Instantiate (Harbour);
+		newHarbour2.transform.position = hex3;
 
 		Vector3 hex5 = new Vector3 (5, -7, 2);
 		GameObject currentHexGameObj3 = cubeHexes [hex5];
@@ -458,6 +464,7 @@ public class HexGrid : MonoBehaviour {
 	{
 		setHexSizes ();
 		createHexGrid ();
+		buildHarbours ();
 	}
 
 	// Update is called once per frame
