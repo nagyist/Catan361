@@ -383,6 +383,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex1 = new Vector2 (4, 1);
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
+		newHarbour1.transform.parent = this.transform;
 		newHarbour1.transform.position = calcWorldCoord (gridPosHex1);
 		Harbour harbourScript1 = newHarbour1.GetComponent<Harbour> ();
 		harbourScript1.exchangeRate = 4;
@@ -399,6 +400,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex2 = new Vector2 (5, 1);
 		GameObject newHarbour2 = (GameObject) Instantiate (Harbour);
+		newHarbour2.transform.parent = this.transform;
 		newHarbour2.transform.position = calcWorldCoord (gridPosHex2);
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
 		harbourScript2.exchangeRate = 4;
@@ -415,6 +417,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex3 = new Vector2 (7, 2);
 		GameObject newHarbour3 = (GameObject) Instantiate (Harbour);
+		newHarbour3.transform.parent = this.transform;
 		newHarbour3.transform.position = calcWorldCoord (gridPosHex3);
 		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
 		harbourScript3.exchangeRate = 4;
@@ -431,6 +434,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex4 = new Vector2 (7, 3);
 		GameObject newHarbour4 = (GameObject) Instantiate (Harbour);
+		newHarbour4.transform.parent = this.transform;
 		newHarbour4.transform.position = calcWorldCoord (gridPosHex4);
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
 		harbourScript4.exchangeRate = 4;
@@ -447,6 +451,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex5 = new Vector2 (8, 4);
 		GameObject newHarbour5 = (GameObject) Instantiate (Harbour);
+		newHarbour5.transform.parent = this.transform;
 		newHarbour5.transform.position = calcWorldCoord (gridPosHex5);
 		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
 		harbourScript5.exchangeRate = 4;
@@ -463,6 +468,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex6 = new Vector2 (7, 5);
 		GameObject newHarbour6 = (GameObject) Instantiate (Harbour);
+		newHarbour6.transform.parent = this.transform;
 		newHarbour6.transform.position = calcWorldCoord (gridPosHex6);
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 4;
@@ -479,6 +485,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex7 = new Vector2 (7, 6);
 		GameObject newHarbour7 = (GameObject) Instantiate (Harbour);
+		newHarbour7.transform.parent = this.transform;
 		newHarbour7.transform.position = calcWorldCoord (gridPosHex7);
 		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
 		harbourScript7.exchangeRate = 4;
@@ -495,6 +502,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex8 = new Vector2 (5, 7);
 		GameObject newHarbour8 = (GameObject) Instantiate (Harbour);
+		newHarbour8.transform.parent = this.transform;
 		newHarbour8.transform.position = calcWorldCoord (gridPosHex8);
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 4;
@@ -511,6 +519,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex9 = new Vector2 (4, 7);
 		GameObject newHarbour9 = (GameObject) Instantiate (Harbour);
+		newHarbour9.transform.parent = this.transform;
 		newHarbour9.transform.position = calcWorldCoord (gridPosHex9);
 		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
 		harbourScript9.exchangeRate = 4;
@@ -527,6 +536,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex10 = new Vector2 (3, 6);
 		GameObject newHarbour10 = (GameObject) Instantiate (Harbour);
+		newHarbour10.transform.parent = this.transform;
 		newHarbour10.transform.position = calcWorldCoord (gridPosHex10);
 		Harbour harbourScript10 = newHarbour10.GetComponent<Harbour> ();
 		harbourScript10.exchangeRate = 4;
@@ -543,6 +553,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex11 = new Vector2 (2, 5);
 		GameObject newHarbour11 = (GameObject) Instantiate (Harbour);
+		newHarbour11.transform.parent = this.transform;
 		newHarbour11.transform.position = calcWorldCoord (gridPosHex11);
 		Harbour harbourScript11 = newHarbour11.GetComponent<Harbour> ();
 		harbourScript11.exchangeRate = 4;
@@ -559,6 +570,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex12 = new Vector2 (2, 4);
 		GameObject newHarbour12 = (GameObject) Instantiate (Harbour);
+		newHarbour12.transform.parent = this.transform;
 		newHarbour12.transform.position = calcWorldCoord (gridPosHex12);
 		Harbour harbourScript12 = newHarbour12.GetComponent<Harbour> ();
 		harbourScript12.exchangeRate = 4;
@@ -575,6 +587,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex13 = new Vector2 (2, 3);
 		GameObject newHarbour13 = (GameObject) Instantiate (Harbour);
+		newHarbour13.transform.parent = this.transform;
 		newHarbour13.transform.position = calcWorldCoord (gridPosHex13);
 		Harbour harbourScript13 = newHarbour12.GetComponent<Harbour> ();
 		harbourScript13.exchangeRate = 4;
@@ -592,6 +605,7 @@ public class HexGrid : MonoBehaviour {
 		*/
 		Vector2 gridPosHex14 = new Vector2 (3, 2);
 		GameObject newHarbour14 = (GameObject) Instantiate (Harbour);
+		newHarbour14.transform.parent = this.transform;
 		newHarbour14.transform.position = calcWorldCoord (gridPosHex14);
 		Harbour harbourScript14 = newHarbour14.GetComponent<Harbour> ();
 		harbourScript14.exchangeRate = 4;
