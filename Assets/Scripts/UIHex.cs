@@ -8,11 +8,11 @@ public class UIHex : MonoBehaviour {
 
 	public Dictionary<StealableType, Color> resourceColor = new Dictionary<StealableType, Color>()
 	{
-		{StealableType.Resource_Wool, new Color (0, 1, 1, 1)},
-		{StealableType.Resource_Lumber, new Color (0, 1, 0, 1)},
-		{StealableType.Resource_Ore, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{StealableType.Resource_Brick, new Color (1, 0, 0, 1)},
-		{StealableType.Resource_Grain, new Color (1, 0, 1, 1)}
+		{StealableType.Resource_Wool, new Color32 (255, 160, 122, 255)},
+		{StealableType.Resource_Lumber, new Color32 (128, 128, 0, 255)},
+		{StealableType.Resource_Ore, new Color32 (112, 128, 144, 255)},
+		{StealableType.Resource_Brick, new Color32 (178, 34, 34, 255)},
+		{StealableType.Resource_Grain, new Color32 (255, 215, 0, 255)}
 	};
 
 
