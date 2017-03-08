@@ -64,8 +64,6 @@ public class GameManager : Singleton<GameManager> {
 		}
 	}
     
-    
-
 	public bool isInSetupPhase() {
 		return true;
 	}
