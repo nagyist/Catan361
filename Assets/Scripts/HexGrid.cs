@@ -5,6 +5,7 @@ using UnityEngine;
 public class HexGrid : MonoBehaviour {
 
 	public GameObject Hex;
+	public GameObject Harbour;
 
 	public int gridWidth = 10;
 	public int gridHeight = 9;
