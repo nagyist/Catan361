@@ -12,6 +12,6 @@ public class TEst : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		GetComponent<Text> ().text = "idx = " + GameManager.Instance.GetLocalPlayerIndex ();
 	}
 }
