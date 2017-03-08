@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class GamePlayer : NetworkBehaviour {
     public string myName = "";
     public Color myColor = Color.white;
+	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> ();
 
 	public override void OnStartClient() {
 		// register itself as a connected player

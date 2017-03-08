@@ -29,6 +29,7 @@ public class GameState : NetworkBehaviour {
 	void Start() {
 		GameManager.CurrentGameState = this;
 		CurrentStatus = GameStatus.NOT_READY;
+		PlayerResources = new Dictionary<GamePlayer, Dictionary<StealableType, int>> ();
 
 		NetworkTransmitter networkTransmitter = GetComponent<NetworkTransmitter> ();
 
@@ -37,7 +38,7 @@ public class GameState : NetworkBehaviour {
 			GetComponent<HexGrid> ().CreateUIHexGrid ();
 			CurrentStatus = GameStatus.GRID_CREATED;
 
-			InvokeRepeating ("SyncGameBoard", 1.0f, 5.0f);
+			InvokeRepeating ("SyncGameBoard", 2.0f, 60.0f);
 
 			SyncGameTurns ();
 			CurrentStatus = GameStatus.GAME_TURN_SYNC;
@@ -64,10 +65,10 @@ public class GameState : NetworkBehaviour {
 		if (isServer) {
 			return;
 		}
-		Debug.Log ("GameTurn synchronized on client");
+
 		CurrentTurn = SerializationUtils.ByteArrayToObject (gameTurnsSerialized) as GameTurn;
 	}
-
+	
 	[ClientRpc]
 	public void RpcClientRolledDice(GameObject player, int diceResult) {
 		Debug.Log ("Player rolled " + diceResult);
