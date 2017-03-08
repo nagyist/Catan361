@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager> {
 	public HexGrid gameBoard;
 	public GUIInterface gui;
 	public GameTurn currentTurn { get; private set; }
+	public Player playerTest;
 
 	protected GameManager() {
 		connectedPlayers = new List<GameObject> ();
@@ -41,10 +42,29 @@ public class GameManager : Singleton<GameManager> {
 		//return GetPlayerIndex (localPlayer);
 	}
 
+
     public void RollDice() {
-        int diceResult = Random.Range(1, 15);
+        int diceResult = Random.Range(1, 13);
         StartCoroutine(gui.ShowMessage("Player X rolled " + diceResult));
-    }
+
+		foreach(GameObject thisHex in gameBoard.theHexes)
+		{
+			Hex hexScript = thisHex.GetComponent<Hex> ();
+			if (hexScript.selectedNum == diceResult) {
+				foreach (GameObject thisPlayer in connectedPlayers) 
+				{
+					//check if player has settlement(s) on hex (increment by number and type) then... (still need to implement)
+
+					if (playerTest.ownedResources.ContainsKey (hexScript.hexResource)) {
+						playerTest.ownedResources [hexScript.hexResource]++;
+					}
+
+				}
+			}
+		}
+	}
+    
+    
 
 	public bool isInSetupPhase() {
 		return true;

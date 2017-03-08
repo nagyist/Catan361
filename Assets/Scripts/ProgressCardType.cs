@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace AssemblyCSharp
-{
+//namespace AssemblyCSharp
+//{
 	public enum ProgressCardType
 	{
 		Medicine,
@@ -30,5 +30,5 @@ namespace AssemblyCSharp
 		Inventor,
 		Irrigation
 	}
-}
+//}
 

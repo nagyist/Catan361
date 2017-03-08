@@ -6,6 +6,8 @@ public class Hex : MonoBehaviour {
 	public Vector2 hexGridPosition;
 	public Vector3 hexGridCubePosition;
 	public int selectedNum;
+	public int resourceNumber;
+	public StealableType hexResource;
 
 	private SpriteRenderer renderer;
 	private Color oldColor;

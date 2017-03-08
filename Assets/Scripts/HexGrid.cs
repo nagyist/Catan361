@@ -11,6 +11,7 @@ public class HexGrid : MonoBehaviour {
 	public int gridHeight = 9;
 
 	public Dictionary<Vector3, GameObject> cubeHexes;
+	public List<GameObject> theHexes;
 	public EdgeCollection edges;
 	public IntersectionCollection intersections;
 	public Dictionary<Edge, StealableType> harbours;
@@ -110,6 +111,7 @@ public class HexGrid : MonoBehaviour {
 		cubeHexes = new Dictionary<Vector3, GameObject> ();
 		edges = new EdgeCollection ();
 		intersections = new IntersectionCollection ();
+		theHexes = new List<GameObject> ();
 
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
@@ -127,7 +129,11 @@ public class HexGrid : MonoBehaviour {
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
+				theHexes.Add (thisHex);
 				int resourceNum = Random.Range (1, 20);
+				Hex hexScript = thisHex.GetComponent<Hex> ();
+				hexScript.resourceNumber = resourceNum;
+				hexScript.hexResource = resourceType [resourceNum];
 
 				/*
 				if (resourceNum == 1) 
@@ -168,7 +174,7 @@ public class HexGrid : MonoBehaviour {
 				*/
 
 
-				Hex hexScript = thisHex.GetComponent<Hex> ();
+
 				if (x == 3 && y > 2 && y < 6) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];

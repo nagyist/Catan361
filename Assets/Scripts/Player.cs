@@ -4,20 +4,20 @@
 using System.Collections.Generic;
 
 
-namespace AssemblyCSharp
-{
+//namespace AssemblyCSharp
+//{
 	public class Player
 	{
 		// private username and password
-		string username;
-		string password;
+		private string username;
+		private string password;
 		// status, vps, gold, and longestRoad are simple c# attributes
-		PlayerStatus status { get; set; }
-		int defenderOfCatanVPs { get; set; }
-		int gold { get; set; }
-		bool longestRoad { get; set; }
+		private PlayerStatus status { get; set; }
+		private int defenderOfCatanVPs { get; set; }
+		private int gold { get; set; }
+		private bool longestRoad { get; set; }
 		// using dictionary for holding resources and commodities
-		Dictionary<StealableType, int> ownedResources= new Dictionary<StealableType, int>();
+		public Dictionary<StealableType, int> ownedResources= new Dictionary<StealableType, int>();
 		// using list for holding owned progress cards
 		List<ProgressCardType> ownedProgressCards = new List<ProgressCardType>();
 		List<OwnableUnit> ownedUnits = new List<OwnableUnit>();
@@ -37,5 +37,5 @@ namespace AssemblyCSharp
 		}
 
 	}
-}
+//}
 
