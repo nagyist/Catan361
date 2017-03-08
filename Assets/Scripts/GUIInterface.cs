@@ -25,16 +25,7 @@ public class GUIInterface : MonoBehaviour {
 	}
 
 	public void ToggleCurrentPlayerTurnManagement() {
-		if (GameManager.Instance.currentTurn.IsLocalPlayerAllowedToTakeTurn ()) {
-			// take turn
-				// roll dice
-				// trade
-				// build road / settlement
-			GameManager.Instance.currentPlayerTakeTurn();
-		} else if (GameManager.Instance.currentTurn.IsLocalPlayerTurn()) { 
-			// end turn
-			GameManager.Instance.currentPlayerEndTurn();
-		}
+		
 	}
 
 	private bool hasModalWindowOpened() {
@@ -43,43 +34,14 @@ public class GUIInterface : MonoBehaviour {
 		return actionPanel.activeSelf;
 	}
 
-	private void updateTurnMgmtButton() {
-		GameObject turnMgmtButton = guiCanvas.transform.FindChild ("TurnMgmtButton").gameObject;
-		if (GameManager.Instance.currentTurn.IsLocalPlayerAllowedToTakeTurn()) {
-			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (true);
-			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
-			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
-			turnMgmtButton.GetComponent<Button> ().enabled = true;
-		} else if (GameManager.Instance.currentTurn.IsLocalPlayerTurn()) {
-			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
-			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (true);
-			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (false);
-			turnMgmtButton.GetComponent<Button> ().enabled = true;
-		} else {
-			turnMgmtButton.transform.FindChild ("TakeTurnText").gameObject.SetActive (false);
-			turnMgmtButton.transform.FindChild ("EndTurnText").gameObject.SetActive (false);
-			turnMgmtButton.transform.FindChild ("WaitingTurnText").gameObject.SetActive (true);
-			turnMgmtButton.GetComponent<Button> ().enabled = false;
-		}
-	}
-	/*
-	private void rollDiceButton () {
-		GameObject rollDiceButtonOne = guiCanvas.transform.Find ("RollDiceButton").gameObject;
-		if (GameManager.Instance.currentTurn.IsLocalPlayerTurn()) {
-			int diceNum = Random.Range (1, 7);
-			StartCoroutine(gui.ShowMessage("Player X rolled " + diceNum));
-		}
-
-	}
-	*/
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		guiCanvas = GameObject.FindGameObjectWithTag ("GameCanvas");
 	}
 
 	// Update is called once per frame
 	void Update () {
-		//updateTurnMgmtButton ();
+		
 	}
 }

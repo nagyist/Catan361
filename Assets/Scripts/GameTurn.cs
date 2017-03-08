@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class GameTurn : MonoBehaviour
+[Serializable]
+public class GameTurn
 {
-	public int MaximumPlayer = 2;
+	public List<string> OrderedPlayers = new List<String> (new string[] { "Player1", "Player2" });
 	public int CurrentPlayerIndex { get; private set; }
 	public bool CurrentTurnEnded { get; private set; }
 
@@ -13,8 +15,8 @@ public class GameTurn : MonoBehaviour
 		CurrentTurnEnded = true;
 	}
 
-	public bool LocalPlayerTakeTurn() {
-		if (IsLocalPlayerAllowedToTakeTurn()) {
+	public bool PlayerTakeTurn(string name) {
+		if (IsPlayerAllowedToTakeTurn(name)) {
 			CurrentPlayerIndex = GetNextPlayerTurn ();
 			CurrentTurnEnded = false;
 			return true;
@@ -23,16 +25,25 @@ public class GameTurn : MonoBehaviour
 		return false;
 	}
 
+	public bool EndTurn(string name) {
+		if (!IsPlayerTurn (name)) {
+			return false;
+		}
+
+		CurrentTurnEnded = true;
+		return true;
+	}
+
 	public bool LocalPlayerEndTurn() {
 		if (IsLocalPlayerTurn ()) {
 			CurrentTurnEnded = true;
 		}
 
-		return false;
+		return true;
 	}
 
 	public int GetNextPlayerTurn() {
-		return (CurrentPlayerIndex + 1) % MaximumPlayer;
+		return (CurrentPlayerIndex + 1) % OrderedPlayers.Count;
 	}
 
 	public bool IsTurnTaken() {
@@ -40,10 +51,22 @@ public class GameTurn : MonoBehaviour
 	}
 
 	public bool IsLocalPlayerAllowedToTakeTurn() {
-		return GetNextPlayerTurn () == GameManager.Instance.GetLocalPlayerIndex() && ! IsTurnTaken ();
+		return GetNextPlayerTurn () == OrderedPlayers.IndexOf(GameManager.LocalPlayer.GetComponent<GamePlayer>().myName) && ! IsTurnTaken ();
+	}
+
+	public bool IsPlayerAllowedToTakeTurn(string name) {
+		return GetNextPlayerTurn () == OrderedPlayers.IndexOf (name) && !IsTurnTaken ();
+	}
+
+	public bool IsPlayerAllowedToTakeTurn(int idx) {
+		return GetNextPlayerTurn () == idx && !IsTurnTaken ();
 	}
 
 	public bool IsLocalPlayerTurn() {
-		return CurrentPlayerIndex == GameManager.Instance.GetLocalPlayerIndex () && IsTurnTaken ();
+		return CurrentPlayerIndex == OrderedPlayers.IndexOf(GameManager.LocalPlayer.GetComponent<GamePlayer>().myName) && IsTurnTaken ();
+	}
+
+	public bool IsPlayerTurn(string name) {
+		return CurrentPlayerIndex == OrderedPlayers.IndexOf (name) && IsTurnTaken ();
 	}
 }

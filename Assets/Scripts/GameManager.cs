@@ -4,13 +4,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class GameManager : Singleton<GameManager> {
-	const int MAX_PLAYER = 4;
+	public static GameObject LocalPlayer = null;
+	public static List<GameObject> ConnectedPlayers = new List<GameObject> ();
+	public static GameState CurrentGameState = null;
+	public static int PlayerCount = 0;
 
-	public GameTurn currentTurn;
 	public GUIInterface gui;
 
 	protected GameManager() {
-		//connectedPlayers = new List<GameObject> ();
+		
 	}
 
     void Awake () {
@@ -22,55 +24,53 @@ public class GameManager : Singleton<GameManager> {
 		
 	}
 
-	public void PlayerConnected(GameObject player) {
-		//connectedPlayers.Add (player);
+	public static void PlayerConnected(GameObject player) {
+		player.GetComponent<GamePlayer> ().myName = "Player" + (++PlayerCount);
+		ConnectedPlayers.Add (player);
 	}
 
-	public void SetLocalPlayer(GameObject player) {
-		//localPlayer = player;
-	}
-
-	public int GetPlayerIndex(GameObject player) {
-		return 0;
-	}
-
-	public int GetLocalPlayerIndex() {
-		return 0;
-		//return GetPlayerIndex (localPlayer);
+	public static void SetLocalPlayer(GameObject player) {
+		LocalPlayer = player;
 	}
 
     public void RollDice() {
-        int diceResult = Random.Range(1, 15);
-        StartCoroutine(gui.ShowMessage("Player X rolled " + diceResult));
+        
     }
 
-	public bool isInSetupPhase() {
-		return true;
-	}
-
-	public void currentPlayerTakeTurn() {
-		//if (!currentTurn.LocalPlayerTakeTurn()) { return; }
-	}
-
-	public void currentPlayerEndTurn() {
-		//if (!currentTurn.LocalPlayerEndTurn()) { return; }
-	}
-
 	public bool GameStateReady() {
-		GameObject gameStateObj = GameObject.FindGameObjectWithTag ("GameState");
-		if (gameStateObj == null) { return false; }
-		GameState gameState = gameStateObj.GetComponent<GameState> ();
-		if (gameState == null) { return false; }
-		return true;
+		return CurrentGameState != null;
 	}
 
 	public GameState GetCurrentGameState() {
-		return GameObject.FindGameObjectWithTag ("GameState").GetComponent<GameState>();
+		return CurrentGameState;
+	}
+
+	public bool GameStateReadyAtStage(GameState.GameStatus status) {
+		return GameStateReady () && GetCurrentGameState ().CurrentStatus >= status;
+	}
+
+	public bool CurrentPlayerTakeTurn() {
+		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerAllowedToTakeTurn()) {
+			StartCoroutine (GameManager.Instance.gui.ShowMessage ("Cannot take turn"));
+			return false;
+		}
+
+		LocalPlayer.GetComponent<GamePlayer> ().CmdTakeTurn ();
+		return true;
+	}
+
+	public bool CurrentPlayerEndTurn() {
+		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
+			StartCoroutine (GameManager.Instance.gui.ShowMessage ("Cannot end turn"));
+			return false;
+		}
+
+		LocalPlayer.GetComponent<GamePlayer> ().CmdEndTurn ();
+		return true;
 	}
 
 	void Start () {
-		//currentTurn.MaximumPlayer = connectedPlayers.Count;
-		//currentTurn.MaximumPlayer = 2;
+		
 	}
 	
 	// Update is called once per frame
