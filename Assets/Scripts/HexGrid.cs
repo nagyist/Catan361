@@ -132,8 +132,8 @@ public class HexGrid : MonoBehaviour {
 				theHexes.Add (thisHex);
 				int resourceNum = Random.Range (1, 20);
 				Hex hexScript = thisHex.GetComponent<Hex> ();
-				
-				/*
+
+                /*
 				if (resourceNum == 1) 
 				{
 					oneCount++;
@@ -172,6 +172,7 @@ public class HexGrid : MonoBehaviour {
 				*/
 
 
+                thisHex.GetComponent<SpriteRenderer>().sortingLayerName = "Hex";
 
 				if (x == 3 && y > 2 && y < 6) 
 				{

@@ -4,8 +4,7 @@
 using System.Collections.Generic;
 
 
-//namespace AssemblyCSharp
-//{
+
 	public class Player
 	{
 		// private username and password
@@ -37,5 +36,5 @@ using System.Collections.Generic;
 		}
 
 	}
-//}
+
 

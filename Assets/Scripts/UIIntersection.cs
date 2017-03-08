@@ -6,6 +6,8 @@ public class UIIntersection : MonoBehaviour {
 
 	public Intersection referencedIntersection;
 
+    private SpriteRenderer intersectionRenderer;
+
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.blue;
 
@@ -17,7 +19,8 @@ public class UIIntersection : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        intersectionRenderer = GetComponent<SpriteRenderer>();
+        intersectionRenderer.sortingLayerName = "Intersection";
 	}
 
 	// Update is called once per frame

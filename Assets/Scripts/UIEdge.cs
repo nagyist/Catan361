@@ -6,6 +6,8 @@ public class UIEdge : MonoBehaviour {
 
 	public Edge referencedEdge;
 
+    SpriteRenderer edgeRenderer;
+
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.red;
 
@@ -15,9 +17,15 @@ public class UIEdge : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().color = Color.black;
 	}
 
-	// Use this for initialization
-	void Start () {
-		
+    private void OnMouseDown()
+    {
+        GetComponent<SpriteRenderer>().color = Color.cyan;
+    }
+
+    // Use this for initialization
+    void Start () {
+        edgeRenderer = GetComponent<SpriteRenderer>();
+        edgeRenderer.sortingLayerName = "Edge";
 	}
 	
 	// Update is called once per frame
