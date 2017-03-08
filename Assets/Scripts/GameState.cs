@@ -29,7 +29,6 @@ public class GameState : NetworkBehaviour {
 	void Start() {
 		GameManager.CurrentGameState = this;
 		CurrentStatus = GameStatus.NOT_READY;
-		PlayerResources = new Dictionary<GamePlayer, Dictionary<StealableType, int>> ();
 
 		NetworkTransmitter networkTransmitter = GetComponent<NetworkTransmitter> ();
 
