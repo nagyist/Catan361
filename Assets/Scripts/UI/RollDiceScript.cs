@@ -11,7 +11,13 @@ public class RollDiceScript : MonoBehaviour {
 	}
 
 	public void RollDiceClick() {
-		
+		if(!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED)) {
+			return;
+		}
+
+		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
+			// roll the dice
+		}
 	}
 	
 	// Update is called once per frame
@@ -20,6 +26,17 @@ public class RollDiceScript : MonoBehaviour {
 			return;
 		}
 
-		GetComponent<Button> ().enabled = GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ();
+		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
+			GetComponent<Button> ().enabled = false;
+			GetComponentInChildren<Text> ().text = "In setup phase -- round: " + GameManager.Instance.GetCurrentGameState ().CurrentTurn.RoundCount;
+		} else {
+			if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
+				GetComponent<Button> ().enabled = true;
+				GetComponentInChildren<Text> ().text = "Roll dice";
+			} else {
+				GetComponent<Button> ().enabled = false;
+				GetComponentInChildren<Text> ().text = "Wait for your turn";
+			}
+		}
 	}
 }

@@ -9,16 +9,27 @@ public class GameTurn
 	public List<string> OrderedPlayers = new List<String> (new string[] { "Player1", "Player2" });
 	public int CurrentPlayerIndex { get; private set; }
 	public bool CurrentTurnEnded { get; private set; }
+	public int RoundCount { get; private set; }
 
 	public GameTurn () { 
 		CurrentPlayerIndex = -1;
+		RoundCount = 0;
 		CurrentTurnEnded = true;
+	}
+
+	public bool IsInSetupPhase() {
+		return RoundCount < 2;
 	}
 
 	public bool PlayerTakeTurn(string name) {
 		if (IsPlayerAllowedToTakeTurn(name)) {
+			if (CurrentPlayerIndex == 0) {
+				RoundCount++;
+			}
+
 			CurrentPlayerIndex = GetNextPlayerTurn ();
 			CurrentTurnEnded = false;
+
 			return true;
 		}
 

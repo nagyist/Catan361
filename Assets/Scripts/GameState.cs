@@ -18,7 +18,6 @@ public class GameState : NetworkBehaviour {
 		GAME_TURN_SYNC = 1
 	}
 
-
 	public static int transId = 0;
 	public GameStatus CurrentStatus { get; private set; }
 	public Dictionary<Vec3, HexTile> CurrentBoard;
