@@ -18,9 +18,8 @@ public class DisplayNumber : MonoBehaviour {
 		var pos = spriteTransform.position;
 
 		Hex hexScript = parent.GetComponent<Hex> ();
-		if (hexScript.selectedNum != 0) {
-			text.text = string.Format ("" + hexScript.selectedNum, pos.x, pos.y);
-		}
+		text.text = string.Format("" + hexScript.selectedNum, pos.x, pos.y);
+	
 	}
 	
 	// Update is called once per frame
