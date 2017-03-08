@@ -82,7 +82,7 @@ public class HexGrid : MonoBehaviour {
 		for (int y = 0; y < gridHeight; y++) {
 			for (int x = 0; x < gridWidth; x++) {
 				HexTile refTile = new HexTile ();
-				refTile.Resource = resourceType [Random.Range (1, 20)];
+				refTile.Resource = resourceType [Random.Range (1, 21)];
 
 				if (x == 3 && y > 2 && y < 6) 
 				{
