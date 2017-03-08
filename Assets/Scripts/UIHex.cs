@@ -66,7 +66,7 @@ public class UIHex : MonoBehaviour {
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
 		if (refTile.IsWater) {
-			GetComponent<SpriteRenderer>().color = Color.blue;
+			GetComponent<SpriteRenderer>().color = new Color32 (64, 224, 208, 255);
 		} else {
 			GetComponent<SpriteRenderer>().color = resourceColor[refTile.Resource];
 		}
