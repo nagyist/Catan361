@@ -18,26 +18,26 @@ public class HexGrid : MonoBehaviour {
 
 	public Dictionary<int, Color> resourceColor = new Dictionary<int, Color>()
 	{
-		{1, new Color (0, 1, 1, 1)},
-		{2, new Color (0, 1, 0, 1)},
-		{3, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{4, new Color (1, 0, 0, 1)},
-		{5, new Color (1, 0, 1, 1)},
-		{6, new Color (0, 1, 1, 1)},
-		{7, new Color (0, 1, 0, 1)},
-		{8, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{9, new Color (1, 0, 0, 1)},
-		{10, new Color (1, 0, 1, 1)},
-		{11, new Color (0, 1, 1, 1)},
-		{12, new Color (0, 1, 0, 1)},
-		{13, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{14, new Color (1, 0, 0, 1)},
-		{15, new Color (1, 0, 1, 1)},
-		{16, new Color (0, 1, 1, 1)},
-		{17, new Color (0, 1, 0, 1)},
-		{18, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{19, new Color (1, 0, 0, 1)},
-		{20, new Color (1, 0, 1, 1)}
+		{1, new Color32 (255, 160, 122, 255)},
+		{2, new Color32 (128, 128, 0, 255)},
+		{3, new Color32 (112, 128, 144, 255)},
+		{4, new Color32 (178, 34, 34, 255)},
+		{5, new Color32 (255, 215, 0, 255)},
+		{6, new Color32 (255, 160, 122, 255)},
+		{7, new Color32 (128, 128, 0, 255)},
+		{8, new Color32 (112, 128, 144, 255)},
+		{9, new Color32 (178, 34, 34, 255)},
+		{10, new Color32 (255, 215, 0, 255)},
+		{11, new Color32 (255, 160, 122, 255)},
+		{12, new Color32 (128, 128, 0, 255)},
+		{13, new Color32 (112, 128, 144, 255)},
+		{14, new Color32 (178, 34, 34, 255)},
+		{15, new Color32 (255, 215, 0, 255)},
+		{16, new Color32 (255, 160, 122, 255)},
+		{17, new Color32 (128, 128, 0, 255)},
+		{18, new Color32 (112, 128, 144, 255)},
+		{19, new Color32 (178, 34, 34, 255)},
+		{20, new Color32 (255, 215, 0, 255)}
 	};
 
 
@@ -130,7 +130,7 @@ public class HexGrid : MonoBehaviour {
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
 				theHexes.Add (thisHex);
-				int resourceNum = Random.Range (1, 20);
+				int resourceNum = Random.Range (1, 21);
 				Hex hexScript = thisHex.GetComponent<Hex> ();
 
                 /*
@@ -221,7 +221,7 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 5 && y == 4) 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (1, 0.92f, 0.016f, 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 0, 255);
 					hexScript.selectedNum = 7;
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
@@ -268,7 +268,7 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else 
 				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1);
+					thisHex.GetComponent<SpriteRenderer> ().color = new Color32 (64, 224, 208, 255);
 				}
 
 				Vector2 gridPos = new Vector2(x, y);
