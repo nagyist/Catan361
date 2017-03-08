@@ -9,35 +9,10 @@ public class HexGrid : MonoBehaviour {
 	public int gridWidth = 10;
 	public int gridHeight = 9;
 
-	public Dictionary<Vector3, GameObject> cubeHexes;
-	public EdgeCollection edges;
-	public IntersectionCollection intersections;
-	public Dictionary<Edge, StealableType> harbours;
+	private Dictionary<Vec3, GameObject> cubeHexes;
 
-	public Dictionary<int, Color> resourceColor = new Dictionary<int, Color>()
-	{
-		{1, new Color (0, 1, 1, 1)},
-		{2, new Color (0, 1, 0, 1)},
-		{3, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{4, new Color (1, 0, 0, 1)},
-		{5, new Color (1, 0, 1, 1)},
-		{6, new Color (0, 1, 1, 1)},
-		{7, new Color (0, 1, 0, 1)},
-		{8, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{9, new Color (1, 0, 0, 1)},
-		{10, new Color (1, 0, 1, 1)},
-		{11, new Color (0, 1, 1, 1)},
-		{12, new Color (0, 1, 0, 1)},
-		{13, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{14, new Color (1, 0, 0, 1)},
-		{15, new Color (1, 0, 1, 1)},
-		{16, new Color (0, 1, 1, 1)},
-		{17, new Color (0, 1, 0, 1)},
-		{18, new Color (0.5f, 0.5f, 0.5f, 1)},
-		{19, new Color (1, 0, 0, 1)},
-		{20, new Color (1, 0, 1, 1)}
-	};
-
+	private float hexWidth;
+	private float hexHeight;
 
 	public Dictionary<int, StealableType> resourceType = new Dictionary<int, StealableType>()
 	{
@@ -61,12 +36,7 @@ public class HexGrid : MonoBehaviour {
 		{18, StealableType.Resource_Ore},
 		{19, StealableType.Resource_Brick},
 		{20, StealableType.Resource_Grain},
-
 	};
-
-
-	private float hexWidth;
-	private float hexHeight;
 
 	private void setHexSizes () 
 	{
@@ -83,7 +53,7 @@ public class HexGrid : MonoBehaviour {
 
 	private void createHex(Vector3 pos)
 	{
-		GameObject thisHex = (GameObject)Instantiate (Hex);
+		GameObject thisHex = (GameObject) Instantiate (Hex);
 		thisHex.transform.position = pos;
 	}
 
@@ -96,255 +66,229 @@ public class HexGrid : MonoBehaviour {
 		return new Vector3 (x, y, 0);
 	}
 
-	private Vector3 offsetOddRToCubeCoordinate(Vector2 oddR) {
-		float x = oddR.x - (oddR.y - (float)((int)oddR.y & 1)) / 2.0f;
-		float z = oddR.y;
-		float y = -x - z;
+	private Vec3 offsetOddRToCubeCoordinate(Vector2 oddR) {
+		int x = (int) oddR.x - ((int)oddR.y - ((int)oddR.y & 1)) / 2;
+		int z = (int) oddR.y;
+		int y = -x - z;
 
-		return new Vector3 (x, y, z);
+		return new Vec3 (x, y, z);
 	}
 
-	void createHexGrid()
+	public void CreateHexGrid(GameState createdGameState) {
+		createdGameState.CurrentBoard = new Dictionary<Vec3, HexTile> ();
+		createdGameState.CurrentEdges = new EdgeCollection ();
+		createdGameState.CurrentIntersections = new IntersectionCollection ();
+
+		for (int y = 0; y < gridHeight; y++) {
+			for (int x = 0; x < gridWidth; x++) {
+				HexTile refTile = new HexTile ();
+				refTile.Resource = resourceType [Random.Range (1, 20)];
+
+				if (x == 3 && y > 2 && y < 6) 
+				{
+					if (x % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 4 && y > 1 && y < 7) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 5 && y > 1 && y < 7 && y != 4) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 5 && y == 4) 
+				{
+					refTile.SelectedNum = 7;
+				} 
+				else if (x == 6 && y > 1 && y < 7) 
+				{
+					if (y % 2 == 1) {
+						refTile.SelectedNum = Random.Range (1, 6);
+					} else {
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+
+				} 
+				else if (x == 6 && y > 3 && y < 7) 
+				{
+					if (y % 2 == 1) {
+						refTile.SelectedNum = Random.Range (1, 6);
+					} else {
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+
+				} 
+				else if (x == 7 && y > 3 && y < 5) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else 
+				{
+					refTile.SelectedNum = 0;
+					refTile.IsWater = true;
+				}
+			
+				Vec3 cubePos = offsetOddRToCubeCoordinate (new Vector2(x, y));
+
+				// add tile to game state
+				createdGameState.CurrentBoard.Add (cubePos, refTile);
+
+				// add edges to game state
+				foreach (Vec3 adjHex in UIHex.getAdjacentHexesPos(cubePos)) {
+					createdGameState.CurrentEdges.addEdge (cubePos, adjHex);
+				}
+
+				// add intersections to game state
+				foreach(List<Vec3> adjHexInIntersection in UIHex.getIntersectionsAdjacentPos(cubePos)) {
+					createdGameState.CurrentIntersections.addIntersection (adjHexInIntersection [0], adjHexInIntersection [1], adjHexInIntersection [2]);
+				}
+			}
+		}
+	}
+
+	public void CreateUIHexGrid()
 	{
-		cubeHexes = new Dictionary<Vector3, GameObject> ();
-		edges = new EdgeCollection ();
-		intersections = new IntersectionCollection ();
+		cubeHexes = new Dictionary<Vec3, GameObject> ();
 
 		GameObject hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
-
-		int oneCount = 0;
-		int twoCount = 0;
-		int threeCount = 0;
-		int fourCount = 0;
-		int fiveCount = 0;
 
 		for (int y = 0; y < gridHeight; y++) 
 		{
 			for (int x = 0; x < gridWidth; x++) 
 			{
 				GameObject thisHex = (GameObject)Instantiate (Hex);
-				int resourceNum = Random.Range (1, 20);
 
-				/*
-				if (resourceNum == 1) 
-				{
-					oneCount++;
-					if (oneCount > 3)
-					{
-						resourceNum = Random.Range (1, 6);
-					}
-				} else if (resourceNum == 2) 
-				{
-					twoCount++;
-					if (twoCount > 3) {
-						resourceNum = Random.Range (1, 6);
-					}
-				} else if (resourceNum == 3) 
-				{
-					threeCount++;
-					if (threeCount > 3) 
-					{
-						resourceNum = Random.Range (1, 6);
-					}
-				} else if (resourceNum == 4) 
-				{
-					fourCount++;
-					if (fourCount > 3) 
-					{
-						resourceNum = Random.Range(1, 6);
-					}
-				} else if (resourceNum == 5)
-				{
-					fiveCount++;
-					if (fiveCount > 3) 
-					{
-						resourceNum = Random.Range (1, 6);
-					}
-				}
-				*/
-
-
-				Hex hexScript = thisHex.GetComponent<Hex> ();
-				if (x == 3 && y > 2 && y < 6) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (x % 2 == 1) 
-					{
-						hexScript.selectedNum = Random.Range (1, 6);
-					} 
-					else 
-					{
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-				} 
-				else if (x == 4 && y > 1 && y < 7) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (y % 2 == 1) 
-					{
-						hexScript.selectedNum = Random.Range (1, 6);
-					} 
-					else 
-					{
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-				} 
-				else if (x == 5 && y > 1 && y < 7 && y != 4) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (y % 2 == 1) 
-					{
-						hexScript.selectedNum = Random.Range (1, 6);
-					} 
-					else 
-					{
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-				} 
-				else if (x == 5 && y == 4) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (1, 0.92f, 0.016f, 1);
-					hexScript.selectedNum = 7;
-				} 
-				else if (x == 6 && y > 1 && y < 7) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (y % 2 == 1) {
-						hexScript.selectedNum = Random.Range (1, 6);
-					} else {
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-
-				} 
-				else if (x == 6 && y > 3 && y < 7) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (y % 2 == 1) {
-						hexScript.selectedNum = Random.Range (1, 6);
-					} else {
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-
-				} 
-				else if (x == 7 && y > 3 && y < 5) 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
-
-					if (y % 2 == 1) 
-					{
-						hexScript.selectedNum = Random.Range (1, 6);
-					} 
-					else 
-					{
-						hexScript.selectedNum = Random.Range (8, 12);
-					}
-
-				} 
-				else 
-				{
-					thisHex.GetComponent<SpriteRenderer> ().color = new Color (0, 0, 1);
-				}
-
+				// setup ui
 				Vector2 gridPos = new Vector2(x, y);
-
 				thisHex.transform.position = calcWorldCoord(gridPos);
 				thisHex.transform.parent = hexGridObject.transform;
 
-				hexScript.hexGridPosition = gridPos;
-				hexScript.hexGridCubePosition = offsetOddRToCubeCoordinate (gridPos);
-
-				// add to cube board
-				cubeHexes.Add (hexScript.hexGridCubePosition, thisHex);
-				// add edges
-				foreach (Vector3 adjHex in hexScript.getAdjacentHexesPos()) {
-					edges.addEdge (hexScript.hexGridCubePosition, adjHex);
-				}
-				// add intersections
-				foreach(List<Vector3> adjHexInIntersection in hexScript.getIntersectionsAdjacentPos()) {
-					intersections.addIntersection (adjHexInIntersection [0], adjHexInIntersection [1], adjHexInIntersection [2]);
-				}
+				UIHex uiHex = thisHex.GetComponent<UIHex> ();
+				uiHex.HexGridPosition = gridPos;
+				uiHex.HexGridCubePosition = offsetOddRToCubeCoordinate (gridPos);
+				cubeHexes.Add (uiHex.HexGridCubePosition, thisHex);
 			}
 		}
 
 		// attach edges and intersection to UI
-		foreach(Vector3 tilePos in cubeHexes.Keys) {
-			GameObject currentHexGameObj = cubeHexes [tilePos];
-			Hex currentHex = currentHexGameObj.GetComponent<Hex> ();
-			Vector3 currentCubePos = currentHex.hexGridCubePosition;
+		foreach(Vec3 currentCubePos in cubeHexes.Keys) {
+			GameObject currentHexGameObj = cubeHexes [currentCubePos];
+			UIHex currentHex = currentHexGameObj.GetComponent<UIHex> ();
 
-			//edges
+			// edges
 			// get each edge instance 
-			Edge rightEdge = edges.getEdge(currentCubePos, currentHex.getAdjacentHexPos(global::Hex.AdjHex.LEFT));
-			Edge rightTopEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_TOP));
-			Edge leftTopEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP));
-			Edge leftEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT));
-			Edge leftBottomEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.LEFT_BOTTOM));
-			Edge rightBottomEdge = edges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::Hex.AdjHex.RIGHT_BOTTOM));
+			Edge rightEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(currentCubePos, currentHex.getAdjacentHexPos(global::UIHex.AdjHex.LEFT));
+			Edge rightTopEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::UIHex.AdjHex.RIGHT_TOP));
+			Edge leftTopEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::UIHex.AdjHex.LEFT_TOP));
+			Edge leftEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::UIHex.AdjHex.LEFT));
+			Edge leftBottomEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::UIHex.AdjHex.LEFT_BOTTOM));
+			Edge rightBottomEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge (currentCubePos, currentHex.getAdjacentHexPos (global::UIHex.AdjHex.RIGHT_BOTTOM));
 
 			// add each edge instance as a component to corresponding edge game object
 			GameObject rightEdgeGameObj = currentHexGameObj.transform.FindChild("REdge").gameObject;
 			UIEdge rightEdgeUi = rightEdgeGameObj.AddComponent<UIEdge> ();
-			rightEdgeUi.referencedEdge = rightEdge;
+			rightEdgeUi.HexPos1 = rightEdge.adjTile1;
+			rightEdgeUi.HexPos2 = rightEdge.adjTile2;
 
 			GameObject rightTopEdgeGameObj = currentHexGameObj.transform.FindChild("RTEdge").gameObject;
 			UIEdge rightTopEdgeUi = rightTopEdgeGameObj.AddComponent<UIEdge> ();
-			rightTopEdgeUi.referencedEdge = rightTopEdge;
+			rightTopEdgeUi.HexPos1 = rightTopEdge.adjTile1;
+			rightTopEdgeUi.HexPos2 = rightTopEdge.adjTile1;
 
 			GameObject leftTopEdgeGameObj = currentHexGameObj.transform.FindChild("LTEdge").gameObject;
 			UIEdge leftTopEdgeUi = leftTopEdgeGameObj.AddComponent<UIEdge> ();
-			leftTopEdgeUi.referencedEdge = leftTopEdge;
+			leftTopEdgeUi.HexPos1 = leftTopEdge.adjTile1;
+			leftTopEdgeUi.HexPos2 = leftTopEdge.adjTile2;
 
 			GameObject leftEdgeGameObj = currentHexGameObj.transform.FindChild("LEdge").gameObject;
 			UIEdge leftEdgeUi = leftEdgeGameObj.AddComponent<UIEdge> ();
-			leftEdgeUi.referencedEdge = leftEdge;
+			leftEdgeUi.HexPos1 = leftEdge.adjTile1;
+			leftEdgeUi.HexPos2 = leftEdge.adjTile2;
 
 			GameObject leftBottomEdgeGameObj = currentHexGameObj.transform.FindChild("LBEdge").gameObject;
 			UIEdge leftBottomEdgeUi = leftBottomEdgeGameObj.AddComponent<UIEdge> ();
-			leftBottomEdgeUi.referencedEdge = leftBottomEdge;
+			leftBottomEdgeUi.HexPos1 = leftBottomEdge.adjTile1;
+			leftBottomEdgeUi.HexPos2 = leftBottomEdge.adjTile1;
 
 			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
 			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();
-			rightBottomEdgeUi.referencedEdge = rightBottomEdge;
+			rightBottomEdgeUi.HexPos1 = rightBottomEdge.adjTile1;
+			rightBottomEdgeUi.HexPos2 = rightBottomEdge.adjTile2;
 
 			// intersections
 			// get each intersection instance
-			Intersection leftTopIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.LEFT_TOP));
-			Intersection topIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.TOP));
-			Intersection rightTopIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.RIGHT_TOP));
-			Intersection rightBottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.RIGHT_BOTTOM));
-			Intersection bottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.BOTTOM));
-			Intersection leftBottomIntersection = intersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::Hex.HexIntersection.LEFT_BOTTOM));
+			Intersection leftTopIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.LEFT_TOP));
+			Intersection topIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.TOP));
+			Intersection rightTopIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.RIGHT_TOP));
+			Intersection rightBottomIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.RIGHT_BOTTOM));
+			Intersection bottomIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.BOTTOM));
+			Intersection leftBottomIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(currentHex.getIntersectionAdjacentHexPos(global::UIHex.HexIntersection.LEFT_BOTTOM));
 
 			// add each intersection instance as a component to corresponding intersection game object
 			GameObject leftTopGameObj = currentHexGameObj.transform.FindChild("LTIntersection").gameObject;
 			UIIntersection leftTopIntersectionUi = leftTopGameObj.AddComponent<UIIntersection> ();
-			leftTopIntersectionUi.referencedIntersection = leftTopIntersection;
+			leftTopIntersectionUi.HexPos1 = leftTopIntersection.adjTile1;
+			leftTopIntersectionUi.HexPos2 = leftTopIntersection.adjTile2;
+			leftTopIntersectionUi.HexPos3 = leftTopIntersection.adjTile3;
 
 			GameObject topGameObj = currentHexGameObj.transform.FindChild("TIntersection").gameObject;
 			UIIntersection topIntersectionUi = topGameObj.AddComponent<UIIntersection> ();
-			topIntersectionUi.referencedIntersection = topIntersection;
+			topIntersectionUi.HexPos1 = topIntersection.adjTile1;
+			topIntersectionUi.HexPos2 = topIntersection.adjTile2;
+			topIntersectionUi.HexPos3 = topIntersection.adjTile3;
 
 			GameObject rightTopGameObj = currentHexGameObj.transform.FindChild("RTIntersection").gameObject;
 			UIIntersection rightTopIntersectionUi = rightTopGameObj.AddComponent<UIIntersection> ();
-			rightTopIntersectionUi.referencedIntersection = rightTopIntersection;
+			rightTopIntersectionUi.HexPos1 = rightTopIntersection.adjTile1;
+			rightTopIntersectionUi.HexPos2 = rightTopIntersection.adjTile2;
+			rightTopIntersectionUi.HexPos3 = rightTopIntersection.adjTile3;
 
 			GameObject rightBottomGameObj = currentHexGameObj.transform.FindChild("RBIntersection").gameObject;
 			UIIntersection rightBottomIntersectionUi = rightBottomGameObj.AddComponent<UIIntersection> ();
-			rightBottomIntersectionUi.referencedIntersection = rightBottomIntersection;
+			rightBottomIntersectionUi.HexPos1 = rightBottomIntersection.adjTile1;
+			rightBottomIntersectionUi.HexPos2 = rightBottomIntersection.adjTile2;
+			rightBottomIntersectionUi.HexPos3 = rightBottomIntersection.adjTile3;
 
 			GameObject bottomGameObj = currentHexGameObj.transform.FindChild("BIntersection").gameObject;
 			UIIntersection bottomIntersectionUi = bottomGameObj.AddComponent<UIIntersection> ();
-			bottomIntersectionUi.referencedIntersection = bottomIntersection;
+			bottomIntersectionUi.HexPos1 = bottomIntersection.adjTile1;
+			bottomIntersectionUi.HexPos2 = bottomIntersection.adjTile2;
+			bottomIntersectionUi.HexPos3 = bottomIntersection.adjTile3;
 
 			GameObject leftBottomGameObj = currentHexGameObj.transform.FindChild("LBIntersection").gameObject;
 			UIIntersection leftBottomIntersectionUi = leftBottomGameObj.AddComponent<UIIntersection> ();
-			leftBottomIntersectionUi.referencedIntersection = leftBottomIntersection;
+			leftBottomIntersectionUi.HexPos1 = leftBottomIntersection.adjTile1;
+			leftBottomIntersectionUi.HexPos2 = leftBottomIntersection.adjTile2;
+			leftBottomIntersectionUi.HexPos3 = leftBottomIntersection.adjTile3;
 		}
 	}
 
@@ -367,6 +311,7 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void buildHarbours () {
+		/*harbours = new Dictionary<Edge, StealableType> ();
 		Vector3 hex1 = new Vector3 (3, -5, 2);
 		GameObject currentHexGameObj1 = cubeHexes [new Vector3(3, -5, 2)];
 		Hex hexScript1 = currentHexGameObj1.GetComponent<Hex> ();
@@ -449,7 +394,7 @@ public class HexGrid : MonoBehaviour {
 		Hex hexScript12 = currentHexGameObj12.GetComponent<Hex> ();
 		Vector3 hex24 = hexScript12.getAdjacentHexPos (global::Hex.AdjHex.LEFT);
 		Edge harbouredEdge12 = edges.getEdge (hex23, hex24);
-		harbours.Add (harbouredEdge12, StealableType.Resource_Grain);
+		harbours.Add (harbouredEdge12, StealableType.Resource_Grain);*/
 
 	}
 
@@ -457,7 +402,6 @@ public class HexGrid : MonoBehaviour {
 	void Start () 
 	{
 		setHexSizes ();
-		createHexGrid ();
 	}
 
 	// Update is called once per frame

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class UIIntersection : MonoBehaviour {
 
-	public Intersection referencedIntersection;
+	public Vec3 HexPos1;
+	public Vec3 HexPos2;
+	public Vec3 HexPos3;
 
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.blue;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameTurn : MonoBehaviour
 {
-	public int MaximumPlayer = 0;
+	public int MaximumPlayer = 2;
 	public int CurrentPlayerIndex { get; private set; }
 	public bool CurrentTurnEnded { get; private set; }
 

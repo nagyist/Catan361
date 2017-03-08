@@ -2,15 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
+using System;
 
+[Serializable]
 public class EdgeCollection {
-	private Dictionary<string, Edge> Edges { get; }
+	public Dictionary<string, Edge> Edges { get; private set; }
 
 	public EdgeCollection() {
 		Edges = new Dictionary<string, Edge> ();
 	}
 
-	public void addEdge(Vector3 hexPos1, Vector3 hexPos2) {
+	public void addEdge(Vec3 hexPos1, Vec3 hexPos2) {
 		string key = computeKey (hexPos1, hexPos2);
 		if (!Edges.ContainsKey (key)) {
 			Edge edgeToAdd = new Edge (hexPos1, hexPos2);
@@ -19,12 +22,20 @@ public class EdgeCollection {
 		}
 	}
 
-	public Edge getEdge(Vector3 hexPos1, Vector3 hexPos2) {
+	public void setEdge(string key, Edge edge) {
+		if (!Edges.ContainsKey (key)) {
+			Edges.Add (key, edge);
+		} else {
+			Edges [key] = edge;
+		}
+	}
+
+	public Edge getEdge(Vec3 hexPos1, Vec3 hexPos2) {
 		string key = computeKey (hexPos1, hexPos2);
 		return Edges [key];
-	} 
+	}
 
-	private string computeKey(Vector3 hex1, Vector3 hex2) {
+	private string computeKey(Vec3 hex1, Vec3 hex2) {
 		// apply simple heuristic : "flatten" xyz coords of both coords and take the lowest one
 		byte[] hashFirst = posToByte(hex1);
 		byte[] hashSecond = posToByte (hex2);
@@ -39,7 +50,7 @@ public class EdgeCollection {
 		return key;
 	}
 
-	private byte[] posToByte(Vector3 pos) {
+	private byte[] posToByte(Vec3 pos) {
 		byte[] xBytes = BitConverter.GetBytes ((int)pos.x);
 		byte[] yBytes = BitConverter.GetBytes ((int)pos.y);
 		byte[] zBytes = BitConverter.GetBytes ((int)pos.z);

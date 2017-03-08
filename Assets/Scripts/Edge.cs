@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Edge : MonoBehaviour {
-	public Vector3 adjTile1 { get; }
-	public Vector3 adjTile2 { get; }
+[Serializable]
+public class Edge {
+	public Vec3 adjTile1 { get; }
+	public Vec3 adjTile2 { get; }
 
-	public Edge(Vector3 tile1, Vector3 tile2) {
+	public Edge() {}
+
+	public Edge(Vec3 tile1, Vec3 tile2) {
 		adjTile1 = tile1;
 		adjTile2 = tile2;
 	}

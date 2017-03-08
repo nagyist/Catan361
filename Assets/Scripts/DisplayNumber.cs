@@ -6,6 +6,11 @@ public class DisplayNumber : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void Update () {
 		var parent = transform.parent;
 
 		var parentRenderer = parent.GetComponent<Renderer>();
@@ -17,13 +22,13 @@ public class DisplayNumber : MonoBehaviour {
 		var text = GetComponent<TextMesh>();
 		var pos = spriteTransform.position;
 
-		Hex hexScript = parent.GetComponent<Hex> ();
-		text.text = string.Format("" + hexScript.selectedNum, pos.x, pos.y);
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		UIHex hexScript = parent.GetComponent<UIHex> ();
+
+		if (!GameManager.Instance.GameStateReady() || 
+			GameManager.Instance.GetCurrentGameState().CurrentStatus < GameState.GameStatus.GRID_CREATED) {
+			return;
+		}
+
+		text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum, pos.x, pos.y);
 	}
 }

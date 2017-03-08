@@ -3,38 +3,44 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+[Serializable]
 public class IntersectionCollection
 {
-	private Dictionary<string, Intersection> Intersections { get; }
+	public Dictionary<string, Intersection> Intersections { get; private set; }
 
 	public IntersectionCollection ()
 	{
 		Intersections = new Dictionary<String, Intersection> ();
 	}
 
-	public void addIntersection(Vector3 adjTile1, Vector3 adjTile2, Vector3 adjTile3) {
+	public void addIntersection(Vec3 adjTile1, Vec3 adjTile2, Vec3 adjTile3) {
 		string key = computeKey (adjTile1, adjTile2, adjTile3);
 		if (!Intersections.ContainsKey (key)) {
-			Intersection newIntersection = new Intersection ();
-			newIntersection.adjTile1 = adjTile1;
-			newIntersection.adjTile2 = adjTile2;
-			newIntersection.adjTile3 = adjTile3;
+			Intersection newIntersection = new Intersection (adjTile1, adjTile2, adjTile3);
 
 			Intersections.Add (key, newIntersection);
 		}
 	}
 
-	public Intersection getIntersection(List<Vector3> hexes) {
+	public void setIntersection(string key, Intersection intersection) {
+		if (!Intersections.ContainsKey (key)) {
+			Intersections.Add (key, intersection);
+		} else {
+			Intersections [key] = intersection;
+		}
+	}
+
+	public Intersection getIntersection(List<Vec3> hexes) {
 		return getIntersection (hexes [0], hexes [1], hexes [2]);
 	}
 
-	public Intersection getIntersection(Vector3 hex1, Vector3 hex2, Vector3 hex3) {
+	public Intersection getIntersection(Vec3 hex1, Vec3 hex2, Vec3 hex3) {
 		string key = computeKey (hex1, hex2, hex3);
 		return Intersections [key];
 	}
 
 	// TODO : refactor for better code
-	private string computeKey(Vector3 hex1, Vector3 hex2, Vector3 hex3) {
+	private string computeKey(Vec3 hex1, Vec3 hex2, Vec3 hex3) {
 		// apply simple heuristic : "flatten" xyz coords of both coords and take the lowest one
 		byte[] hashFirst = posToByte(hex1);
 		byte[] hashSecond = posToByte (hex2);
@@ -64,7 +70,7 @@ public class IntersectionCollection
 		return key;
 	}
 
-	private byte[] posToByte(Vector3 pos) {
+	private byte[] posToByte(Vec3 pos) {
 		byte[] xBytes = BitConverter.GetBytes ((int)pos.x);
 		byte[] yBytes = BitConverter.GetBytes ((int)pos.y);
 		byte[] zBytes = BitConverter.GetBytes ((int)pos.z);

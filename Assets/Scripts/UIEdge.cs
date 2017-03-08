@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class UIEdge : MonoBehaviour {
 
-	public Edge referencedEdge;
+	public Vec3 HexPos1 { get; set; }
+	public Vec3 HexPos2 { get; set; }
 
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.red;

@@ -16,7 +16,7 @@ public class GUIInterface : MonoBehaviour {
 		popupPanel.gameObject.SetActive (false);
     }
 
-	public void ShowHexActionWindow(Hex hexTile) {
+	public void ShowHexActionWindow(UIHex hexTile) {
 		if (hasModalWindowOpened ()) { return; }
 
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;

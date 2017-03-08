@@ -5,39 +5,37 @@ using UnityEngine.Networking;
 
 public class GameManager : Singleton<GameManager> {
 	const int MAX_PLAYER = 4;
-	public static GameManager Instance = new GameManager ();
 
-	public int MockedCurrentPlayer = 0;
-	public GameObject localPlayer { get; private set; }
-	public List<GameObject> connectedPlayers { get; private set; }
-	public HexGrid gameBoard;
+	public GameTurn currentTurn;
 	public GUIInterface gui;
-	public GameTurn currentTurn { get; private set; }
 
 	protected GameManager() {
-		connectedPlayers = new List<GameObject> ();
+		//connectedPlayers = new List<GameObject> ();
 	}
 
     void Awake () {
-        gameBoard = GetComponent<HexGrid>();
         gui = GetComponent<GUIInterface>();
-		currentTurn = GetComponent<GameTurn> ();
+		//currentTurn = GetComponent<GameTurn> ();
     }
 
+	public void StartGame() {
+		
+	}
+
 	public void PlayerConnected(GameObject player) {
-		connectedPlayers.Add (player);
+		//connectedPlayers.Add (player);
 	}
 
 	public void SetLocalPlayer(GameObject player) {
-		localPlayer = player;
+		//localPlayer = player;
 	}
 
 	public int GetPlayerIndex(GameObject player) {
-		return connectedPlayers.IndexOf (player);
+		return 0;
 	}
 
 	public int GetLocalPlayerIndex() {
-		return MockedCurrentPlayer;
+		return 0;
 		//return GetPlayerIndex (localPlayer);
 	}
 
@@ -51,15 +49,27 @@ public class GameManager : Singleton<GameManager> {
 	}
 
 	public void currentPlayerTakeTurn() {
-		if (!currentTurn.LocalPlayerTakeTurn()) { return; }
+		//if (!currentTurn.LocalPlayerTakeTurn()) { return; }
 	}
 
 	public void currentPlayerEndTurn() {
-		if (!currentTurn.LocalPlayerEndTurn()) { return; }
+		//if (!currentTurn.LocalPlayerEndTurn()) { return; }
+	}
+
+	public bool GameStateReady() {
+		GameObject gameStateObj = GameObject.FindGameObjectWithTag ("GameState");
+		if (gameStateObj == null) { return false; }
+		GameState gameState = gameStateObj.GetComponent<GameState> ();
+		if (gameState == null) { return false; }
+		return true;
+	}
+
+	public GameState GetCurrentGameState() {
+		return GameObject.FindGameObjectWithTag ("GameState").GetComponent<GameState>();
 	}
 
 	void Start () {
-		currentTurn.MaximumPlayer = connectedPlayers.Count;
+		//currentTurn.MaximumPlayer = connectedPlayers.Count;
 		//currentTurn.MaximumPlayer = 2;
 	}
 	

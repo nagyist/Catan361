@@ -1,20 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Intersection : MonoBehaviour {
+[Serializable]
+public class Intersection {
 
-	public Vector3 adjTile1;
-	public Vector3 adjTile2;
-	public Vector3 adjTile3;
+	public Vec3 adjTile1;
+	public Vec3 adjTile2;
+	public Vec3 adjTile3;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	public Intersection(Vec3 i1, Vec3 i2, Vec3 i3) {
+		adjTile1 = i1;
+		adjTile2 = i2;
+		adjTile3 = i3;
 	}
 }
