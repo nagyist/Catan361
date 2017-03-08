@@ -62,12 +62,6 @@ public class GUIInterface : MonoBehaviour {
 			turnMgmtButton.GetComponent<Button> ().enabled = false;
 		}
 	}
-
-    private void intersectionTransform()
-    {
-        GameObject spriteTransform = guiCanvas.transform.FindChild("SpriteTransform").gameObject;
-
-    }
 	/*
 	private void rollDiceButton () {
 		GameObject rollDiceButtonOne = guiCanvas.transform.Find ("RollDiceButton").gameObject;
