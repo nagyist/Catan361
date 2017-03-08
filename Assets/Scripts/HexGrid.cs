@@ -132,9 +132,7 @@ public class HexGrid : MonoBehaviour {
 				theHexes.Add (thisHex);
 				int resourceNum = Random.Range (1, 20);
 				Hex hexScript = thisHex.GetComponent<Hex> ();
-				hexScript.resourceNumber = resourceNum;
-				hexScript.hexResource = resourceType [resourceNum];
-
+				
 				/*
 				if (resourceNum == 1) 
 				{
@@ -178,6 +176,8 @@ public class HexGrid : MonoBehaviour {
 				if (x == 3 && y > 2 && y < 6) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (x % 2 == 1) 
 					{
@@ -191,6 +191,8 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 4 && y > 1 && y < 7) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (y % 2 == 1) 
 					{
@@ -204,6 +206,8 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (y % 2 == 1) 
 					{
@@ -222,6 +226,8 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 6 && y > 1 && y < 7) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (y % 2 == 1) {
 						hexScript.selectedNum = Random.Range (1, 6);
@@ -233,6 +239,8 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 6 && y > 3 && y < 7) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (y % 2 == 1) {
 						hexScript.selectedNum = Random.Range (1, 6);
@@ -244,6 +252,8 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 7 && y > 3 && y < 5) 
 				{
 					thisHex.GetComponent<SpriteRenderer> ().color = resourceColor [resourceNum];
+					hexScript.resourceNumber = resourceNum;
+					hexScript.hexResource = resourceType [resourceNum];
 
 					if (y % 2 == 1) 
 					{
