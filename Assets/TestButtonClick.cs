@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class TEst : MonoBehaviour {
+public class TestButtonClick : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -12,6 +11,6 @@ public class TEst : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GetComponent<Text> ().text = "idx = " + GameManager.Instance.GetLocalPlayerIndex ();
+		
 	}
 }
