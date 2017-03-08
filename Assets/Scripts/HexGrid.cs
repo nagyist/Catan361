@@ -313,131 +313,220 @@ public class HexGrid : MonoBehaviour {
 
 	public void buildHarbours () {
 		
+		
+		Dictionary<string, GameObject> harbourCollection = new Dictionary<string, GameObject>();
+		
 		Vector2 gridPosHex1 = new Vector2 (4, 1);
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
 		newHarbour1.transform.parent = this.transform;
 		newHarbour1.transform.position = calcWorldCoord (gridPosHex1);
+
+		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
+		harbour1Text.text = "1";
+		harbourCollection.Add("1", newHarbour1);
+
 		Harbour harbourScript1 = newHarbour1.GetComponent<Harbour> ();
 		harbourScript1.exchangeRate = 4;
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
 
+
 		Vector2 gridPosHex2 = new Vector2 (5, 1);
 		GameObject newHarbour2 = (GameObject) Instantiate (Harbour);
 		newHarbour2.transform.parent = this.transform;
 		newHarbour2.transform.position = calcWorldCoord (gridPosHex2);
+
+		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
+		harbour2Text.text = "2";
+		harbourCollection.Add("2", newHarbour2);
+
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
 		harbourScript2.exchangeRate = 4;
 		harbourScript2.returnedResource = StealableType.Resource_Grain;
 		harbourScript2.returnedAmount = 1;
 
+
 		Vector2 gridPosHex3 = new Vector2 (7, 2);
 		GameObject newHarbour3 = (GameObject) Instantiate (Harbour);
 		newHarbour3.transform.parent = this.transform;
 		newHarbour3.transform.position = calcWorldCoord (gridPosHex3);
+
+		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
+		harbour3Text.text = "3";
+		harbourCollection.Add("3", newHarbour3);
+
 		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
 		harbourScript3.exchangeRate = 4;
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
 		harbourScript3.returnedAmount = 1;
 
+
 		Vector2 gridPosHex4 = new Vector2 (7, 3);
 		GameObject newHarbour4 = (GameObject) Instantiate (Harbour);
 		newHarbour4.transform.parent = this.transform;
 		newHarbour4.transform.position = calcWorldCoord (gridPosHex4);
+
+		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
+		harbour4Text.text = "4";
+		harbourCollection.Add("4", newHarbour4);
+
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
 		harbourScript4.exchangeRate = 4;
 		harbourScript4.returnedResource = StealableType.Resource_Ore;
 		harbourScript4.returnedAmount = 1;
 
+
 		Vector2 gridPosHex5 = new Vector2 (8, 4);
 		GameObject newHarbour5 = (GameObject) Instantiate (Harbour);
 		newHarbour5.transform.parent = this.transform;
 		newHarbour5.transform.position = calcWorldCoord (gridPosHex5);
+
+		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
+		harbour5Text.text = "5";
+		harbourCollection.Add("5", newHarbour5);
+
 		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
 		harbourScript5.exchangeRate = 4;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
 
+
 		Vector2 gridPosHex6 = new Vector2 (7, 5);
 		GameObject newHarbour6 = (GameObject) Instantiate (Harbour);
 		newHarbour6.transform.parent = this.transform;
 		newHarbour6.transform.position = calcWorldCoord (gridPosHex6);
+
+		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
+		harbour6Text.text = "6";
+		harbourCollection.Add("6", newHarbour6);
+
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 4;
 		harbourScript6.returnedResource = StealableType.Resource_Brick;
 		harbourScript6.returnedAmount = 1;
 
+
 		Vector2 gridPosHex7 = new Vector2 (7, 6);
 		GameObject newHarbour7 = (GameObject) Instantiate (Harbour);
 		newHarbour7.transform.parent = this.transform;
 		newHarbour7.transform.position = calcWorldCoord (gridPosHex7);
+
+		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
+		harbour7Text.text = "7";
+		harbourCollection.Add("7", newHarbour7);
+
 		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
 		harbourScript7.exchangeRate = 4;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
 		harbourScript7.returnedAmount = 1;
 
+
 		Vector2 gridPosHex8 = new Vector2 (5, 7);
 		GameObject newHarbour8 = (GameObject) Instantiate (Harbour);
 		newHarbour8.transform.parent = this.transform;
 		newHarbour8.transform.position = calcWorldCoord (gridPosHex8);
+
+		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
+		harbour8Text.text = "8";
+		harbourCollection.Add("8", newHarbour8);
+
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 4;
 		harbourScript8.returnedResource = StealableType.Resource_Lumber;
 		harbourScript8.returnedAmount = 1;
 
+
 		Vector2 gridPosHex9 = new Vector2 (4, 7);
 		GameObject newHarbour9 = (GameObject) Instantiate (Harbour);
 		newHarbour9.transform.parent = this.transform;
 		newHarbour9.transform.position = calcWorldCoord (gridPosHex9);
+
+		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
+		harbour9Text.text = "9";
+		harbourCollection.Add("9", newHarbour9);
+
 		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
 		harbourScript9.exchangeRate = 4;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
 
+
 		Vector2 gridPosHex10 = new Vector2 (3, 6);
 		GameObject newHarbour10 = (GameObject) Instantiate (Harbour);
 		newHarbour10.transform.parent = this.transform;
 		newHarbour10.transform.position = calcWorldCoord (gridPosHex10);
+
+		TextMesh harbour10Text = newHarbour10.GetComponentInChildren<TextMesh>();
+		harbour10Text.text = "10";
+		harbourCollection.Add("10", newHarbour10);
+
 		Harbour harbourScript10 = newHarbour10.GetComponent<Harbour> ();
 		harbourScript10.exchangeRate = 4;
 		harbourScript10.returnedResource = StealableType.Resource_Wool;
 		harbourScript10.returnedAmount = 1;
 
+
 		Vector2 gridPosHex11 = new Vector2 (2, 5);
 		GameObject newHarbour11 = (GameObject) Instantiate (Harbour);
 		newHarbour11.transform.parent = this.transform;
 		newHarbour11.transform.position = calcWorldCoord (gridPosHex11);
+
+		TextMesh harbour11Text = newHarbour11.GetComponentInChildren<TextMesh>();
+		harbour11Text.text = "11";
+		harbourCollection.Add("11", newHarbour11);
+
 		Harbour harbourScript11 = newHarbour11.GetComponent<Harbour> ();
 		harbourScript11.exchangeRate = 4;
 		harbourScript11.returnedResource = StealableType.Resource_Brick;
 		harbourScript11.returnedAmount = 1;
 
+
 		Vector2 gridPosHex12 = new Vector2 (2, 4);
 		GameObject newHarbour12 = (GameObject) Instantiate (Harbour);
 		newHarbour12.transform.parent = this.transform;
 		newHarbour12.transform.position = calcWorldCoord (gridPosHex12);
+
+		TextMesh harbour12Text = newHarbour12.GetComponentInChildren<TextMesh>();
+		harbour12Text.text = "12";
+		harbourCollection.Add("12", newHarbour12);
+
 		Harbour harbourScript12 = newHarbour12.GetComponent<Harbour> ();
 		harbourScript12.exchangeRate = 4;
 		harbourScript12.returnedResource = StealableType.Resource_Grain;
 		harbourScript12.returnedAmount = 1;
 
+
 		Vector2 gridPosHex13 = new Vector2 (2, 3);
 		GameObject newHarbour13 = (GameObject) Instantiate (Harbour);
 		newHarbour13.transform.parent = this.transform;
 		newHarbour13.transform.position = calcWorldCoord (gridPosHex13);
+
+		TextMesh harbour13Text = newHarbour13.GetComponentInChildren<TextMesh>();
+		harbour13Text.text = "13";
+		harbourCollection.Add("13", newHarbour13);
+
 		Harbour harbourScript13 = newHarbour12.GetComponent<Harbour> ();
 		harbourScript13.exchangeRate = 4;
 		harbourScript13.returnedResource = StealableType.Resource_Lumber;
 		harbourScript13.returnedAmount = 1;
 
+
 		Vector2 gridPosHex14 = new Vector2 (3, 2);
 		GameObject newHarbour14 = (GameObject) Instantiate (Harbour);
 		newHarbour14.transform.parent = this.transform;
 		newHarbour14.transform.position = calcWorldCoord (gridPosHex14);
+
+		TextMesh harbour14Text = newHarbour14.GetComponentInChildren<TextMesh>();
+		harbour14Text.text = "14";
+		harbourCollection.Add("14", newHarbour14);
+
 		Harbour harbourScript14 = newHarbour14.GetComponent<Harbour> ();
 		harbourScript14.exchangeRate = 4;
 		harbourScript14.returnedResource = StealableType.Resource_Ore;
 		harbourScript14.returnedAmount = 1;
+
+		
+
 		
 		/*harbours = new Dictionary<Edge, StealableType> ();
 		Vector3 hex1 = new Vector3 (3, -5, 2);
