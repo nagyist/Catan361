@@ -13,6 +13,7 @@ public class HexGrid : MonoBehaviour {
 	public int gridHeight = 9;
 
 	private Dictionary<Vec3, GameObject> cubeHexes;
+	public Dictionary<string, GameObject> harbourCollection;
 
 	private float hexWidth;
 	private float hexHeight;
