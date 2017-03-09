@@ -72,7 +72,7 @@ public class GameState : NetworkBehaviour {
 		Debug.Log ("Player rolled " + diceResult);
 	}
 
-	void SyncGameBoard() {
+	public void SyncGameBoard() {
 		NetworkTransmitter networkTransmitter = GetComponent<NetworkTransmitter> ();
 		GameboardSyncMessage syncMsg = new GameboardSyncMessage ();
 		syncMsg.CurrentBoard = CurrentBoard;

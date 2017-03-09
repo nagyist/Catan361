@@ -17,12 +17,6 @@ public class RollDiceScript : MonoBehaviour {
 
 		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
 			// roll the dice
-			int rand = UnityEngine.Random.Range(1, 13);
-			GameObject panelRollDice = GameObject.FindGameObjectWithTag ("GameCanvas").transform.FindChild ("PanelRollDice").gameObject;
-			panelRollDice.GetComponentInChildren<Text>().text = "You rolled " + rand;
-			GameObject.FindGameObjectWithTag ("GameCanvas").transform.FindChild ("PanelRollDice").gameObject.SetActive (true);
-
-			GameManager.Instance.RollDice(rand);
 		}
 	}
 	

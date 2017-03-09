@@ -30,6 +30,11 @@ public class IntersectionCollection
 		}
 	}
 
+	public void setIntersection(Vec3[] pos, Intersection i) {
+		string key = computeKey (pos [0], pos [1], pos [2]);
+		setIntersection (key, i);
+	}
+
 	public Intersection getIntersection(List<Vec3> hexes) {
 		return getIntersection (hexes [0], hexes [1], hexes [2]);
 	}

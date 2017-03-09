@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class GameManager : Singleton<GameManager> {
 	public static GameObject LocalPlayer = null;
 	public static List<GameObject> ConnectedPlayers = new List<GameObject> ();
+	public static Dictionary<string, GameObject> ConnectedPlayersByName = new Dictionary<string, GameObject> ();
 	public static GameState CurrentGameState = null;
 	public static int PlayerCount = 0;
 
@@ -17,16 +18,12 @@ public class GameManager : Singleton<GameManager> {
 
     void Awake () {
         gui = GetComponent<GUIInterface>();
-		//currentTurn = GetComponent<GameTurn> ();
     }
-
-	public void StartGame() {
-		
-	}
 
 	public static void PlayerConnected(GameObject player) {
 		player.GetComponent<GamePlayer> ().myName = "Player" + (++PlayerCount);
 		ConnectedPlayers.Add (player);
+		ConnectedPlayersByName.Add (player.GetComponent<GamePlayer> ().myName, player);
 	}
 
 	public static void SetLocalPlayer(GameObject player) {
@@ -55,6 +52,11 @@ public class GameManager : Singleton<GameManager> {
 			return false;
 		}
 
+		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().placedRoad = false;
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().placedRoad = false;
+		} 
+
 		LocalPlayer.GetComponent<GamePlayer> ().CmdTakeTurn ();
 		return true;
 	}
@@ -66,6 +68,34 @@ public class GameManager : Singleton<GameManager> {
 		}
 
 		LocalPlayer.GetComponent<GamePlayer> ().CmdEndTurn ();
+		return true;
+	}
+
+	public bool RollDice(int roll) {
+		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
+			return false;
+		}
+
+		// update player resources accordingly
+		GamePlayer player = LocalPlayer.GetComponent<GamePlayer> ();
+		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
+			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
+			if (i.SettlementCount > 0 && i.SettlementOwner == player.myName) {
+				List<Vec3> adjHexes = new List<Vec3> (new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
+				foreach (Vec3 hex in adjHexes) {
+					HexTile tile = GameManager.Instance.GetCurrentGameState ().CurrentBoard [hex];
+					if (tile.IsWater) { continue; }
+					if (tile.SelectedNum != roll) { continue; }
+
+					if (player.playerResources.ContainsKey (tile.Resource)) {
+						player.playerResources [tile.Resource] = player.playerResources [tile.Resource] + i.SettlementCount;
+					} else {
+						player.playerResources.Add (tile.Resource, i.SettlementCount);
+					}
+				}
+			}
+		}
+
 		return true;
 	}
 

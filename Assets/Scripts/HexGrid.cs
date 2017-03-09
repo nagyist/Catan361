@@ -7,6 +7,8 @@ public class HexGrid : MonoBehaviour {
 	public GameObject Hex;
 	public GameObject Harbour;
 
+	private GameObject hexGridObject;
+
 	public int gridWidth = 10;
 	public int gridHeight = 9;
 
@@ -179,7 +181,11 @@ public class HexGrid : MonoBehaviour {
 	{
 		cubeHexes = new Dictionary<Vec3, GameObject> ();
 
-		GameObject hexGridObject = new GameObject ("HexGrid");
+		if (hexGridObject != null) {
+			Destroy (this.hexGridObject);
+		}
+
+		hexGridObject = new GameObject ("HexGrid");
 		hexGridObject.transform.parent = this.transform;
 
 		for (int y = 0; y < gridHeight; y++) 
@@ -223,7 +229,7 @@ public class HexGrid : MonoBehaviour {
 			GameObject rightTopEdgeGameObj = currentHexGameObj.transform.FindChild("RTEdge").gameObject;
 			UIEdge rightTopEdgeUi = rightTopEdgeGameObj.AddComponent<UIEdge> ();
 			rightTopEdgeUi.HexPos1 = rightTopEdge.adjTile1;
-			rightTopEdgeUi.HexPos2 = rightTopEdge.adjTile1;
+			rightTopEdgeUi.HexPos2 = rightTopEdge.adjTile2;
 
 			GameObject leftTopEdgeGameObj = currentHexGameObj.transform.FindChild("LTEdge").gameObject;
 			UIEdge leftTopEdgeUi = leftTopEdgeGameObj.AddComponent<UIEdge> ();
@@ -238,7 +244,7 @@ public class HexGrid : MonoBehaviour {
 			GameObject leftBottomEdgeGameObj = currentHexGameObj.transform.FindChild("LBEdge").gameObject;
 			UIEdge leftBottomEdgeUi = leftBottomEdgeGameObj.AddComponent<UIEdge> ();
 			leftBottomEdgeUi.HexPos1 = leftBottomEdge.adjTile1;
-			leftBottomEdgeUi.HexPos2 = leftBottomEdge.adjTile1;
+			leftBottomEdgeUi.HexPos2 = leftBottomEdge.adjTile2;
 
 			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
 			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();

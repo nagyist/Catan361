@@ -22,6 +22,11 @@ public class EdgeCollection {
 		}
 	}
 
+	public void setEdge(Vec3 hex1, Vec3 hex2, Edge e) {
+		string key = computeKey (hex1, hex2);
+		setEdge (key, e);
+	}
+
 	public void setEdge(string key, Edge edge) {
 		if (!Edges.ContainsKey (key)) {
 			Edges.Add (key, edge);
@@ -32,6 +37,9 @@ public class EdgeCollection {
 
 	public Edge getEdge(Vec3 hexPos1, Vec3 hexPos2) {
 		string key = computeKey (hexPos1, hexPos2);
+		if (!Edges.ContainsKey (key)) {
+			return null;
+		}
 		return Edges [key];
 	}
 

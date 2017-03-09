@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class GUIInterface : MonoBehaviour {
-	private GameObject guiCanvas;
+	public GameObject guiCanvas;
 
     public IEnumerator ShowMessage(string msg, float delay = 1.75f) {
 		GameObject popupPanel = guiCanvas.transform.Find ("PanelPopup").gameObject;
@@ -16,7 +16,7 @@ public class GUIInterface : MonoBehaviour {
 		popupPanel.gameObject.SetActive (false);
     }
 
-	public void ShowHexActionWindow(UIHex hexTile) {
+	public void ShowHexActionWindow(UIIntersection uiIntersection) {
 		if (hasModalWindowOpened ()) { return; }
 
 		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
@@ -24,8 +24,12 @@ public class GUIInterface : MonoBehaviour {
 		actionPanel.SetActive (true);
 	}
 
-	public void ToggleCurrentPlayerTurnManagement() {
-		
+	public void ShowHexActionWindow(UIHex hexTile) {
+		if (hasModalWindowOpened ()) { return; }
+
+		GameObject actionPanel = guiCanvas.transform.Find ("PanelHexActions").gameObject;
+		actionPanel.GetComponent<RectTransform>().position = Input.mousePosition;
+		actionPanel.SetActive (true);
 	}
 
 	private bool hasModalWindowOpened() {
@@ -36,8 +40,8 @@ public class GUIInterface : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Awake () {
-		guiCanvas = GameObject.FindGameObjectWithTag ("GameCanvas");
+	void Start () {
+		
 	}
 
 	// Update is called once per frame

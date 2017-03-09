@@ -5,6 +5,10 @@ using System;
 
 [Serializable]
 public class Edge {
+
+	public bool IsOwned = false;
+	public string Owner;
+
 	public Vec3 adjTile1 { get; }
 	public Vec3 adjTile2 { get; }
 

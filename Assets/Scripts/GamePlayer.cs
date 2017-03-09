@@ -8,6 +8,9 @@ public class GamePlayer : NetworkBehaviour {
     public Color myColor = Color.white;
 	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> ();
 
+	public bool placedSettlement = false;
+	public bool placedRoad = false;
+
 	public override void OnStartClient() {
 		// register itself as a connected player
 		GameManager.PlayerConnected (gameObject);
@@ -50,6 +53,30 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();
 	}
 
+	[Command]
+	public void CmdBuildSettlement(byte[] vec3sSerialized) {
+		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
+		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
+
+		int settlementIdx = i.SettlementCount;
+		i.SettlementCount++;
+		i.SettlementOwner = this.myName;
+		i.SettlementLevels.Add (settlementIdx, 1);
+
+		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
+		GameManager.Instance.GetCurrentGameState ().SyncGameBoard ();
+	}
+
+	public void CmdBuildRoad(byte[] vec3Serialized) {
+		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3Serialized) as Vec3[];
+		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (vec3Pos [0], vec3Pos [1]);
+
+		currentEdge.Owner = this.myName;
+		currentEdge.IsOwned = true;
+
+		GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
+		GameManager.Instance.GetCurrentGameState ().SyncGameBoard ();
+	}
 	void Start () {
 		
 	}
