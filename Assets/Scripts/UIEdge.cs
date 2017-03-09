@@ -23,11 +23,6 @@ public class UIEdge : MonoBehaviour {
 			return;
 		}
 
-		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
-			Debug.Log ("Is not in setup phase");
-			return;
-		}
-
 		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
 		if (currentEdge.IsOwned) {
 			Debug.Log ("Edge is already owned");
@@ -38,6 +33,20 @@ public class UIEdge : MonoBehaviour {
 		if (localPlayer.placedRoad) {
 			Debug.Log ("You already placed a road");
 			return;
+		}
+
+		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{StealableType.Resource_Brick, 1},
+				{StealableType.Resource_Lumber, 1}
+			};
+
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				Debug.Log ("Not enough resources");
+				return;
+			}
+
+
 		}
 
 		Debug.Log ("Create road");

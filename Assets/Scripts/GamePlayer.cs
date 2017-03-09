@@ -92,6 +92,34 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
 		GameManager.Instance.GetCurrentGameState ().RpcPublishEdge (vec3Serialized, SerializationUtils.ObjectToByteArray (currentEdge));
 	}
+
+	public bool HasEnoughResources(Dictionary<StealableType, int> requiredRes) {
+		foreach(StealableType key in requiredRes.Keys) {
+			if(!this.playerResources.ContainsKey(key)) {
+				return false;
+			}
+
+			int playerAmount = this.playerResources[key];
+			if(playerAmount < requiredRes[key]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public bool ConsumeResources(Dictionary<StealableType, int> requiredRes) {
+		if(!HasEnoughResources(requiredRes)) { return false; }
+
+		foreach(StealableType key in requiredRes.Keys) {
+			int playerAmount = this.playerResources[key];
+			int newAmount = playerAmount - requiredRes[key];
+			this.playerResources[key] = newAmount;
+		}
+
+		return true;
+	}
+
 	void Start () {
 		
 	}
