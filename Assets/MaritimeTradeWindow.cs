@@ -19,27 +19,6 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	public Text [] oreNum;
 	public Text [] woolNum;
 	public Text [] lumberNum;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class MaritimeTradeWindow : MonoBehaviour {
-
-	public GameObject brick;
-	public GameObject grain;
-	public GameObject ore;
-	public GameObject wool;
-	public GameObject lumber;
-	public GameObject harbour;
-	public Button confirmButton;
-	public HexGrid hexGrid;
-
-	public Text [] brickNum;
-	public Text [] grainNum;
-	public Text [] oreNum;
-	public Text [] woolNum;
-	public Text [] lumberNum;
 	public Text [] harbourNum;
 	public Text [] resourceOffer;
 
