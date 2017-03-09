@@ -19,6 +19,27 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	public Text [] oreNum;
 	public Text [] woolNum;
 	public Text [] lumberNum;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class MaritimeTradeWindow : MonoBehaviour {
+
+	public GameObject brick;
+	public GameObject grain;
+	public GameObject ore;
+	public GameObject wool;
+	public GameObject lumber;
+	public GameObject harbour;
+	public Button confirmButton;
+	public HexGrid hexGrid;
+
+	public Text [] brickNum;
+	public Text [] grainNum;
+	public Text [] oreNum;
+	public Text [] woolNum;
+	public Text [] lumberNum;
 	public Text [] harbourNum;
 	public Text [] resourceOffer;
 
@@ -67,6 +88,13 @@ public class MaritimeTradeWindow : MonoBehaviour {
 		}
 	}
 
+	void TaskOnClick(){
+		Debug.Log ("You have clicked the button!");
+		GameObject thisHarbour = findHarbour (harbourNum[1].text);
+		StealableType thisHarbourResource = findHarbourResource (thisHarbour);
+		resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
+	}
+
 	// Use this for initialization
 	void Start () {
 		
@@ -78,6 +106,13 @@ public class MaritimeTradeWindow : MonoBehaviour {
 		harbourNum = harbour.GetComponentsInChildren<Text>();
 
 		//Text [] resourceOffer = {brickNum[1], grainNum[1], oreNum[1], woolNum[1], lumberNum[1]};
+		Button btn = confirmButton.GetComponent<Button>();
+		btn.onClick.AddListener (TaskOnClick);
+		/*
+		GameObject thisHarbour = findHarbour (harbourNum[1].text);
+		StealableType thisHarbourResource = findHarbourResource (thisHarbour);
+		resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
+		*/
 		//confirmButton.onClick
 			GameObject thisHarbour = findHarbour (harbourNum[1].text);
 			StealableType thisHarbourResource = findHarbourResource (thisHarbour);
