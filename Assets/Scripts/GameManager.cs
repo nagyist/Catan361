@@ -76,6 +76,11 @@ public class GameManager : Singleton<GameManager> {
 			return false;
 		}
 
+		/**
+		 * Figure out edge colletion bug
+		 * Different color for edges/intersections
+		 * */
+
 		// update player resources accordingly
 		GamePlayer player = LocalPlayer.GetComponent<GamePlayer> ();
 		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
