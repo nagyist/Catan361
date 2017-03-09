@@ -11,9 +11,12 @@ public class UIIntersection : MonoBehaviour {
 	void OnMouseEnter() {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-			Debug.Log ("Settlement count = " + i.SettlementCount);
+			if (i.SettlementCount > 1) { // settlement is a city
+				GetComponent<SpriteRenderer>().color = new Color32(255, 215, 0, 255);
+			}
+		} else {
+			GetComponent<SpriteRenderer> ().color = Color.blue;
 		}
-		GetComponent<SpriteRenderer> ().color = Color.blue;
 	}
 
 	void OnMouseDown() {
@@ -26,22 +29,50 @@ public class UIIntersection : MonoBehaviour {
 			Debug.Log ("Is not local player turn");
 			return;
 		}
-
-		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
-			Debug.Log ("Is not in setup phase");
+	
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase () && localPlayer.placedSettlement) {
+			Debug.Log ("You already placed a settlement during your turn");
 			return;
 		}
 
 		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-		if (intersection.SettlementCount > 0 && intersection.SettlementOwner != GameManager.LocalPlayer.GetComponent<GamePlayer>().myName) {
+		if (intersection.SettlementCount > 0 && intersection.SettlementOwner != GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
 			Debug.Log ("Does not own the settlement");
 			return;
-		}
-			
-		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		if (localPlayer.placedSettlement) {
-			Debug.Log ("You already placed a settlement during your turn");
+		} else if (intersection.SettlementCount == 1 && intersection.SettlementOwner == GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
+			// upgrade the settlement to city
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{StealableType.Resource_Ore, 3},
+				{StealableType.Resource_Grain, 2}
+			};
+
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				Debug.Log ("Does not have enough resource to upgrade to city");
+				return;
+			}
+
+			localPlayer.ConsumeResources (requiredRes);
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdUpgradeSettlement (
+				SerializationUtils.ObjectToByteArray (new Vec3[] { HexPos1, HexPos2, HexPos3 })
+			);
 			return;
+		}
+
+		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{StealableType.Resource_Brick, 1},
+				{StealableType.Resource_Lumber, 1},
+				{StealableType.Resource_Wool, 1},
+				{StealableType.Resource_Grain, 1}
+			};
+
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				Debug.Log ("Not enough resources");
+				return;
+			}
+
+			localPlayer.ConsumeResources (requiredRes);
 		}
 
 		localPlayer.placedSettlement = true;

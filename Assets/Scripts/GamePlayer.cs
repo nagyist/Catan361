@@ -12,7 +12,13 @@ public class GamePlayer : NetworkBehaviour {
 
     public string myName = "";
     public Color myColor = Color.white;
-	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> ();
+	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> () {
+		{StealableType.Resource_Brick, 100},
+		{StealableType.Resource_Grain, 100},
+		{StealableType.Resource_Lumber, 100},
+		{StealableType.Resource_Ore, 100},
+		{StealableType.Resource_Wool, 100}
+	};
 
 	public bool placedSettlement = false;
 	public bool placedRoad = false;
@@ -76,6 +82,18 @@ public class GamePlayer : NetworkBehaviour {
 		i.SettlementCount++;
 		i.SettlementOwner = this.myName;
 		i.SettlementLevels.Add (settlementIdx, 1);
+
+		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
+		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
+	}
+
+	[Command]
+	public void CmdUpgradeSettlement(byte[] vec3sSerialized) {
+		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
+		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
+
+		int settlementIdx = i.SettlementCount;
+		i.SettlementCount++;
 
 		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
 		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));

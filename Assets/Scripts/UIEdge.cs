@@ -30,7 +30,7 @@ public class UIEdge : MonoBehaviour {
 		}
 
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		if (localPlayer.placedRoad) {
+		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase () && localPlayer.placedRoad) {
 			Debug.Log ("You already placed a road");
 			return;
 		}
@@ -46,7 +46,7 @@ public class UIEdge : MonoBehaviour {
 				return;
 			}
 
-
+			localPlayer.ConsumeResources (requiredRes);
 		}
 
 		Debug.Log ("Create road");
