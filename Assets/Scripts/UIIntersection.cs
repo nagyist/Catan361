@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class UIIntersection : MonoBehaviour {
 
@@ -11,11 +13,14 @@ public class UIIntersection : MonoBehaviour {
 	void OnMouseEnter() {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-			if (i.SettlementCount > 1) { // settlement is a city
-				GetComponent<SpriteRenderer>().color = new Color32(255, 215, 0, 255);
-			}
+
+			GameObject mouseOver = GameObject.FindGameObjectWithTag ("GameCanvas").transform.FindChild ("MouseOverInfos").gameObject;
+			mouseOver.GetComponent<Text> ().text = 
+				"Level = " + i.SettlementCount + "\n";
+			mouseOver.GetComponent<Transform> ().position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
+			mouseOver.SetActive (true);
 		} else {
-			GetComponent<SpriteRenderer> ().color = Color.blue;
+			GetComponent<SpriteRenderer> ().color = Color.blue; 
 		}
 	}
 

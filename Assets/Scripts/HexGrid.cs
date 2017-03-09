@@ -321,7 +321,7 @@ public class HexGrid : MonoBehaviour {
 	public void buildHarbours () {
 		
 		
-		Dictionary<string, GameObject> harbourCollection = new Dictionary<string, GameObject>();
+		harbourCollection = new Dictionary<string, GameObject>();
 		
 		Vector2 gridPosHex1 = new Vector2 (4, 1);
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);

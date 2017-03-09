@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class GameTurn
 {
-	public List<string> OrderedPlayers = new List<String> (new string[] { "Player1", "Player2" });
+	public List<string> OrderedPlayers = new List<String> (new string[] { "Player1", "Player2", "Player3" }); 
 	public int CurrentPlayerIndex { get; private set; }
 	public bool CurrentTurnEnded { get; private set; }
 	public int RoundCount { get; private set; }

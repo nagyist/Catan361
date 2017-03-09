@@ -12,7 +12,6 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	public GameObject lumber;
 	public GameObject harbour;
 	public Button confirmButton;
-	public HexGrid hexGrid;
 
 	public Text [] brickNum;
 	public Text [] grainNum;
@@ -24,6 +23,7 @@ public class MaritimeTradeWindow : MonoBehaviour {
 
 	public GameObject findHarbour(string harbourNumber)
 	{
+		HexGrid hexGrid = GameObject.FindGameObjectWithTag ("GameState").GetComponent<HexGrid> ();
 		return hexGrid.harbourCollection [harbourNumber];
 	}
 
@@ -38,7 +38,8 @@ public class MaritimeTradeWindow : MonoBehaviour {
 
 		if (player.playerResources.ContainsKey (resourceFromHarbour)) 
 		{
-			player.playerResources [resourceFromHarbour] = player.playerResources [resourceFromHarbour]++;
+			int newRes = player.playerResources [resourceFromHarbour] + 1;
+			player.playerResources [resourceFromHarbour] = newRes;
 		}
 
 		if (player.playerResources.ContainsKey (StealableType.Resource_Brick))
@@ -76,7 +77,6 @@ public class MaritimeTradeWindow : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
 		brickNum = brick.GetComponentsInChildren<Text>();
 		grainNum = grain.GetComponentsInChildren<Text>();
 		oreNum = ore.GetComponentsInChildren<Text>();
@@ -92,10 +92,7 @@ public class MaritimeTradeWindow : MonoBehaviour {
 		StealableType thisHarbourResource = findHarbourResource (thisHarbour);
 		resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
 		*/
-		//confirmButton.onClick
-			GameObject thisHarbour = findHarbour (harbourNum[1].text);
-			StealableType thisHarbourResource = findHarbourResource (thisHarbour);
-			resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
+		//confirmButton.onClic
 		
 	}
 
