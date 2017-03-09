@@ -55,6 +55,7 @@ public class UIHex : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		GetComponent<SpriteRenderer>().sortingLayerName = "hex";
 	}
 
 	void Update () {

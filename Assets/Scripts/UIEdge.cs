@@ -51,7 +51,7 @@ public class UIEdge : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		GetComponent<SpriteRenderer>().sortingLayerName = "edge";
 	}
 	
 	// Update is called once per frame

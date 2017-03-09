@@ -58,7 +58,7 @@ public class UIIntersection : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		GetComponent<SpriteRenderer>().sortingLayerName = "intersection";
 	}
 
 	// Update is called once per frame
