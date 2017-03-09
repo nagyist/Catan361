@@ -36,7 +36,7 @@ public class GameState : NetworkBehaviour {
 			GetComponent<HexGrid> ().CreateUIHexGrid ();
 			CurrentStatus = GameStatus.GRID_CREATED;
 
-			InvokeRepeating ("SyncGameBoard", 2.0f, 60.0f);
+			InvokeRepeating ("SyncGameBoard", 2.0f, 300f);
 
 			SyncGameTurns ();
 			CurrentStatus = GameStatus.GAME_TURN_SYNC;
@@ -56,6 +56,22 @@ public class GameState : NetworkBehaviour {
 
 		GetComponent<HexGrid>().CreateUIHexGrid();
 		CurrentStatus = GameStatus.GRID_CREATED;
+	}
+
+	[ClientRpc]
+	public void RpcPublishEdge(byte[] vec3Serialized, byte[] newEdgeSerialized) {
+		Vec3[] edgePos = SerializationUtils.ByteArrayToObject (vec3Serialized) as Vec3[];
+		Edge newEdge = SerializationUtils.ByteArrayToObject(newEdgeSerialized) as Edge;
+
+		CurrentEdges.setEdge (edgePos [0], edgePos [1], newEdge);
+	}
+
+	[ClientRpc]
+	public void RpcPublishIntersection(byte[] vec3Serialized, byte[] newIntersectionSerialized) {
+		Vec3[] intersectionPos = SerializationUtils.ByteArrayToObject (vec3Serialized) as Vec3[];
+		Intersection newIntersection = SerializationUtils.ByteArrayToObject (newIntersectionSerialized) as Intersection;
+
+		CurrentIntersections.setIntersection (intersectionPos, newIntersection);
 	}
 
 	[ClientRpc]

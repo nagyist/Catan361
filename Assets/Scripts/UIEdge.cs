@@ -60,7 +60,7 @@ public class UIEdge : MonoBehaviour {
 			Edge e = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
 			if (e == null) { return; }
 			if (e.IsOwned) {
-				GetComponent<SpriteRenderer> ().color = Color.green;
+				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
 		}
 	}

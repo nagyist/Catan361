@@ -20,12 +20,15 @@ public class PlayerResourcePanel : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		GamePlayer currentPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		GetComponentInChildren<Text> ().text = 
-			"Wool: " + ResDisplay(currentPlayer, StealableType.Resource_Wool) + "\n" +
-			"Lumber: " + ResDisplay(currentPlayer, StealableType.Resource_Lumber) + "\n" + 
-			"Ore: " + ResDisplay(currentPlayer, StealableType.Resource_Ore) + "\n" + 
-			"Brick: " + ResDisplay(currentPlayer, StealableType.Resource_Brick) + "\n" + 
-			"Grain: " + ResDisplay(currentPlayer, StealableType.Resource_Grain);
+		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
+			GamePlayer currentPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+			GetComponentInChildren<Text> ().text = 
+				"Wool: " + ResDisplay(currentPlayer, StealableType.Resource_Wool) + "\n" +
+				"Lumber: " + ResDisplay(currentPlayer, StealableType.Resource_Lumber) + "\n" + 
+				"Ore: " + ResDisplay(currentPlayer, StealableType.Resource_Ore) + "\n" + 
+				"Brick: " + ResDisplay(currentPlayer, StealableType.Resource_Brick) + "\n" + 
+				"Grain: " + ResDisplay(currentPlayer, StealableType.Resource_Grain);
+		}
+
 	}
 }

@@ -54,7 +54,7 @@ public class GameManager : Singleton<GameManager> {
 
 		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().placedRoad = false;
-			GameManager.LocalPlayer.GetComponent<GamePlayer> ().placedRoad = false;
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().placedSettlement = false;
 		} 
 
 		LocalPlayer.GetComponent<GamePlayer> ().CmdTakeTurn ();

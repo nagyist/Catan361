@@ -23,10 +23,6 @@ public class GameTurn
 
 	public bool PlayerTakeTurn(string name) {
 		if (IsPlayerAllowedToTakeTurn(name)) {
-			if (CurrentPlayerIndex == 0) {
-				RoundCount++;
-			}
-
 			CurrentPlayerIndex = GetNextPlayerTurn ();
 			CurrentTurnEnded = false;
 
@@ -42,6 +38,11 @@ public class GameTurn
 		}
 
 		CurrentTurnEnded = true;
+
+		if (CurrentPlayerIndex == 1) {
+			RoundCount++;
+		}
+
 		return true;
 	}
 

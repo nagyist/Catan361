@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class GamePlayer : NetworkBehaviour {
+	private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {
+		{"Player1", new Color32(100, 149, 237, 255)},
+		{"Player2", new Color32(255, 165, 0, 255)},
+		{"Player3", new Color32(152, 251, 152, 255)}
+	};
+
     public string myName = "";
     public Color myColor = Color.white;
 	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> ();
@@ -31,6 +37,14 @@ public class GamePlayer : NetworkBehaviour {
 		}
 
 		return item.myName == this.myName;
+	}
+
+	public Color32 GetPlayerColor() {
+		if (!playerColors.ContainsKey (this.myName)) {
+			return new Color32 (153, 50, 204, 255);
+		} else {
+			return playerColors [this.myName];
+		}
 	}
 
 	[Command]
@@ -64,9 +78,10 @@ public class GamePlayer : NetworkBehaviour {
 		i.SettlementLevels.Add (settlementIdx, 1);
 
 		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-		GameManager.Instance.GetCurrentGameState ().SyncGameBoard ();
+		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
 	}
 
+	[Command]
 	public void CmdBuildRoad(byte[] vec3Serialized) {
 		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3Serialized) as Vec3[];
 		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (vec3Pos [0], vec3Pos [1]);
@@ -75,7 +90,7 @@ public class GamePlayer : NetworkBehaviour {
 		currentEdge.IsOwned = true;
 
 		GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
-		GameManager.Instance.GetCurrentGameState ().SyncGameBoard ();
+		GameManager.Instance.GetCurrentGameState ().RpcPublishEdge (vec3Serialized, SerializationUtils.ObjectToByteArray (currentEdge));
 	}
 	void Start () {
 		

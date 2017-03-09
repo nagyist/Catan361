@@ -66,7 +66,7 @@ public class UIIntersection : MonoBehaviour {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 			if (i.SettlementCount > 0) {
-				GetComponent<SpriteRenderer> ().color = Color.green;
+				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.SettlementOwner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
 		}
 	}
