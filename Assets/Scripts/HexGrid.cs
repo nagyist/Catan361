@@ -123,6 +123,7 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 5 && y == 4) 
 				{
+					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum = 7;
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
@@ -144,6 +145,39 @@ public class HexGrid : MonoBehaviour {
 
 				} 
 				else if (x == 7 && y > 3 && y < 5) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 8 && y > 4 && y < 8) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 7 && y == 7) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 9 && y ==6) 
 				{
 					if (y % 2 == 1) 
 					{

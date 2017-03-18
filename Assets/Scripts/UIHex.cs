@@ -12,7 +12,8 @@ public class UIHex : MonoBehaviour {
 		{StealableType.Resource_Lumber, new Color32 (128, 128, 0, 255)},
 		{StealableType.Resource_Ore, new Color32 (112, 128, 144, 255)},
 		{StealableType.Resource_Brick, new Color32 (178, 34, 34, 255)},
-		{StealableType.Resource_Grain, new Color32 (255, 215, 0, 255)}
+		{StealableType.Resource_Grain, new Color32 (255, 215, 0, 255)},
+		{StealableType.Resource_Fish, new Color32 (64, 224, 208, 255)}
 	};
 
 
