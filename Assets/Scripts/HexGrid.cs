@@ -39,7 +39,15 @@ public class HexGrid : MonoBehaviour {
 		{17, StealableType.Resource_Lumber},
 		{18, StealableType.Resource_Ore},
 		{19, StealableType.Resource_Brick},
-		{20, StealableType.Resource_Grain},
+		{20, StealableType.Resource_Grain}
+		/*
+		{21, StealableType.Resource_Wool},
+		{22, StealableType.Resource_Lumber},
+		{23, StealableType.Resource_Ore},
+		{24, StealableType.Resource_Brick},
+		{25, StealableType.Resource_Grain},
+		{26, StealableType.Resource_Gold}
+		*/
 	};
 
 	private void setHexSizes () 
@@ -155,7 +163,7 @@ public class HexGrid : MonoBehaviour {
 						refTile.SelectedNum = Random.Range (8, 12);
 					}
 				} 
-				else if (x == 8 && y > 4 && y < 8) 
+				else if (x == 8 && y > 4 && y < 7) 
 				{
 					if (y % 2 == 1) 
 					{
@@ -178,6 +186,50 @@ public class HexGrid : MonoBehaviour {
 					}
 				} 
 				else if (x == 9 && y ==6) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 9 && y == 4) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 8 && y == 2) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x == 7 && y == 1) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 6);
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 12);
+					}
+				} 
+				else if (x < 7 && x > 4 && y == 8) 
 				{
 					if (y % 2 == 1) 
 					{
