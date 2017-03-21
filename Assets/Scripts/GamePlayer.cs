@@ -99,12 +99,28 @@ public class GamePlayer : NetworkBehaviour {
         // get the intersection located at that at that intersection
 		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
 
-        // hold an index holding the settlement count
-		int settlementIdx = i.SettlementCount;
-        // create the settlement at the intersection
-		i.SettlementCount++;
-		i.SettlementOwner = this.myName;
-		i.SettlementLevels.Add (settlementIdx, 1);
+
+        // if in round two, place city, otherwise place settlement
+        int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
+        if (roundCount == 1)
+        {
+            // hold an index holding the settlement count
+            int settlementIdx = i.SettlementCount;
+            // create the settlement at the intersection
+            i.SettlementCount += 2;
+            i.SettlementOwner = this.myName;
+            i.SettlementLevels.Add(settlementIdx, 2);
+        } 
+        else
+        {
+            // hold an index holding the settlement count
+            int settlementIdx = i.SettlementCount;
+            // create the settlement at the intersection
+            i.SettlementCount += 1;
+            i.SettlementOwner = this.myName;
+            i.SettlementLevels.Add(settlementIdx, 2);
+        }
+	
 
         // add the intersection to the game manager
 		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
