@@ -18,19 +18,18 @@ public class GameTurn
     // also holds boolean values to denote a players turn has ended
 	public bool CurrentTurnEnded { get; private set; }
     // holds a counter for rounds
-	public int RoundCount { get; private set; }
+	public int turnCount { get; private set; }
 
-    // contructor
-    // set's the current player's index to invalid value
+    // construct and set's the current player's index to invalid value
 	public GameTurn () { 
 		CurrentPlayerIndex = 3;
-		RoundCount = 0;
+		turnCount = 0;
 		CurrentTurnEnded = true;
 	}
 
     // if return true if less than 2 rounds have passed
 	public bool IsInSetupPhase() {
-		return RoundCount < 3;
+		return turnCount < 6;
 	}
 
     // this function is used when a player can take their turn
@@ -47,8 +46,7 @@ public class GameTurn
 		    return false;
 	}
 
-    // function is used when a player ends their turn
-    // called by GamePlayer
+    // function is called by GamePlayer when a player ends their turn
 	public bool EndTurn(string name) {
 
         // returns false it is not the current player's turn
@@ -58,7 +56,7 @@ public class GameTurn
         // set the current turn as ended
         CurrentTurnEnded = true;
         
-        RoundCount++;
+        turnCount++;
 		return true;
 	}
 
@@ -84,43 +82,27 @@ public class GameTurn
 		return this.CurrentTurnEnded == false;
 	}
 
-    /* returns true if both:
-     *      1. the index retreived by GetNextPlayerTurn() function is the the local player
-     *      2. the current turn is not taken
-    */
+    // returns true is local player is allowed to take a turn and the turn is not already taken
     public bool IsLocalPlayerAllowedToTakeTurn() {
 		return GetNextPlayerTurn () == OrderedPlayers.IndexOf(GameManager.LocalPlayer.GetComponent<GamePlayer>().myName) && ! IsTurnTaken ();
 	}
 
-    /* returns true if both:
-     *      1. the index retreived by the GetNextPlayerTurn() function equivalent to the player argument's index 
-     *      2. the current turn is not taken
-    */
+    // returns true if player with myName = name is allowed to take a turn and the turn is not already taken
     public bool IsPlayerAllowedToTakeTurn(string name) {
 		return GetNextPlayerTurn () == OrderedPlayers.IndexOf (name) && !IsTurnTaken ();
 	}
 
-    // note function needs review, doesn't seem to be called anywhere
-    /* returns true if both:
-     *      1. the index retreived by the GetNextPlayerTurn() function is equal to the index argument
-     *      2. the current turn is not taken
-    */
-	public bool IsPlayerAllowedToTakeTurn(int idx) {
+    // return true is player with index idx is allowed to take a turn and the turn is not already taken
+    public bool IsPlayerAllowedToTakeTurn(int idx) {
 		return GetNextPlayerTurn () == idx && !IsTurnTaken ();
 	}
 
-    /* return true if both:
-     *      1. the index retreived by the GetNextPlayerTurn() function equivalent to the player argument's index 
-     *      2. the curren turn is not taken
-    */
+    // returns true if it is the local player's turn and the turn is not already taken
     public bool IsLocalPlayerTurn() {
 		return CurrentPlayerIndex == OrderedPlayers.IndexOf(GameManager.LocalPlayer.GetComponent<GamePlayer>().myName) && IsTurnTaken ();
 	}
 
-    /* returns true if both:
-     *      1. the index retreived by the GetNextPlayerTurn() function equivalent to the player argument's index 
-     *      2. the current turn is not taken
-    */
+    // returns true if player with myName = name is allowed to take a turn and the turn is not already taken
     public bool IsPlayerTurn(string name) {
 		return CurrentPlayerIndex == OrderedPlayers.IndexOf (name) && IsTurnTaken ();
 	}

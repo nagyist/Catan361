@@ -13,7 +13,7 @@ using System;
  *          - an rpc function is called on all players
  *          - it is executed by the server, not the client
  *      5. synchronization functions for the game's board and player turns
-*/ 
+ */ 
 
 
 // serializable means that the object can be converted into a stream of bytes
@@ -54,7 +54,7 @@ public class GameState : NetworkBehaviour {
 		GameManager.CurrentGameState = this;
 		CurrentStatus = GameStatus.NOT_READY;
 
-        // get teh network transmitter
+        // get the network transmitter
 		NetworkTransmitter networkTransmitter = GetComponent<NetworkTransmitter> ();
 
         // this block will only be executed by the server
@@ -81,10 +81,11 @@ public class GameState : NetworkBehaviour {
 		}
 	}
 
-    // ClientRpc function calls are called by the server and run on clients
-    // function names must have Rcp in their names
-    // ClientRpc tag means funcions returns immediately if it is not a client
-    // this function is used for game board synchronization
+    /* ClientRpc function calls are called by the server and run on clients
+     * function names must have Rcp in their names
+     * ClientRpc tag means funcions returns immediately if it is not a client
+     * this function is used for game board synchronization
+     */
     [ClientRpc]
 	public void RpcGameBoardSynchronized(int transmissionId, byte[] boardSerialized) {
 
@@ -137,6 +138,7 @@ public class GameState : NetworkBehaviour {
 	
     // this rcp function is used when a player rolsl the dice
     // doesn't seem to do anything aside from creating a debug message for now 
+    // review needed
 	[ClientRpc]
 	public void RpcClientRolledDice(GameObject player, int diceResult) {
 		Debug.Log ("Player rolled " + diceResult);

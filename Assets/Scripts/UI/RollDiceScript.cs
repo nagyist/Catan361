@@ -34,7 +34,7 @@ public class RollDiceScript : MonoBehaviour {
 
 		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
 			GetComponent<Button> ().enabled = false;
-			GetComponentInChildren<Text> ().text = "In setup phase -- round: " + GameManager.Instance.GetCurrentGameState ().CurrentTurn.RoundCount;
+			GetComponentInChildren<Text> ().text = "In setup phase -- round: " + GameManager.Instance.GetCurrentGameState ().CurrentTurn.turnCount;
 		} else {
 			if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
 				GetComponent<Button> ().enabled = true;
