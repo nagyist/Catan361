@@ -118,7 +118,7 @@ public class GamePlayer : NetworkBehaviour {
             // create the settlement at the intersection
             i.SettlementCount += 1;
             i.SettlementOwner = this.myName;
-            i.SettlementLevels.Add(settlementIdx, 2);
+            i.SettlementLevels.Add(settlementIdx, 1);
         }
 	
 
