@@ -118,7 +118,7 @@ public class GameManager : Singleton<GameManager> {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
 
             // if the intetersecion has a settlement and that settlement is owned by teh local player
-			if (i.SettlementCount > 0 && i.SettlementOwner == player.myName) {
+			if (i.SettlementLevel > 0 && i.SettlementOwner == player.myName) {
                 // go through all the adjacent hexes
 				List<Vec3> adjHexes = new List<Vec3> (new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
 				foreach (Vec3 hex in adjHexes) {
@@ -132,12 +132,12 @@ public class GameManager : Singleton<GameManager> {
                     // if so then add the appropriate amount of resources
 					if (player.playerResources.ContainsKey (tile.Resource))
                     {
-						player.playerResources [tile.Resource] = player.playerResources [tile.Resource] + i.SettlementCount;
+						player.playerResources [tile.Resource] = player.playerResources [tile.Resource] + i.SettlementLevel;
 					}
                     // if the player's resource don't already contain the key for the resource then add it
                     else
                     {
-						player.playerResources.Add (tile.Resource, i.SettlementCount);
+						player.playerResources.Add (tile.Resource, i.SettlementLevel);
 					}
 				}
 			}

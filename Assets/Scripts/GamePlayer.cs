@@ -104,21 +104,15 @@ public class GamePlayer : NetworkBehaviour {
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
         if (roundCount == 1)
         {
-            // hold an index holding the settlement count
-            int settlementIdx = i.SettlementCount;
             // create the settlement at the intersection
-            i.SettlementCount += 2;
+            i.SettlementLevel += 2;
             i.SettlementOwner = this.myName;
-            i.SettlementLevels.Add(settlementIdx, 2);
         } 
         else
         {
-            // hold an index holding the settlement count
-            int settlementIdx = i.SettlementCount;
             // create the settlement at the intersection
-            i.SettlementCount += 1;
+            i.SettlementLevel += 1;
             i.SettlementOwner = this.myName;
-            i.SettlementLevels.Add(settlementIdx, 1);
         }
 	
 
@@ -137,7 +131,7 @@ public class GamePlayer : NetworkBehaviour {
 		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
 
         // increment the settlement count
-		i.SettlementCount++;
+		i.SettlementLevel++;
 
         // add the new intersetcion to the game manager
 		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
