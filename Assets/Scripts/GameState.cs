@@ -81,7 +81,8 @@ public class GameState : NetworkBehaviour {
 		}
 	}
 
-    // Rpc function calls are called by the server and run on clients
+    // ClientRpc function calls are called by the server and run on clients
+    // function names must have Rcp in their names
     // ClientRpc tag means funcions returns immediately if it is not a client
     // this function is used for game board synchronization
     [ClientRpc]
