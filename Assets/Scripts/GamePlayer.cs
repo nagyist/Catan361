@@ -106,13 +106,13 @@ public class GamePlayer : NetworkBehaviour {
         {
             // create the settlement at the intersection
             i.SettlementLevel += 2;
-            i.SettlementOwner = this.myName;
+            i.Owner = this.myName;
         } 
         else
         {
             // create the settlement at the intersection
             i.SettlementLevel += 1;
-            i.SettlementOwner = this.myName;
+            i.Owner = this.myName;
         }
 	
 

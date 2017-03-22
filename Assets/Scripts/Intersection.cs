@@ -19,7 +19,7 @@ public class Intersection {
         return false;
     }
 
-	public String SettlementOwner = "";
+	public String Owner = "";
 	public int SettlementLevel = 0;
     public int KnightLevel = 0;
 

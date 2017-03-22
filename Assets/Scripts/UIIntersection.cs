@@ -42,10 +42,10 @@ public class UIIntersection : MonoBehaviour {
 		}
 
 		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-		if (intersection.SettlementLevel > 0 && intersection.SettlementOwner != GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
+		if (intersection.SettlementLevel > 0 && intersection.Owner != GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
 			Debug.Log ("Does not own the settlement");
 			return;
-		} else if (intersection.SettlementLevel == 1 && intersection.SettlementOwner == GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
+		} else if (intersection.SettlementLevel == 1 && intersection.Owner == GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
 			// upgrade the settlement to city
 			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
 				{StealableType.Resource_Ore, 3},
@@ -102,7 +102,7 @@ public class UIIntersection : MonoBehaviour {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 			if (i.SettlementLevel > 0) {
-				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.SettlementOwner].GetComponent<GamePlayer> ().GetPlayerColor ();
+				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
 		}
 	}
