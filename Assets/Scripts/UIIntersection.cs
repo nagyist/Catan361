@@ -19,9 +19,9 @@ public class UIIntersection : MonoBehaviour {
 				"Level = " + i.SettlementLevel + "\n";
 			mouseOver.GetComponent<Transform> ().position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 			mouseOver.SetActive (true);
-		} else {
-			GetComponent<SpriteRenderer> ().color = Color.blue; 
-		}
+		} 
+
+		GetComponent<SpriteRenderer> ().color = Color.blue; 
 	}
 
 	void OnMouseDown() {
@@ -89,7 +89,7 @@ public class UIIntersection : MonoBehaviour {
 	}
 
 	void OnMouseExit() {
-		GetComponent<SpriteRenderer> ().color = Color.red;
+		GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
 	}
 
 	// Use this for initialization
