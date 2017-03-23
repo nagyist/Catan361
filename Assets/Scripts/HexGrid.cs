@@ -279,6 +279,9 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
+	private Dictionary<Edge, GameObject> instanciatedUiEdges = new Dictionary<Edge, GameObject>();
+	private Dictionary<Intersection, GameObject> instanciatedUiIntersections = new Dictionary<Intersection, GameObject>();
+
 	public void CreateUIHexGrid()
 	{
 		cubeHexes = new Dictionary<Vec3, GameObject> ();
@@ -327,31 +330,55 @@ public class HexGrid : MonoBehaviour {
 			UIEdge rightEdgeUi = rightEdgeGameObj.AddComponent<UIEdge> ();
 			rightEdgeUi.HexPos1 = rightEdge.adjTile1;
 			rightEdgeUi.HexPos2 = rightEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightEdge)) {
+				rightEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightEdge, rightEdgeGameObj);
+			}
 
 			GameObject rightTopEdgeGameObj = currentHexGameObj.transform.FindChild("RTEdge").gameObject;
 			UIEdge rightTopEdgeUi = rightTopEdgeGameObj.AddComponent<UIEdge> ();
 			rightTopEdgeUi.HexPos1 = rightTopEdge.adjTile1;
 			rightTopEdgeUi.HexPos2 = rightTopEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightTopEdge)) {
+				rightTopEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightTopEdge, rightTopEdgeGameObj);
+			}
 
 			GameObject leftTopEdgeGameObj = currentHexGameObj.transform.FindChild("LTEdge").gameObject;
 			UIEdge leftTopEdgeUi = leftTopEdgeGameObj.AddComponent<UIEdge> ();
 			leftTopEdgeUi.HexPos1 = leftTopEdge.adjTile1;
 			leftTopEdgeUi.HexPos2 = leftTopEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftTopEdge)) {
+				leftTopEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftTopEdge, leftTopEdgeGameObj);
+			}
 
 			GameObject leftEdgeGameObj = currentHexGameObj.transform.FindChild("LEdge").gameObject;
 			UIEdge leftEdgeUi = leftEdgeGameObj.AddComponent<UIEdge> ();
 			leftEdgeUi.HexPos1 = leftEdge.adjTile1;
 			leftEdgeUi.HexPos2 = leftEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftEdge)) {
+				leftEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftEdge, leftEdgeGameObj);
+			}
 
 			GameObject leftBottomEdgeGameObj = currentHexGameObj.transform.FindChild("LBEdge").gameObject;
 			UIEdge leftBottomEdgeUi = leftBottomEdgeGameObj.AddComponent<UIEdge> ();
 			leftBottomEdgeUi.HexPos1 = leftBottomEdge.adjTile1;
 			leftBottomEdgeUi.HexPos2 = leftBottomEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftBottomEdge)) {
+				leftBottomEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftBottomEdge, leftBottomEdgeGameObj);
+			}
 
 			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
 			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();
 			rightBottomEdgeUi.HexPos1 = rightBottomEdge.adjTile1;
 			rightBottomEdgeUi.HexPos2 = rightBottomEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightBottomEdge)) {
+				rightBottomEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightBottomEdge, rightBottomEdgeGameObj);
+			}
 
 			// intersections
 			// get each intersection instance
@@ -368,36 +395,60 @@ public class HexGrid : MonoBehaviour {
 			leftTopIntersectionUi.HexPos1 = leftTopIntersection.adjTile1;
 			leftTopIntersectionUi.HexPos2 = leftTopIntersection.adjTile2;
 			leftTopIntersectionUi.HexPos3 = leftTopIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (leftTopIntersection)) {
+				leftTopGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (leftTopIntersection, leftTopGameObj);
+			}
 
 			GameObject topGameObj = currentHexGameObj.transform.FindChild("TIntersection").gameObject;
 			UIIntersection topIntersectionUi = topGameObj.AddComponent<UIIntersection> ();
 			topIntersectionUi.HexPos1 = topIntersection.adjTile1;
 			topIntersectionUi.HexPos2 = topIntersection.adjTile2;
 			topIntersectionUi.HexPos3 = topIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (topIntersection)) {
+				topGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (topIntersection, topGameObj);
+			}
 
 			GameObject rightTopGameObj = currentHexGameObj.transform.FindChild("RTIntersection").gameObject;
 			UIIntersection rightTopIntersectionUi = rightTopGameObj.AddComponent<UIIntersection> ();
 			rightTopIntersectionUi.HexPos1 = rightTopIntersection.adjTile1;
 			rightTopIntersectionUi.HexPos2 = rightTopIntersection.adjTile2;
 			rightTopIntersectionUi.HexPos3 = rightTopIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (rightTopIntersection)) {
+				rightTopGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (rightTopIntersection, rightTopGameObj);
+			}
 
 			GameObject rightBottomGameObj = currentHexGameObj.transform.FindChild("RBIntersection").gameObject;
 			UIIntersection rightBottomIntersectionUi = rightBottomGameObj.AddComponent<UIIntersection> ();
 			rightBottomIntersectionUi.HexPos1 = rightBottomIntersection.adjTile1;
 			rightBottomIntersectionUi.HexPos2 = rightBottomIntersection.adjTile2;
 			rightBottomIntersectionUi.HexPos3 = rightBottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (rightBottomIntersection)) {
+				rightBottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (rightBottomIntersection, rightBottomGameObj);
+			}
 
 			GameObject bottomGameObj = currentHexGameObj.transform.FindChild("BIntersection").gameObject;
 			UIIntersection bottomIntersectionUi = bottomGameObj.AddComponent<UIIntersection> ();
 			bottomIntersectionUi.HexPos1 = bottomIntersection.adjTile1;
 			bottomIntersectionUi.HexPos2 = bottomIntersection.adjTile2;
 			bottomIntersectionUi.HexPos3 = bottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (bottomIntersection)) {
+				bottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (bottomIntersection, bottomGameObj);
+			}
 
 			GameObject leftBottomGameObj = currentHexGameObj.transform.FindChild("LBIntersection").gameObject;
 			UIIntersection leftBottomIntersectionUi = leftBottomGameObj.AddComponent<UIIntersection> ();
 			leftBottomIntersectionUi.HexPos1 = leftBottomIntersection.adjTile1;
 			leftBottomIntersectionUi.HexPos2 = leftBottomIntersection.adjTile2;
 			leftBottomIntersectionUi.HexPos3 = leftBottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (leftBottomIntersection)) {
+				leftBottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (leftBottomIntersection, leftBottomGameObj);
+			}
 		}
 	}
 
