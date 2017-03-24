@@ -51,8 +51,8 @@ public class HexGrid : MonoBehaviour {
 
 	private void setHexSizes () 
 	{
-		hexWidth = Hex.GetComponent<Renderer> ().bounds.size.x;
-		hexHeight = Hex.GetComponent<Renderer> ().bounds.size.y;
+		hexWidth = Hex.GetComponent<RectTransform> ().rect.size.x;
+		hexHeight = Hex.GetComponent<RectTransform> ().rect.size.y;
 	}
 
 	private Vector3 calcInitialPos ()

@@ -5,16 +5,18 @@ using UnityEngine;
 public class UIHex : MonoBehaviour {
 	public Vector2 HexGridPosition;
 	public Vec3 HexGridCubePosition;
+	public Texture2D TilesTexture;
+	private Sprite[] loadedSprites;
 
-	public Dictionary<StealableType, Color> resourceColor = new Dictionary<StealableType, Color>()
+	public Dictionary<StealableType, int> resourceSpriteIndex = new Dictionary<StealableType, int>()
 	{
-		{StealableType.Resource_Wool, new Color32 (255, 160, 122, 255)},
-		{StealableType.Resource_Lumber, new Color32 (128, 128, 0, 255)},
-		{StealableType.Resource_Ore, new Color32 (112, 128, 144, 255)},
-		{StealableType.Resource_Brick, new Color32 (178, 34, 34, 255)},
-		{StealableType.Resource_Grain, new Color32 (255, 215, 0, 255)},
-		{StealableType.Resource_Fish, new Color32 (0, 0, 139, 255) },
-		{StealableType.Resource_Gold, new Color32 (244, 164, 96, 255)}
+		{StealableType.Resource_Wool, 28},
+		{StealableType.Resource_Lumber, 12},
+		{StealableType.Resource_Ore, 24},
+		{StealableType.Resource_Brick, 11},
+		{StealableType.Resource_Grain, 28},
+		{StealableType.Resource_Fish, 32 },
+		{StealableType.Resource_Gold, 4}
 	};
 
 
@@ -58,6 +60,7 @@ public class UIHex : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GetComponent<SpriteRenderer>().sortingLayerName = "hex";
+		this.loadedSprites = Resources.LoadAll<Sprite> (TilesTexture.name);
 	}
 
 	void Update () {
@@ -69,9 +72,9 @@ public class UIHex : MonoBehaviour {
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
 		if (refTile.IsWater) {
-			GetComponent<SpriteRenderer>().color = new Color32 (64, 224, 208, 255);
+			GetComponent<SpriteRenderer>().sprite = loadedSprites[36];
 		} else {
-			GetComponent<SpriteRenderer>().color = resourceColor[refTile.Resource];
+			GetComponent<SpriteRenderer>().sprite = loadedSprites[resourceSpriteIndex[refTile.Resource]];
 		}
 
 	}
