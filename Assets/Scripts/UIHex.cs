@@ -7,6 +7,7 @@ public class UIHex : MonoBehaviour {
 	public Vec3 HexGridCubePosition;
 	public Texture2D TilesTexture;
 	private Sprite[] loadedSprites;
+	private int oldIndex = 0;
 
 	public Dictionary<StealableType, int> resourceSpriteIndex = new Dictionary<StealableType, int>()
 	{
@@ -71,12 +72,22 @@ public class UIHex : MonoBehaviour {
 		}
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
+		int newIndex = 0;
 		if (refTile.IsWater) {
 			GetComponent<SpriteRenderer>().sprite = loadedSprites[36];
+			newIndex = 36;
 		} else {
-			GetComponent<SpriteRenderer>().sprite = loadedSprites[resourceSpriteIndex[refTile.Resource]];
+			newIndex = resourceSpriteIndex [refTile.Resource];
 		}
 
+		newIndex += Random.Range(0, 4);
+		if (System.Math.Abs (newIndex - this.oldIndex) > 3) {
+			this.oldIndex = newIndex;
+		} else {
+			newIndex = this.oldIndex;
+		}
+
+		GetComponent<SpriteRenderer>().sprite = loadedSprites[newIndex];
 	}
 
 	public Vec3 getAdjacentHexPos(AdjHex adjHex) {
