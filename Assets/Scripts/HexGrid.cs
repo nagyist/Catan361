@@ -99,33 +99,33 @@ public class HexGrid : MonoBehaviour {
 				{
 					if (x % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 4 && y > 1 && y < 7) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 5 && y == 4) 
@@ -136,18 +136,18 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 6 && y > 1 && y < 7) 
 				{
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
 				} 
 				else if (x == 6 && y > 3 && y < 7) 
 				{
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
 				} 
@@ -155,11 +155,11 @@ public class HexGrid : MonoBehaviour {
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 
@@ -168,91 +168,91 @@ public class HexGrid : MonoBehaviour {
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [26];
 					}
 				} 
 				else if (x == 7 && y == 7) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else if (x == 9 && y ==6) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [26];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [26];
 					}
 				} 
 				else if (x == 9 && y == 4) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else if (x == 8 && y == 2) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else if (x == 7 && y == 1) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else if (x < 7 && x > 4 && y == 8) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
-						refTile.Resource = resourceType [Random.Range (20, 27)];
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else 
