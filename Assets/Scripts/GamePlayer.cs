@@ -26,6 +26,7 @@ public class GamePlayer : NetworkBehaviour {
 		{StealableType.Resource_Lumber, 100},
 		{StealableType.Resource_Ore, 100},
 		{StealableType.Resource_Wool, 100}
+		// Now must include Fish, possibly gold?
 	};
 
     // add the the current player game object to the list of connected players

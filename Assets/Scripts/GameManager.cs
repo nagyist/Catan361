@@ -127,6 +127,8 @@ public class GameManager : Singleton<GameManager> {
 					if (tile.IsWater) { continue; }
 					if (tile.SelectedNum != roll) { continue; }
 
+					// need to add for the fish selectedNum 2, 3, 4
+
                     // to to see if the player's resrouces already contain the key for the resource
                     // if so then add the appropriate amount of resources
 					if (player.playerResources.ContainsKey (tile.Resource))
