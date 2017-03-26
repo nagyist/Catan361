@@ -46,7 +46,6 @@ public class HexGrid : MonoBehaviour {
 		{24, StealableType.Resource_Brick},
 		{25, StealableType.Resource_Grain},
 		{26, StealableType.Resource_Gold}
-
 	};
 
 	private void setHexSizes () 
@@ -190,7 +189,7 @@ public class HexGrid : MonoBehaviour {
 						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
-				else if (x == 9 && y ==6) 
+				else if (x == 9 && y == 6) 
 				{
 					if (y % 2 == 1) 
 					{
