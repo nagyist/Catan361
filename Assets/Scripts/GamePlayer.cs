@@ -66,6 +66,11 @@ public class GamePlayer : NetworkBehaviour {
 		}
 	}
 
+	[Command]
+	public void CmdShowMessage(string message, float delay) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage (message, delay);
+	}
+
     /* [Command] tag means this is a command function
      * Command functions are called form the client and run on the server
      * Function name must start with Cmd
@@ -74,7 +79,8 @@ public class GamePlayer : NetworkBehaviour {
 	public void CmdTakeTurn() {
 		// make sure that it is the current player turn
 		if (GameManager.Instance.GetCurrentGameState().CurrentTurn.PlayerTakeTurn(this.myName)) {
-			Debug.Log ("Player took turn!");
+			CmdShowMessage (this.myName + " turn begins.", 2.0f);
+			GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (this.myName + " took his turn.");
 		}
         // synchronize game turns
 		GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();
@@ -85,7 +91,7 @@ public class GamePlayer : NetworkBehaviour {
 	public void CmdEndTurn() {
 		// make sure that it is the current player turn
 		if (GameManager.Instance.GetCurrentGameState().CurrentTurn.EndTurn (this.myName)) {
-			Debug.Log ("Player Ended term");
+			GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (this.myName + " ended his turn.");
 		}
         // synchronize game turns
 		GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();

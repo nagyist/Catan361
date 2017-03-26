@@ -144,6 +144,16 @@ public class GameState : NetworkBehaviour {
 		Debug.Log ("Player rolled " + diceResult);
 	}
 
+	[ClientRpc]
+	public void RpcClientShowMessage(string msg, float delay) {
+		StartCoroutine (GameManager.GUI.ShowMessage (msg, delay));
+	}
+
+	[ClientRpc]
+	public void RpcClientPostStatusMessage(string msg) {
+		GameManager.GUI.PostStatusMessage (msg);
+	}
+
     // this function si used to sync the gameboard
 	public void SyncGameBoard() {
 

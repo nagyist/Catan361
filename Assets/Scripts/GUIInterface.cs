@@ -20,6 +20,13 @@ public class GUIInterface : MonoBehaviour {
 		popupPanel.GetComponent<UIWindow>().Hide();
     }
 
+	public void PostStatusMessage(string msg) {
+		GameObject gameStatus = guiCanvas.transform.FindChild ("GameStatus").gameObject;
+		GameObject lastStatusMsgTxt = gameStatus.transform.FindChild ("TxtLastStatusMessage").gameObject;
+
+		lastStatusMsgTxt.GetComponent<Text> ().text = msg;
+	}
+
 	public void ShowHexActionWindow(UIIntersection uiIntersection) {
 		if (hasModalWindowOpened ()) { return; }
 
