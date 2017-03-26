@@ -14,8 +14,8 @@ public class GameManager : Singleton<GameManager> {
     // initialize some variables
 	public static GameObject LocalPlayer = null;
 	public static GameState CurrentGameState = null;
+	public static GUIInterface GUI = null;
 	public static int PlayerCount = 0;
-	public GUIInterface gui;
 
     // note: players are added in two different data structures
     // the ConnectedPlayers List is a list containing all the game objects
@@ -29,7 +29,6 @@ public class GameManager : Singleton<GameManager> {
 
     // awake function used to initialize variables before the game starts
     void Awake () {
-        gui = GetComponent<GUIInterface>();
     }
 
     // this function will add the player argument to the GameManager's data structures
@@ -67,7 +66,7 @@ public class GameManager : Singleton<GameManager> {
 	public bool CurrentPlayerTakeTurn() {
         // if the player isn't allowed to take their turn, return false
 		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerAllowedToTakeTurn()) {
-			StartCoroutine (GameManager.Instance.gui.ShowMessage ("Cannot take turn"));
+			StartCoroutine (GameManager.GUI.ShowMessage ("Cannot take turn"));
 			return false;
 		}
 
@@ -87,7 +86,7 @@ public class GameManager : Singleton<GameManager> {
 
         // if the player isn't currently taking their turn, show error and return false
 		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
-			StartCoroutine (GameManager.Instance.gui.ShowMessage ("Cannot end turn"));
+			StartCoroutine (GameManager.Instance.GetComponent<GUIInterface>().ShowMessage ("Cannot end turn"));
 			return false;
 		}
 

@@ -7,57 +7,43 @@ using UnityEngine.UI;
 // this class is used to control the text displayed in the left pnale showing all the players' resources
 public class PlayerResourcePanel : MonoBehaviour {
 
+	public int PlayerIndex = 0;
+
+	private Dictionary<StealableType, GameObject> resourcesGameObjs = new Dictionary<StealableType, GameObject>();
+
 	// Use this for initialization
 	void Start () {
-		
+		resourcesGameObjs.Add (StealableType.Resource_Wool, transform.FindChild ("Wool").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Lumber, transform.FindChild ("Lumber").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Ore, transform.FindChild ("Ore").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Brick, transform.FindChild ("Brick").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Grain, transform.FindChild ("Grain").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Fish, transform.FindChild ("Fish").gameObject);
+		resourcesGameObjs.Add (StealableType.Resource_Gold, transform.FindChild ("Gold").gameObject);
+
+		transform.FindChild ("Header").gameObject.GetComponentInChildren<Text> ().text = this.getPlayer ().myName;
 	}
 
-    // this function prints out the local player's resources
-	string ResDisplay(GamePlayer player, StealableType type) {
-		if (player.playerResources.ContainsKey (type)) {
-			return "" + player.playerResources [type];
-		} else {
-			return "0";
+	private void displayPlayerResource(StealableType type) {
+		int resValue = 0;
+		if (getPlayer ().playerResources.ContainsKey (type)) {
+			resValue = getPlayer ().playerResources [type];
 		}
+
+		resourcesGameObjs [type].GetComponentInChildren<Text> ().text = "" + resValue;
 	}
 
+	private GamePlayer getPlayer() {
+		return GameManager.ConnectedPlayers [PlayerIndex].GetComponent<GamePlayer>();
+	}
 
 	// Update is called once per frame
 	void Update () {
         // check if the game is ready  (if the grid is created)
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
-
-            //initialiaze variables
-            string buffer;
-			GamePlayer currentPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-            List<GameObject> connectedPlayers = GameManager.ConnectedPlayers;
-
-            // get the resouces for the local player, add it to the buffer
-            buffer = "Wool: " + ResDisplay(currentPlayer, StealableType.Resource_Wool) + "\n" +
-                "Lumber: " + ResDisplay(currentPlayer, StealableType.Resource_Lumber) + "\n" +
-                "Ore: " + ResDisplay(currentPlayer, StealableType.Resource_Ore) + "\n" +
-                "Brick: " + ResDisplay(currentPlayer, StealableType.Resource_Brick) + "\n" +
-                "Grain: " + ResDisplay(currentPlayer, StealableType.Resource_Grain) + "\n";
-
-            // go through all connected players
-            foreach (GameObject i in connectedPlayers)
-            {
-                int count = 0;
-                // only do this for the connected players who aren't the local player
-                if (!i.Equals(currentPlayer))
-                {
-                    // add all their resources to count
-                    foreach(KeyValuePair<StealableType, int> entry in i.GetComponent<GamePlayer>().playerResources)
-                    {
-                        count += entry.Value;
-                    }
-                    // add the count to resource card count to the buffer
-                    buffer += "\nName: " + i.GetComponent<GamePlayer>().myName + "\nResource Cards: " + count + "\n";
-                }
-            }
-            
-            // set the text's value to buffer
-            GetComponentInChildren<Text>().text = buffer;
+			foreach (StealableType type in getPlayer().playerResources.Keys) {
+				displayPlayerResource (type);
+			}
 		}
 
 	}

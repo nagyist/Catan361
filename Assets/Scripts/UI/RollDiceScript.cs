@@ -38,10 +38,10 @@ public class RollDiceScript : MonoBehaviour {
 		} else {
 			if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
 				GetComponent<Button> ().enabled = true;
-				GetComponentInChildren<Text> ().text = "Roll dice";
+				GetComponentInChildren<Text> ().text = "ROLL DICE";
 			} else {
 				GetComponent<Button> ().enabled = false;
-				GetComponentInChildren<Text> ().text = "Wait for your turn";
+				GetComponentInChildren<Text> ().text = "WAIT";
 			}
 		}
 	}
