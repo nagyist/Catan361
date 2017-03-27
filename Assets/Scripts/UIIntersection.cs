@@ -105,7 +105,7 @@ public class UIIntersection : MonoBehaviour {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 			if (i.SettlementLevel > 0) {
-				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
+				intersectionIcon.GetComponent<SpriteRenderer>().color = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			} else {
 				intersectionIcon.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("ore_f_b_03");
 				intersectionIcon.GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 1.0f);
