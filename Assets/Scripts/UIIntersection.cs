@@ -14,16 +14,21 @@ public class UIIntersection : MonoBehaviour {
 
 	void OnMouseEnter() {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
-			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+			Intersection refIntersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-			GameManager.GUI.ShowTooltip ("IntersectionTooltip");
+			if (refIntersection.SettlementLevel > 0) {
+				GameObject tooltipObj = GameManager.GUI.GetTooltip ("IntersectionTooltip");
+				tooltipObj.GetComponent<IntersectionTooltip> ().ReferencedIntersection = refIntersection;
+				tooltipObj.GetComponent<UIWindow> ().Show ();
+			}
+
 		} 
 
 		GetComponent<SpriteRenderer> ().color = Color.blue; 
 	}
 
 	void OnMouseExit() {
-		GameManager.GUI.HideTooltip ("IntersectionTooltip");
+		GameManager.GUI.GetTooltip ("IntersectionTooltip").GetComponent<UIWindow>().Hide();
 	}
 
 	void OnMouseDown() {
