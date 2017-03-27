@@ -16,14 +16,14 @@ public class UIIntersection : MonoBehaviour {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-			GameObject mouseOver = GameObject.FindGameObjectWithTag ("GameCanvas").transform.FindChild ("MouseOverInfos").gameObject;
-			mouseOver.GetComponent<Text> ().text = 
-				"Level = " + i.SettlementLevel + "\n";
-			mouseOver.GetComponent<Transform> ().position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
-			mouseOver.SetActive (true);
+			GameManager.GUI.ShowTooltip ("IntersectionTooltip");
 		} 
 
 		GetComponent<SpriteRenderer> ().color = Color.blue; 
+	}
+
+	void OnMouseExit() {
+		GameManager.GUI.HideTooltip ("IntersectionTooltip");
 	}
 
 	void OnMouseDown() {
@@ -90,9 +90,7 @@ public class UIIntersection : MonoBehaviour {
 		);
 	}
 
-	void OnMouseExit() {
-		GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
-	}
+
 
 	// Use this for initialization
 	void Start () {

@@ -49,7 +49,24 @@ public class GUIInterface : MonoBehaviour {
 		return actionPanel.activeSelf;
 	}
 
+	public void ShowTooltip(string tooltipName) {
+		GameObject tooltipObj = guiCanvas.transform.FindChild(tooltipName).gameObject;
+		UIWindow tooltipWindow = tooltipObj.GetComponent<UIWindow> ();
 
+		tooltipObj.GetComponent<RectTransform> ().position = Input.mousePosition;
+		if (!tooltipWindow.IsVisible) {
+			tooltipWindow.Show ();
+		}
+	}
+
+	public void HideTooltip(string tooltipName) {
+		GameObject tooltipObj = guiCanvas.transform.FindChild(tooltipName).gameObject;
+		UIWindow tooltipWindow = tooltipObj.GetComponent<UIWindow> ();
+
+		if (tooltipWindow.IsVisible) {
+			tooltipWindow.Hide ();
+		}
+	}
 
 	// Update is called once per frame
 	void Update () {
