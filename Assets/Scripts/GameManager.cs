@@ -104,6 +104,10 @@ public class GameManager : Singleton<GameManager> {
         if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED))
 			return false;
 
+		// roll the dice
+		StartCoroutine (GameManager.GUI.ShowMessage("You rolled " + roll));
+		GetCurrentGameState ().RpcClientPostStatusMessage (player.myName + " rolled " + roll);
+
 		/* 
          * TODO:
 		 *      Figure out edge colletion bug

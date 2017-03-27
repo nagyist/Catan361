@@ -58,7 +58,7 @@ public class GameTurn
         // set the current turn as ended
         CurrentTurnEnded = true;
 
-        if (CurrentPlayerIndex == 2)
+		if (CurrentPlayerIndex == (OrderedPlayers.Count - 1))
         {
             RoundCount++;
         }
