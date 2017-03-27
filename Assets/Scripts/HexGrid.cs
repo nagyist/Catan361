@@ -130,10 +130,12 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 5 && y == 4) 
 				{
 					refTile.Resource = StealableType.Resource_Fish;
-					refTile.SelectedNum = Random.Range(1,4);
-					refTile.SelectedNum2 = Random.Range(4,7);
-					refTile.SelectedNum3 = Random.Range(7,10);
-					refTile.SelectedNum4 = Random.Range(10,13);
+
+					refTile.SelectedNum = 0;
+					refTile.SelectedNum2 = Random.Range(1,4);
+					refTile.SelectedNum3 = Random.Range(4,7);
+					refTile.SelectedNum4 = Random.Range(7,10);
+					refTile.SelectedNum5 = Random.Range(10,13);
 
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
