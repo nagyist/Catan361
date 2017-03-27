@@ -6,6 +6,12 @@ using System;
 [Serializable]
 public class Intersection {
 
+	[Serializable]
+	enum IntersectionLevel {
+		VILLAGE,
+		CITY
+	}
+
 	public Vec3 adjTile1;
 	public Vec3 adjTile2;
 	public Vec3 adjTile3;
