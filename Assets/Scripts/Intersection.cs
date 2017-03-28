@@ -6,28 +6,12 @@ using System;
 [Serializable]
 public class Intersection {
 
-	[Serializable]
-	enum IntersectionLevel {
-		VILLAGE,
-		CITY
-	}
-
 	public Vec3 adjTile1;
 	public Vec3 adjTile2;
 	public Vec3 adjTile3;
 
-    public bool isOccupied()
-    {
-        if (SettlementLevel > 0)
-            return true;
-        if (KnightLevel > 0)
-            return true;
-        return false;
-    }
-
+    public IntersectionUnit unit;
 	public String Owner = "";
-	public int SettlementLevel = 0;
-    public int KnightLevel = 0;
 
 	public Intersection(Vec3 i1, Vec3 i2, Vec3 i3) {
 		adjTile1 = i1;

@@ -101,6 +101,9 @@ public class GamePlayer : NetworkBehaviour {
     // command function for building a settlement 
 	[Command]
 	public void CmdBuildSettlement(byte[] vec3sSerialized) {
+
+        Village village = new Village();
+
         // get the position where the player has clicked
 		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
         // get the intersection located at that at that intersection
@@ -112,14 +115,16 @@ public class GamePlayer : NetworkBehaviour {
         if (roundCount == 1)
         {
             // create the settlement at the intersection
-            i.SettlementLevel += 2;
+            village.myKind = Village.VillageKind.City;
             i.Owner = this.myName;
+            i.unit = village;
         } 
         else
         {
             // create the settlement at the intersection
-            i.SettlementLevel += 1;
+            village.myKind = Village.VillageKind.Settlement;
             i.Owner = this.myName;
+            i.unit = village;
         }
 	
 
@@ -138,7 +143,19 @@ public class GamePlayer : NetworkBehaviour {
 		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
 
         // increment the settlement count
-		i.SettlementLevel++;
+        if (i.unit.GetType() == typeof(Village))
+        {
+            Village village = (Village)(i.unit);
+            if (village.myKind == Village.VillageKind.Settlement)
+            {
+                village.myKind = Village.VillageKind.City;
+            }
+            else
+            {
+                Debug.Log("The village is not a settlement, it might have been upgrade already.");
+            }
+                
+        }
 
         // add the new intersetcion to the game manager
 		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
