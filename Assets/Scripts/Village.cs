@@ -1,22 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Village :  IntersectionUnit {
+[Serializable]
+public class Village : IntersectionUnit {
 
-    VillageKind myKind {get; set;}
-    bool cityWall {get; set;}
+    public VillageKind myKind;
+    public bool cityWall;
 
-    public Village(VillageKind myKind, bool cityWall)
+    public enum VillageKind
     {
-        this.myKind = myKind;
-        this.cityWall = cityWall;
+        Settlement,
+        City,
+        TradeMetropole,
+        PoliticsMetropole,
+        ScienceMetropole
     }
 
     public Village()
     {
-        this.myKind = VillageKind.Settlement;
-        this.cityWall = false;
+        myKind = VillageKind.Settlement;
+        cityWall = false;
     }
 
 }

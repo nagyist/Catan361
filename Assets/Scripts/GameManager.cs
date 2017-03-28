@@ -120,32 +120,51 @@ public class GameManager : Singleton<GameManager> {
 		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
 
-            // if the intetersecion has a settlement and that settlement is owned by teh local player
-			if (i.SettlementLevel > 0 && i.Owner == player.myName) {
-                // go through all the adjacent hexes
-				List<Vec3> adjHexes = new List<Vec3> (new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
-				foreach (Vec3 hex in adjHexes) {
-					HexTile tile = GameManager.Instance.GetCurrentGameState ().CurrentBoard [hex];
+            // check to see if it isn't empty
+            if (i.unit != null)
+            {
+                // check to see if its a village
+                if (i.unit.GetType() == typeof(Village))
+                {
+                    Village currentVillage = (Village)(i.unit);
+                    int amountToAdd = 0;
+                    if (currentVillage.myKind == Village.VillageKind.Settlement)
+                        amountToAdd = 1;
+                    else if (currentVillage.myKind == Village.VillageKind.City)
+                        amountToAdd = 2;
 
-                    // continue if the tile number's don't match the rolled number
-					if (tile.IsWater) { continue; }
-					if (tile.SelectedNum != roll) { continue; }
-
-					// need to add for the fish selectedNum 2, 3, 4
-
-                    // to to see if the player's resrouces already contain the key for the resource
-                    // if so then add the appropriate amount of resources
-					if (player.playerResources.ContainsKey (tile.Resource))
+                    // if the intetersecion has a settlement and that settlement is owned by the local player
+                    if (i.Owner == player.myName)
                     {
-						player.playerResources [tile.Resource] = player.playerResources [tile.Resource] + i.SettlementLevel;
-					}
-                    // if the player's resource don't already contain the key for the resource then add it
-                    else
-                    {
-						player.playerResources.Add (tile.Resource, i.SettlementLevel);
-					}
-				}
-			}
+                        // go through all the adjacent hexes
+                        List<Vec3> adjHexes = new List<Vec3>(new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
+                        foreach (Vec3 hex in adjHexes)
+                        {
+                            HexTile tile = GameManager.Instance.GetCurrentGameState().CurrentBoard[hex];
+
+                            // continue if the tile number's don't match the rolled number
+                            if (tile.IsWater) { continue; }
+                            if (tile.SelectedNum != roll) { continue; }
+
+                            // need to add for the fish selectedNum 2, 3, 4
+
+                            // to to see if the player's resrouces already contain the key for the resource
+                            // if so then add the appropriate amount of resources
+                            if (player.playerResources.ContainsKey(tile.Resource))
+                            {
+                                player.playerResources[tile.Resource] = player.playerResources[tile.Resource] + amountToAdd;
+                            }
+                            // if the player's resource don't already contain the key for the resource then add it
+                            else
+                            {
+                                player.playerResources.Add(tile.Resource, amountToAdd);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
 		}
 
 		return true;
