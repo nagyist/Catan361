@@ -11,6 +11,7 @@ public class GamePlayer : NetworkBehaviour {
     public Color myColor;
     public bool placedSettlement = false;
     public bool placedRoad = false;
+    public UIIntersection selectedUIIntersection = null;
 
     // dictionary containing playe colors
     private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {

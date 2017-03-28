@@ -7,5 +7,6 @@ using UnityEngine;
 public abstract class IntersectionUnit {
 
     public string Owner = "";
+    public Intersection location;
 
 }
