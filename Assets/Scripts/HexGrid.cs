@@ -40,12 +40,18 @@ public class HexGrid : MonoBehaviour {
 		{18, StealableType.Resource_Ore},
 		{19, StealableType.Resource_Brick},
 		{20, StealableType.Resource_Grain},
+		{21, StealableType.Resource_Gold},
+		{22, StealableType.Resource_Lumber},
+		{23, StealableType.Resource_Ore},
+		{24, StealableType.Resource_Brick},
+		{25, StealableType.Resource_Grain},
+		{26, StealableType.Resource_Gold}
 	};
 
 	private void setHexSizes () 
 	{
-		hexWidth = Hex.GetComponent<Renderer> ().bounds.size.x;
-		hexHeight = Hex.GetComponent<Renderer> ().bounds.size.y;
+		hexWidth = Hex.GetComponent<RectTransform> ().rect.size.x;
+		hexHeight = Hex.GetComponent<RectTransform> ().rect.size.y;
 	}
 
 	private Vector3 calcInitialPos ()
@@ -92,54 +98,61 @@ public class HexGrid : MonoBehaviour {
 				{
 					if (x % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 4 && y > 1 && y < 7) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 				else if (x == 5 && y == 4) 
 				{
-					refTile.SelectedNum = 7;
+					refTile.Resource = StealableType.Resource_Fish;
+
+					refTile.SelectedNum = 0;
+					refTile.SelectedNum2 = Random.Range(1,4);
+					refTile.SelectedNum3 = Random.Range(4,7);
+					refTile.SelectedNum4 = Random.Range(7,10);
+					refTile.SelectedNum5 = Random.Range(10,13);
+
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
 				{
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
 				} 
 				else if (x == 6 && y > 3 && y < 7) 
 				{
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
 				} 
@@ -147,11 +160,104 @@ public class HexGrid : MonoBehaviour {
 				{
 					if (y % 2 == 1) 
 					{
-						refTile.SelectedNum = Random.Range (1, 6);
+						refTile.SelectedNum = Random.Range (1, 7);
 					} 
 					else 
 					{
-						refTile.SelectedNum = Random.Range (8, 12);
+						refTile.SelectedNum = Random.Range (8, 13);
+					}
+				} 
+
+				// Islands
+				else if (x == 8 && y > 4 && y < 7) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [26];
+					}
+				} 
+				else if (x == 7 && y == 7) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} 
+				else if (x == 9 && y == 6) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [26];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [26];
+					}
+				} 
+				else if (x == 9 && y == 4) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} 
+				else if (x == 8 && y == 2) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} 
+				else if (x == 7 && y == 1) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} 
+				else if (x < 7 && x > 4 && y == 8) 
+				{
+					if (y % 2 == 1) 
+					{
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} 
+					else 
+					{
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
 				} 
 				else 
@@ -178,6 +284,9 @@ public class HexGrid : MonoBehaviour {
 		}
 	}
 
+	private Dictionary<Edge, GameObject> instanciatedUiEdges = new Dictionary<Edge, GameObject>();
+	private Dictionary<Intersection, GameObject> instanciatedUiIntersections = new Dictionary<Intersection, GameObject>();
+	private static int order = 0;
 	public void CreateUIHexGrid()
 	{
 		cubeHexes = new Dictionary<Vec3, GameObject> ();
@@ -201,6 +310,7 @@ public class HexGrid : MonoBehaviour {
 				thisHex.transform.parent = hexGridObject.transform;
 
 				UIHex uiHex = thisHex.GetComponent<UIHex> ();
+				thisHex.GetComponent<SpriteRenderer> ().sortingOrder = order++;
 				uiHex.HexGridPosition = gridPos;
 				uiHex.HexGridCubePosition = offsetOddRToCubeCoordinate (gridPos);
 				cubeHexes.Add (uiHex.HexGridCubePosition, thisHex);
@@ -226,31 +336,55 @@ public class HexGrid : MonoBehaviour {
 			UIEdge rightEdgeUi = rightEdgeGameObj.AddComponent<UIEdge> ();
 			rightEdgeUi.HexPos1 = rightEdge.adjTile1;
 			rightEdgeUi.HexPos2 = rightEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightEdge)) {
+				rightEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightEdge, rightEdgeGameObj);
+			}
 
 			GameObject rightTopEdgeGameObj = currentHexGameObj.transform.FindChild("RTEdge").gameObject;
 			UIEdge rightTopEdgeUi = rightTopEdgeGameObj.AddComponent<UIEdge> ();
 			rightTopEdgeUi.HexPos1 = rightTopEdge.adjTile1;
 			rightTopEdgeUi.HexPos2 = rightTopEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightTopEdge)) {
+				rightTopEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightTopEdge, rightTopEdgeGameObj);
+			}
 
 			GameObject leftTopEdgeGameObj = currentHexGameObj.transform.FindChild("LTEdge").gameObject;
 			UIEdge leftTopEdgeUi = leftTopEdgeGameObj.AddComponent<UIEdge> ();
 			leftTopEdgeUi.HexPos1 = leftTopEdge.adjTile1;
 			leftTopEdgeUi.HexPos2 = leftTopEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftTopEdge)) {
+				leftTopEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftTopEdge, leftTopEdgeGameObj);
+			}
 
 			GameObject leftEdgeGameObj = currentHexGameObj.transform.FindChild("LEdge").gameObject;
 			UIEdge leftEdgeUi = leftEdgeGameObj.AddComponent<UIEdge> ();
 			leftEdgeUi.HexPos1 = leftEdge.adjTile1;
 			leftEdgeUi.HexPos2 = leftEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftEdge)) {
+				leftEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftEdge, leftEdgeGameObj);
+			}
 
 			GameObject leftBottomEdgeGameObj = currentHexGameObj.transform.FindChild("LBEdge").gameObject;
 			UIEdge leftBottomEdgeUi = leftBottomEdgeGameObj.AddComponent<UIEdge> ();
 			leftBottomEdgeUi.HexPos1 = leftBottomEdge.adjTile1;
 			leftBottomEdgeUi.HexPos2 = leftBottomEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (leftBottomEdge)) {
+				leftBottomEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (leftBottomEdge, leftBottomEdgeGameObj);
+			}
 
 			GameObject rightBottomEdgeGameObj = currentHexGameObj.transform.FindChild("RBEdge").gameObject;
 			UIEdge rightBottomEdgeUi = rightBottomEdgeGameObj.AddComponent<UIEdge> ();
 			rightBottomEdgeUi.HexPos1 = rightBottomEdge.adjTile1;
 			rightBottomEdgeUi.HexPos2 = rightBottomEdge.adjTile2;
+			if (!instanciatedUiEdges.ContainsKey (rightBottomEdge)) {
+				rightBottomEdgeGameObj.SetActive (true);
+				instanciatedUiEdges.Add (rightBottomEdge, rightBottomEdgeGameObj);
+			}
 
 			// intersections
 			// get each intersection instance
@@ -267,36 +401,60 @@ public class HexGrid : MonoBehaviour {
 			leftTopIntersectionUi.HexPos1 = leftTopIntersection.adjTile1;
 			leftTopIntersectionUi.HexPos2 = leftTopIntersection.adjTile2;
 			leftTopIntersectionUi.HexPos3 = leftTopIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (leftTopIntersection)) {
+				leftTopGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (leftTopIntersection, leftTopGameObj);
+			}
 
 			GameObject topGameObj = currentHexGameObj.transform.FindChild("TIntersection").gameObject;
 			UIIntersection topIntersectionUi = topGameObj.AddComponent<UIIntersection> ();
 			topIntersectionUi.HexPos1 = topIntersection.adjTile1;
 			topIntersectionUi.HexPos2 = topIntersection.adjTile2;
 			topIntersectionUi.HexPos3 = topIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (topIntersection)) {
+				topGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (topIntersection, topGameObj);
+			}
 
 			GameObject rightTopGameObj = currentHexGameObj.transform.FindChild("RTIntersection").gameObject;
 			UIIntersection rightTopIntersectionUi = rightTopGameObj.AddComponent<UIIntersection> ();
 			rightTopIntersectionUi.HexPos1 = rightTopIntersection.adjTile1;
 			rightTopIntersectionUi.HexPos2 = rightTopIntersection.adjTile2;
 			rightTopIntersectionUi.HexPos3 = rightTopIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (rightTopIntersection)) {
+				rightTopGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (rightTopIntersection, rightTopGameObj);
+			}
 
 			GameObject rightBottomGameObj = currentHexGameObj.transform.FindChild("RBIntersection").gameObject;
 			UIIntersection rightBottomIntersectionUi = rightBottomGameObj.AddComponent<UIIntersection> ();
 			rightBottomIntersectionUi.HexPos1 = rightBottomIntersection.adjTile1;
 			rightBottomIntersectionUi.HexPos2 = rightBottomIntersection.adjTile2;
 			rightBottomIntersectionUi.HexPos3 = rightBottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (rightBottomIntersection)) {
+				rightBottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (rightBottomIntersection, rightBottomGameObj);
+			}
 
 			GameObject bottomGameObj = currentHexGameObj.transform.FindChild("BIntersection").gameObject;
 			UIIntersection bottomIntersectionUi = bottomGameObj.AddComponent<UIIntersection> ();
 			bottomIntersectionUi.HexPos1 = bottomIntersection.adjTile1;
 			bottomIntersectionUi.HexPos2 = bottomIntersection.adjTile2;
 			bottomIntersectionUi.HexPos3 = bottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (bottomIntersection)) {
+				bottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (bottomIntersection, bottomGameObj);
+			}
 
 			GameObject leftBottomGameObj = currentHexGameObj.transform.FindChild("LBIntersection").gameObject;
 			UIIntersection leftBottomIntersectionUi = leftBottomGameObj.AddComponent<UIIntersection> ();
 			leftBottomIntersectionUi.HexPos1 = leftBottomIntersection.adjTile1;
 			leftBottomIntersectionUi.HexPos2 = leftBottomIntersection.adjTile2;
 			leftBottomIntersectionUi.HexPos3 = leftBottomIntersection.adjTile3;
+			if (!instanciatedUiIntersections.ContainsKey (leftBottomIntersection)) {
+				leftBottomGameObj.SetActive (true);
+				instanciatedUiIntersections.Add (leftBottomIntersection, leftBottomGameObj);
+			}
 		}
 	}
 
@@ -320,9 +478,9 @@ public class HexGrid : MonoBehaviour {
 
 	public void buildHarbours () {
 		
-		
 		harbourCollection = new Dictionary<string, GameObject>();
-		
+
+
 		Vector2 gridPosHex1 = new Vector2 (4, 1);
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
 		newHarbour1.transform.parent = this.transform;

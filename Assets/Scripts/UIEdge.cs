@@ -9,7 +9,6 @@ public class UIEdge : MonoBehaviour {
 
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.red;
-
 	}
 
 	void OnMouseDown() {
@@ -55,7 +54,7 @@ public class UIEdge : MonoBehaviour {
 	}
 
 	void OnMouseExit() {
-		GetComponent<SpriteRenderer> ().color = Color.black;
+		GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
 	}
 
 	// Use this for initialization

@@ -29,13 +29,13 @@ public class TakeTurnScript : MonoBehaviour {
 		}
 
 		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerTurn ()) {
-			GetComponentInChildren<Text> ().text = "End turn";
+			GetComponentInChildren<Text> ().text = "END TURN";
 			GetComponent<Button> ().enabled = true;
 		} else if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsLocalPlayerAllowedToTakeTurn ()) {
-			GetComponentInChildren<Text> ().text = "Take turn";
+			GetComponentInChildren<Text> ().text = "TAKE TURN";
 			GetComponent<Button> ().enabled = true;
 		} else {
-			GetComponentInChildren<Text> ().text = "Waiting for other players ...";
+			GetComponentInChildren<Text> ().text = "WAITING";
 			GetComponent<Button> ().enabled = false;
 		}
 

@@ -6,15 +6,26 @@ using UnityEngine;
 public class GUIInterface : MonoBehaviour {
 	public GameObject guiCanvas;
 
-    public IEnumerator ShowMessage(string msg, float delay = 1.75f) {
-		GameObject popupPanel = guiCanvas.transform.Find ("PanelPopup").gameObject;
+	public void Start() {
+		GameManager.GUI = this;
+	}
+
+    public IEnumerator ShowMessage(string msg, float delay = 2.5f) {
+		GameObject popupPanel = guiCanvas.transform.FindChild ("PanelPopup").gameObject;
 		GameObject popupPanelText = popupPanel.transform.FindChild ("Text").gameObject;
 
 		popupPanelText.GetComponent<Text> ().text = msg;
-		popupPanel.gameObject.SetActive (true);
+		popupPanel.GetComponent<UIWindow> ().Show ();
 		yield return new WaitForSeconds (delay);
-		popupPanel.gameObject.SetActive (false);
+		popupPanel.GetComponent<UIWindow>().Hide();
     }
+
+	public void PostStatusMessage(string msg) {
+		GameObject gameStatus = guiCanvas.transform.FindChild ("GameStatus").gameObject;
+		GameObject lastStatusMsgTxt = gameStatus.transform.FindChild ("TxtLastStatusMessage").gameObject;
+
+		lastStatusMsgTxt.GetComponent<Text> ().text = msg;
+	}
 
 	public void ShowHexActionWindow(UIIntersection uiIntersection) {
 		if (hasModalWindowOpened ()) { return; }
@@ -39,10 +50,6 @@ public class GUIInterface : MonoBehaviour {
 	}
 
 
-	// Use this for initialization
-	void Start () {
-		
-	}
 
 	// Update is called once per frame
 	void Update () {

@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using System;
 
+// TODO: review, we might not this this class anymore... use the overrided equals & hash code fn
 [Serializable]
 public class EdgeCollection {
 	public Dictionary<string, Edge> Edges { get; private set; }
@@ -45,8 +45,8 @@ public class EdgeCollection {
 
 	private string computeKey(Vec3 hex1, Vec3 hex2) {
 		// apply simple heuristic : "flatten" xyz coords of both coords and take the lowest one
-		byte[] hashFirst = posToByte(hex1);
-		byte[] hashSecond = posToByte (hex2);
+		byte[] hashFirst = PositionUtilities.PosToByte(hex1);
+		byte[] hashSecond = PositionUtilities.PosToByte(hex2);
 
 		string flattenFirst = hex1.x + "" + hex1.y + "" + hex1.z;
 		string flattenSecond = hex2.x + "" + hex2.y + "" + hex2.z;
@@ -56,27 +56,5 @@ public class EdgeCollection {
 
 		string key = (firstVal < secondVal ? flattenFirst + flattenSecond : flattenSecond + flattenFirst);
 		return key;
-	}
-
-	private byte[] posToByte(Vec3 pos) {
-		byte[] xBytes = BitConverter.GetBytes ((int)pos.x);
-		byte[] yBytes = BitConverter.GetBytes ((int)pos.y);
-		byte[] zBytes = BitConverter.GetBytes ((int)pos.z);
-
-		byte[] result = new byte[64];
-
-		for (int i = 0; i < xBytes.Length; i++) {
-			result [i] = xBytes [i];
-		}
-
-		for (int j = 0; j < yBytes.Length; j++) {
-			result [j + 3 - 1] = yBytes [j];
-		}
-
-		for (int k = 0; k < zBytes.Length; k++) {
-			result [k + 6 - 1] = zBytes [k];
-		}
-
-		return result;
 	}
 }

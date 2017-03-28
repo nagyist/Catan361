@@ -36,33 +36,33 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	{
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 
-		if (player.playerResources.ContainsKey (resourceFromHarbour)) 
+		if (player.playerResources.ContainsKey (resourceFromHarbour) && (int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost)) % 4 == 0) 
 		{
-			int newRes = player.playerResources [resourceFromHarbour] + 1;
+			int newRes = player.playerResources [resourceFromHarbour] + ((int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost))/4);
 			player.playerResources [resourceFromHarbour] = newRes;
 		}
 
-		if (player.playerResources.ContainsKey (StealableType.Resource_Brick))
+		if (player.playerResources.ContainsKey (StealableType.Resource_Brick) && int.Parse(brickNumLost) % 4 == 0)
 		{
 			player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
 		}
 
-		if (player.playerResources.ContainsKey (StealableType.Resource_Grain))
+		if (player.playerResources.ContainsKey (StealableType.Resource_Grain) && int.Parse(grainNumLost) % 4 == 0)
 		{
 			player.playerResources[StealableType.Resource_Grain] =  player.playerResources[StealableType.Resource_Grain] - int.Parse(grainNumLost);
 		}
 
-		if (player.playerResources.ContainsKey (StealableType.Resource_Ore))
+		if (player.playerResources.ContainsKey (StealableType.Resource_Ore) && int.Parse(oreNumLost) % 4 == 0)
 		{
 			player.playerResources[StealableType.Resource_Ore] =  player.playerResources[StealableType.Resource_Ore] - int.Parse(oreNumLost);
 		}
 
-		if (player.playerResources.ContainsKey (StealableType.Resource_Wool))
+		if (player.playerResources.ContainsKey (StealableType.Resource_Wool) && int.Parse(woolNumLost) % 4 == 0)
 		{
 			player.playerResources[StealableType.Resource_Wool] =  player.playerResources[StealableType.Resource_Wool] - int.Parse(woolNumLost);
 		}
 
-		if (player.playerResources.ContainsKey (StealableType.Resource_Lumber))
+		if (player.playerResources.ContainsKey (StealableType.Resource_Lumber) && int.Parse(lumberNumLost) % 4 == 0)
 		{
 			player.playerResources[StealableType.Resource_Lumber] =  player.playerResources[StealableType.Resource_Lumber] - int.Parse(lumberNumLost);
 		}

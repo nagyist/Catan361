@@ -9,6 +9,8 @@ public enum StealableType
 	Resource_Lumber,
 	Resource_Ore,
 	Resource_Brick,
-	Resource_Grain
+	Resource_Grain,
+	Resource_Fish,
+	Resource_Gold
 }
 

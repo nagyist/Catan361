@@ -16,12 +16,12 @@ public class UIIntersection : MonoBehaviour {
 
 			GameObject mouseOver = GameObject.FindGameObjectWithTag ("GameCanvas").transform.FindChild ("MouseOverInfos").gameObject;
 			mouseOver.GetComponent<Text> ().text = 
-				"Level = " + i.SettlementCount + "\n";
+				"Level = " + i.SettlementLevel + "\n";
 			mouseOver.GetComponent<Transform> ().position = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 			mouseOver.SetActive (true);
-		} else {
-			GetComponent<SpriteRenderer> ().color = Color.blue; 
-		}
+		} 
+
+		GetComponent<SpriteRenderer> ().color = Color.blue; 
 	}
 
 	void OnMouseDown() {
@@ -42,10 +42,10 @@ public class UIIntersection : MonoBehaviour {
 		}
 
 		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-		if (intersection.SettlementCount > 0 && intersection.SettlementOwner != GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
+		if (intersection.SettlementLevel > 0 && intersection.Owner != GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
 			Debug.Log ("Does not own the settlement");
 			return;
-		} else if (intersection.SettlementCount == 1 && intersection.SettlementOwner == GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
+		} else if (intersection.SettlementLevel == 1 && intersection.Owner == GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName) {
 			// upgrade the settlement to city
 			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
 				{StealableType.Resource_Ore, 3},
@@ -89,7 +89,7 @@ public class UIIntersection : MonoBehaviour {
 	}
 
 	void OnMouseExit() {
-		GetComponent<SpriteRenderer> ().color = Color.red;
+		GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
 	}
 
 	// Use this for initialization
@@ -101,8 +101,8 @@ public class UIIntersection : MonoBehaviour {
 	void Update () {
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-			if (i.SettlementCount > 0) {
-				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.SettlementOwner].GetComponent<GamePlayer> ().GetPlayerColor ();
+			if (i.SettlementLevel > 0) {
+				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
 		}
 	}
