@@ -49,7 +49,12 @@ public class GUIInterface : MonoBehaviour {
 		return actionPanel.activeSelf;
 	}
 
+	public GameObject GetTooltip(string tooltipName) {
+		GameObject tooltipObj = guiCanvas.transform.FindChild(tooltipName).gameObject;
+		tooltipObj.GetComponent<RectTransform> ().position = Input.mousePosition;
 
+		return tooltipObj;
+	}
 
 	// Update is called once per frame
 	void Update () {

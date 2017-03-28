@@ -14,6 +14,7 @@ public class HexGrid : MonoBehaviour {
 
 	private Dictionary<Vec3, GameObject> cubeHexes;
 	public Dictionary<string, GameObject> harbourCollection;
+	public Dictionary<Edge, GameObject> harbours;
 
 	private float hexWidth;
 	private float hexHeight;
@@ -480,7 +481,6 @@ public class HexGrid : MonoBehaviour {
 		
 		harbourCollection = new Dictionary<string, GameObject>();
 
-
 		Vector2 gridPosHex1 = new Vector2 (4, 1);
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
 		newHarbour1.transform.parent = this.transform;
@@ -691,16 +691,18 @@ public class HexGrid : MonoBehaviour {
 		harbourScript14.returnedAmount = 1;
 
 		
-
+		/*
 		
-		/*harbours = new Dictionary<Edge, StealableType> ();
+		harbours = new Dictionary<Edge, GameObject> ();
+
 		Vector3 hex1 = new Vector3 (3, -5, 2);
-		GameObject currentHexGameObj1 = cubeHexes [new Vector3(3, -5, 2)];
+		GameObject currentHexGameObj1 = cubeHexes [hex1];
 		Hex hexScript1 = currentHexGameObj1.GetComponent<Hex> ();
 		Vector3 hex2 = hexScript1.getAdjacentHexPos (global::Hex.AdjHex.LEFT_TOP);
 		Edge harbouredEdge1 = edges.getEdge (hex1, hex2);
 		harbours.Add (harbouredEdge1, StealableType.Resource_Brick);
 
+		
 		Vector3 hex3 = new Vector3 (4, -6, 2);
 		GameObject currentHexGameObj2 = cubeHexes [hex3];
 		Hex hexScript2 = currentHexGameObj2.GetComponent<Hex> ();
@@ -776,8 +778,8 @@ public class HexGrid : MonoBehaviour {
 		Hex hexScript12 = currentHexGameObj12.GetComponent<Hex> ();
 		Vector3 hex24 = hexScript12.getAdjacentHexPos (global::Hex.AdjHex.LEFT);
 		Edge harbouredEdge12 = edges.getEdge (hex23, hex24);
-		harbours.Add (harbouredEdge12, StealableType.Resource_Grain);*/
-
+		harbours.Add (harbouredEdge12, StealableType.Resource_Grain);
+		*/
 	}
 
 	// Use this for initialization

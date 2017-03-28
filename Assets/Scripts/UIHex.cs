@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UIHex : MonoBehaviour {
+
 	public Vector2 HexGridPosition;
 	public Vec3 HexGridCubePosition;
 	public Texture2D TilesTexture;
 	private Sprite[] loadedSprites;
 	private int oldIndex = 0;
 
+    // Dictionary containing the resource type and it's specific index
 	public Dictionary<StealableType, int> resourceSpriteIndex = new Dictionary<StealableType, int>()
 	{
 		{StealableType.Resource_Wool, 28},
@@ -20,7 +22,7 @@ public class UIHex : MonoBehaviour {
 		{StealableType.Resource_Gold, 4}
 	};
 
-
+    // Enum for the Adjacent Hex postitions
 	public enum AdjHex {
 		LEFT, 
 		LEFT_TOP, 
@@ -29,7 +31,7 @@ public class UIHex : MonoBehaviour {
 		RIGHT_BOTTOM,
 		LEFT_BOTTOM
 	}
-
+    // Enum for the Hex Intersection positions
 	public enum HexIntersection {
 		LEFT_TOP,
 		TOP,
@@ -38,7 +40,7 @@ public class UIHex : MonoBehaviour {
 		BOTTOM,
 		LEFT_BOTTOM
 	}
-
+    // When the mouse hover's over a tile, log the hex position
 	void OnMouseEnter () {
 		displayPosition ();
 	}
@@ -49,7 +51,7 @@ public class UIHex : MonoBehaviour {
 	void OnMouseDown() {
 		//GameManager.Instance.gui.ShowHexActionWindow (this);
 	}
-
+    // Display the coordinates of the hex
 	void displayPosition() {
 		Vector2 oddR = HexGridPosition;
 		Vec3 cubeCoords = HexGridCubePosition;
