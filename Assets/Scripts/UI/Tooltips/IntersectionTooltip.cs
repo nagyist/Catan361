@@ -22,6 +22,10 @@ public class IntersectionTooltip : MonoBehaviour {
 		GameObject txtIntersectionType = transform.FindChild ("Window").FindChild ("TxtIntersectionType").gameObject;
 		GameObject txtIntersectionOwner = transform.FindChild ("Window").FindChild ("TxtIntersectionOwner").gameObject;
 
+<<<<<<< HEAD
+		txtIntersectionType.GetComponent<Text>().text = ReferencedIntersection.SettlementLevel == 1 ? "Settlement" : "City";
+		txtIntersectionOwner.GetComponent<Text> ().text = ReferencedIntersection.Owner;
+=======
         // only display if there is a unit
         if (ReferencedIntersection.unit != null)
         {
@@ -36,5 +40,6 @@ public class IntersectionTooltip : MonoBehaviour {
             txtIntersectionOwner.GetComponent<Text>().text = ReferencedIntersection.Owner;
         }
 		
+>>>>>>> origin/master
 	}
 }

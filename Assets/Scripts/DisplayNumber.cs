@@ -19,8 +19,9 @@ public class DisplayNumber : MonoBehaviour {
 		renderer.sortingOrder = parentRenderer.sortingOrder;
 
 		var spriteTransform = parent.transform;
+		//var text = GetComponent<TextMesh>();
 		var text = GetComponent<TextMesh>();
-		var text2 = GetComponents<TextMesh>();
+		var fishText = GetComponents<GUIText> ();
 		var pos = spriteTransform.position;
 
 		UIHex hexScript = parent.GetComponent<UIHex> ();
@@ -30,18 +31,29 @@ public class DisplayNumber : MonoBehaviour {
 			return;
 		}
 
-		if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum != 0 &&
-			GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 == 0)
+		if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum != 0)
 		{
 			text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum, pos.x, pos.y);
 		}
-		else if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum != 0 && 
-			GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 != 0 )
+
+
+		if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum == 0 && 
+			GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 != 0)
 		{
+<<<<<<< HEAD
+
+			fishText[0].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2, pos.x, pos.y);
+			fishText[2].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum3, pos.x, pos.y);
+			fishText[3].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum4, pos.x, pos.y);
+			fishText[4].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum5, pos.x, pos.y);
+
+=======
 			/*text2[1].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum, pos.x, pos.y);
 			text2[2].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2, pos.x, pos.y);
 			text2[3].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum3, pos.x, pos.y);
 			text2[4].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum4, pos.x, pos.y);*/
+>>>>>>> origin/master
 		}
+
 	}
 }

@@ -131,10 +131,12 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 5 && y == 4) 
 				{
 					refTile.Resource = StealableType.Resource_Fish;
-					refTile.SelectedNum = Random.Range(1,4);
-					refTile.SelectedNum2 = Random.Range(4,7);
-					refTile.SelectedNum3 = Random.Range(7,10);
-					refTile.SelectedNum4 = Random.Range(10,13);
+
+					refTile.SelectedNum = 0;
+					refTile.SelectedNum2 = Random.Range(1,4);
+					refTile.SelectedNum3 = Random.Range(4,7);
+					refTile.SelectedNum4 = Random.Range(7,10);
+					refTile.SelectedNum5 = Random.Range(10,13);
 
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
@@ -480,6 +482,7 @@ public class HexGrid : MonoBehaviour {
 		harbours = new Dictionary<GameObject, StealableType> ();
 		harbourCollection = new Dictionary<string, GameObject>();
 
+
 		//harbour 1
 		Vec3 harbour1CubePos = offsetOddRToCubeCoordinate (new Vector2(4,2));
 		GameObject currentHexGameObjForHarbour1 = cubeHexes [harbour1CubePos];
@@ -670,8 +673,84 @@ public class HexGrid : MonoBehaviour {
 
 	}
 
+
 	public void buildFishingGrounds () {
 		
+=======
+		Vector2 gridPosHex10 = new Vector2 (3, 6);
+		GameObject newHarbour10 = (GameObject) Instantiate (Harbour);
+		newHarbour10.transform.parent = this.transform;
+		newHarbour10.transform.position = calcWorldCoord (gridPosHex10);
+
+		TextMesh harbour10Text = newHarbour10.GetComponentInChildren<TextMesh>();
+		harbour10Text.text = "10";
+		harbourCollection.Add("10", newHarbour10);
+
+		Harbour harbourScript10 = newHarbour10.GetComponent<Harbour> ();
+		harbourScript10.exchangeRate = 4;
+		harbourScript10.returnedResource = StealableType.Resource_Wool;
+		harbourScript10.returnedAmount = 1;
+
+
+		Vector2 gridPosHex11 = new Vector2 (2, 5);
+		GameObject newHarbour11 = (GameObject) Instantiate (Harbour);
+		newHarbour11.transform.parent = this.transform;
+		newHarbour11.transform.position = calcWorldCoord (gridPosHex11);
+
+		TextMesh harbour11Text = newHarbour11.GetComponentInChildren<TextMesh>();
+		harbour11Text.text = "11";
+		harbourCollection.Add("11", newHarbour11);
+
+		Harbour harbourScript11 = newHarbour11.GetComponent<Harbour> ();
+		harbourScript11.exchangeRate = 4;
+		harbourScript11.returnedResource = StealableType.Resource_Brick;
+		harbourScript11.returnedAmount = 1;
+
+
+		Vector2 gridPosHex12 = new Vector2 (2, 4);
+		GameObject newHarbour12 = (GameObject) Instantiate (Harbour);
+		newHarbour12.transform.parent = this.transform;
+		newHarbour12.transform.position = calcWorldCoord (gridPosHex12);
+
+		TextMesh harbour12Text = newHarbour12.GetComponentInChildren<TextMesh>();
+		harbour12Text.text = "12";
+		harbourCollection.Add("12", newHarbour12);
+
+		Harbour harbourScript12 = newHarbour12.GetComponent<Harbour> ();
+		harbourScript12.exchangeRate = 4;
+		harbourScript12.returnedResource = StealableType.Resource_Grain;
+		harbourScript12.returnedAmount = 1;
+
+
+		Vector2 gridPosHex13 = new Vector2 (2, 3);
+		GameObject newHarbour13 = (GameObject) Instantiate (Harbour);
+		newHarbour13.transform.parent = this.transform;
+		newHarbour13.transform.position = calcWorldCoord (gridPosHex13);
+
+		TextMesh harbour13Text = newHarbour13.GetComponentInChildren<TextMesh>();
+		harbour13Text.text = "13";
+		harbourCollection.Add("13", newHarbour13);
+
+		Harbour harbourScript13 = newHarbour12.GetComponent<Harbour> ();
+		harbourScript13.exchangeRate = 4;
+		harbourScript13.returnedResource = StealableType.Resource_Lumber;
+		harbourScript13.returnedAmount = 1;
+
+
+		Vector2 gridPosHex14 = new Vector2 (3, 2);
+		GameObject newHarbour14 = (GameObject) Instantiate (Harbour);
+		newHarbour14.transform.parent = this.transform;
+		newHarbour14.transform.position = calcWorldCoord (gridPosHex14);
+
+		TextMesh harbour14Text = newHarbour14.GetComponentInChildren<TextMesh>();
+		harbour14Text.text = "14";
+		harbourCollection.Add("14", newHarbour14);
+
+		Harbour harbourScript14 = newHarbour14.GetComponent<Harbour> ();
+		harbourScript14.exchangeRate = 4;
+		harbourScript14.returnedResource = StealableType.Resource_Ore;
+		harbourScript14.returnedAmount = 1;
+
 	}
 
 	// Use this for initialization
