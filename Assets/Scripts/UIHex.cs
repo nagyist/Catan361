@@ -51,6 +51,7 @@ public class UIHex : MonoBehaviour {
 	void OnMouseDown() {
 		//GameManager.Instance.gui.ShowHexActionWindow (this);
 	}
+
     // Display the coordinates of the hex
 	void displayPosition() {
 		Vector2 oddR = HexGridPosition;

@@ -95,170 +95,154 @@ public class HexGrid : MonoBehaviour {
 				HexTile refTile = new HexTile ();
 				refTile.Resource = resourceType [Random.Range (1, 21)];
 
-				if (x == 3 && y > 2 && y < 6) 
-				{
-					if (x % 2 == 1) 
-					{
+				if (x == 3 && y > 2 && y < 6) {
+					if (x % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
-				} 
-				else if (x == 4 && y > 1 && y < 7) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 4 && y > 1 && y < 7) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
-				} 
-				else if (x == 5 && y > 1 && y < 7 && y != 4) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 5 && y > 1 && y < 7 && y != 4) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
-				} 
-				else if (x == 5 && y == 4) 
-				{
+				} else if (x == 5 && y == 4) {
 					refTile.Resource = StealableType.Resource_Fish;
-					refTile.SelectedNum2 = Random.Range(1,4);
-					refTile.SelectedNum3 = Random.Range(4,7);
-					refTile.SelectedNum4 = Random.Range(7,10);
-					refTile.SelectedNum5 = Random.Range(10,13);
+					refTile.IsLakeTile = true;
+					refTile.SelectedNum2 = Random.Range (1, 4);
+					refTile.SelectedNum3 = Random.Range (4, 7);
+					refTile.SelectedNum4 = Random.Range (7, 10);
+					refTile.SelectedNum5 = Random.Range (10, 13);
 
-				} 
-				else if (x == 6 && y > 1 && y < 7) 
-				{
+				} else if (x == 6 && y > 1 && y < 7) {
 					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
-				} 
-				else if (x == 6 && y > 3 && y < 7) 
-				{
+				} else if (x == 6 && y > 3 && y < 7) {
 					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
 
-				} 
-				else if (x == 7 && y > 3 && y < 5) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 7 && y > 3 && y < 5) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 					}
 				} 
 
 				// Islands
-				else if (x == 8 && y > 4 && y < 7) 
-				{
-					if (y % 2 == 1) 
-					{
+				else if (x == 9 && y == 6) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
+					} else {
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} 
+				else if (x == 8 && y == 7) {
+					if (y % 2 == 1) {
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} else {
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				}else if (x == 8 && y == 8) {
+					if (y % 2 == 1) {
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					} else {
+						refTile.SelectedNum = Random.Range (8, 13);
+						refTile.Resource = resourceType [Random.Range (1, 21)];
+					}
+				} else if (x == 9 && y == 7) {
+					if (y % 2 == 1) {
+						refTile.SelectedNum = Random.Range (1, 7);
+						refTile.Resource = resourceType [26];
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 						refTile.Resource = resourceType [26];
 					}
-				} 
-				else if (x == 7 && y == 7) 
-				{
-					if (y % 2 == 1) 
-					{
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
-					}
-				} 
-				else if (x == 9 && y == 6) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 9 && y == 5) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 						refTile.Resource = resourceType [26];
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 						refTile.Resource = resourceType [26];
 					}
-				} 
-				else if (x == 9 && y == 4) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 9 && y == 2) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
-				} 
-				else if (x == 8 && y == 2) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x == 8 && y == 1) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
-				} 
-				else if (x == 7 && y == 1) 
-				{
-					if (y % 2 == 1) 
-					{
+				} else if (x < 4 && x > 1 && y == 8) {
+					if (y % 2 == 1) {
 						refTile.SelectedNum = Random.Range (1, 7);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
+					} else {
 						refTile.SelectedNum = Random.Range (8, 13);
 						refTile.Resource = resourceType [Random.Range (1, 21)];
 					}
+				}
+
+				//fishing tiles
+				else if (x == 3 && y == 2) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (1, 7);
 				} 
-				else if (x < 7 && x > 4 && y == 8) 
-				{
-					if (y % 2 == 1) 
-					{
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
-					} 
-					else 
-					{
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
-					}
-				} 
+				else if (x == 4 && y == 1) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (8, 13);
+				}
+				else if (x == 7 && y == 3) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (1, 7);
+				}
+				else if (x == 7 && y == 5) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (8, 13);
+				}
+				else if (x == 4 && y == 7) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (1, 7);
+				}
+				else if (x == 3 && y == 6) {
+					refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
+					refTile.SelectedNum =  Random.Range (8, 13);
+				}
+				// else is water
 				else 
 				{
 					refTile.SelectedNum = 0;
@@ -485,6 +469,7 @@ public class HexGrid : MonoBehaviour {
 		GameObject currentHexGameObjForHarbour1 = cubeHexes [harbour1CubePos];
 		GameObject ltEdgeHarbour1 = currentHexGameObjForHarbour1.transform.FindChild ("LTEdge").gameObject;
 		UIEdge harbour1LTEdge = ltEdgeHarbour1.GetComponent<UIEdge> ();
+		harbour1LTEdge.GetComponent<SpriteRenderer> ().sortingLayerName = "edge";
 		harbour1LTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (ltEdgeHarbour1, StealableType.Resource_Brick);
 
@@ -495,7 +480,7 @@ public class HexGrid : MonoBehaviour {
 		harbour1Text.text = "1";
 		harbourCollection.Add("1", newHarbour1);
 		Harbour harbourScript1 = newHarbour1.GetComponent<Harbour> ();
-		harbourScript1.exchangeRate = 4;
+		harbourScript1.exchangeRate = 3;
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
 
@@ -515,7 +500,7 @@ public class HexGrid : MonoBehaviour {
 		harbour2Text.text = "2";
 		harbourCollection.Add("2", newHarbour2);
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
-		harbourScript2.exchangeRate = 4;
+		harbourScript2.exchangeRate = 3;
 		harbourScript2.returnedResource = StealableType.Resource_Grain;
 		harbourScript2.returnedAmount = 1;
 
@@ -535,7 +520,7 @@ public class HexGrid : MonoBehaviour {
 		harbour3Text.text = "3";
 		harbourCollection.Add("3", newHarbour3);
 		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
-		harbourScript3.exchangeRate = 4;
+		harbourScript3.exchangeRate = 3;
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
 		harbourScript3.returnedAmount = 1;
 
@@ -555,7 +540,7 @@ public class HexGrid : MonoBehaviour {
 		harbour4Text.text = "4";
 		harbourCollection.Add("4", newHarbour4);
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
-		harbourScript4.exchangeRate = 4;
+		harbourScript4.exchangeRate = 3;
 		harbourScript4.returnedResource = StealableType.Resource_Ore;
 		harbourScript4.returnedAmount = 1;
 
@@ -575,7 +560,7 @@ public class HexGrid : MonoBehaviour {
 		harbour5Text.text = "5";
 		harbourCollection.Add("5", newHarbour5);
 		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
-		harbourScript5.exchangeRate = 4;
+		harbourScript5.exchangeRate = 3;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
 
@@ -595,7 +580,7 @@ public class HexGrid : MonoBehaviour {
 		harbour6Text.text = "6";
 		harbourCollection.Add("6", newHarbour6);
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
-		harbourScript6.exchangeRate = 4;
+		harbourScript6.exchangeRate = 3;
 		harbourScript6.returnedResource = StealableType.Resource_Brick;
 		harbourScript6.returnedAmount = 1;
 
@@ -615,7 +600,7 @@ public class HexGrid : MonoBehaviour {
 		harbour7Text.text = "7";
 		harbourCollection.Add("7", newHarbour7);
 		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
-		harbourScript7.exchangeRate = 4;
+		harbourScript7.exchangeRate = 3;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
 		harbourScript7.returnedAmount = 1;
 
@@ -626,7 +611,7 @@ public class HexGrid : MonoBehaviour {
 		GameObject lEdgeHarbour8 = currentHexGameObjForHarbour8.transform.FindChild ("LEdge").gameObject;
 		UIEdge harbour8LEdge = lEdgeHarbour8.GetComponent<UIEdge> ();
 		harbour8LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (lEdgeHarbour8, StealableType.Resource_Wool);
+		harbours.Add (lEdgeHarbour8, StealableType.Resource_Lumber);
 
 		GameObject newHarbour8 = (GameObject) Instantiate (Harbour);
 		newHarbour8.transform.parent = this.transform;
@@ -635,7 +620,7 @@ public class HexGrid : MonoBehaviour {
 		harbour8Text.text = "8";
 		harbourCollection.Add("8", newHarbour8);
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
-		harbourScript8.exchangeRate = 4;
+		harbourScript8.exchangeRate = 3;
 		harbourScript8.returnedResource = StealableType.Resource_Lumber;
 		harbourScript8.returnedAmount = 1;
 
@@ -646,7 +631,7 @@ public class HexGrid : MonoBehaviour {
 		GameObject lEdgeHarbour9 = currentHexGameObjForHarbour9.transform.FindChild ("LEdge").gameObject;
 		UIEdge harbour9LEdge = lEdgeHarbour9.GetComponent<UIEdge> ();
 		harbour9LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (lEdgeHarbour9, StealableType.Resource_Wool);
+		harbours.Add (lEdgeHarbour9, StealableType.Resource_Ore);
 
 		GameObject newHarbour9 = (GameObject) Instantiate (Harbour);
 		newHarbour9.transform.parent = this.transform;
@@ -655,61 +640,49 @@ public class HexGrid : MonoBehaviour {
 		harbour9Text.text = "9";
 		harbourCollection.Add("9", newHarbour9);
 		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
-		harbourScript9.exchangeRate = 4;
+		harbourScript9.exchangeRate = 3;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
 
 	}
 
-	public void buildFishingGrounds () {
+	public void buildFishingGroundsUI () {
 
 		Vec3 fg1 = offsetOddRToCubeCoordinate (new Vector2(3,2));
 		GameObject fg1h = cubeHexes [fg1];
 		GameObject RBEdgeFG1 = fg1h.transform.FindChild ("RBEdge").gameObject;
 		GameObject REdgeFG1 = fg1h.transform.FindChild ("REdge").gameObject;
-		fg1h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg1h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
-		fg1h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 		Vec3 fg2 = offsetOddRToCubeCoordinate (new Vector2(4,1));
 		GameObject fg2h = cubeHexes [fg2];
 		GameObject LBEdgeFG2 = fg2h.transform.FindChild ("LBEdge").gameObject;
 		GameObject RBEdgeFG2 = fg2h.transform.FindChild ("RBEdge").gameObject;
-		fg2h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg2h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
-		fg2h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 		Vec3 fg3 = offsetOddRToCubeCoordinate (new Vector2(7,3));
 		GameObject fg3h = cubeHexes [fg3];
 		GameObject LEdgeFG3 = fg3h.transform.FindChild ("LEdge").gameObject;
 		GameObject LBEdgeFG3 = fg3h.transform.FindChild ("LBEdge").gameObject;
-		fg3h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg3h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
-		fg3h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 		Vec3 fg4 = offsetOddRToCubeCoordinate (new Vector2(7,5));
 		GameObject fg4h = cubeHexes [fg4];
 		GameObject LEdgeFG4 = fg4h.transform.FindChild ("LEdge").gameObject;
 		GameObject LTEdgeFG4 = fg4h.transform.FindChild ("LTEdge").gameObject;
-		fg4h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg4h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
-		fg4h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 		Vec3 fg5 = offsetOddRToCubeCoordinate (new Vector2(4,7));
 		GameObject fg5h = cubeHexes [fg5];
 		GameObject LTEdgeFG5 = fg5h.transform.FindChild ("LTEdge").gameObject;
 		GameObject RTEdgeFG5 = fg5h.transform.FindChild ("RTEdge").gameObject;
-		fg5h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg5h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
-		fg5h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 		Vec3 fg6 = offsetOddRToCubeCoordinate (new Vector2(3,6));
 		GameObject fg6h = cubeHexes [fg6];
 		GameObject REdgeFG6 = fg6h.transform.FindChild ("REdge").gameObject;
 		GameObject RTEdgeFG6 = fg6h.transform.FindChild ("RTEdge").gameObject;
-		fg6h.GetComponent<HexTile> ().IsFishingGround = true;
-		fg6h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
-		fg6h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 
 	}
 
@@ -718,7 +691,7 @@ public class HexGrid : MonoBehaviour {
 	{
 		setHexSizes ();
 		buildHarbours();
-		buildFishingGrounds ();
+		buildFishingGroundsUI ();
 	}
 
 	// Update is called once per frame

@@ -14,6 +14,7 @@ public class HexTile
 
 	public bool IsWater { get; set; }
 	public bool IsFishingGround { get; set; }
+	public bool IsLakeTile { get; set; }
 	public int FishingNum { get; set; }
 
 
