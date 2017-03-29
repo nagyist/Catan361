@@ -10,7 +10,11 @@ public class HexTile
 	public int SelectedNum3 { get; set; }
 	public int SelectedNum4 { get; set; }
 	public StealableType Resource { get; set; }
+
 	public bool IsWater { get; set; }
+	public bool IsFishingGround { get; set; }
+	public int FishingNum { get; set; }
+
 
 	public HexTile() {
 		

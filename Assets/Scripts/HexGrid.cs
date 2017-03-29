@@ -483,8 +483,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 1
 		Vec3 harbour1CubePos = offsetOddRToCubeCoordinate (new Vector2(4,2));
 		GameObject currentHexGameObjForHarbour1 = cubeHexes [harbour1CubePos];
-		UIHex currentHex1 = currentHexGameObjForHarbour1.GetComponent<UIHex> ();
-		GameObject ltEdgeHarbour1 = currentHex1.transform.FindChild ("LTEdge").gameObject;
+		GameObject ltEdgeHarbour1 = currentHexGameObjForHarbour1.transform.FindChild ("LTEdge").gameObject;
 		UIEdge harbour1LTEdge = ltEdgeHarbour1.GetComponent<UIEdge> ();
 		harbour1LTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (ltEdgeHarbour1, StealableType.Resource_Brick);
@@ -504,8 +503,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 2
 		Vec3 harbour2CubePos = offsetOddRToCubeCoordinate (new Vector2(5,2));
 		GameObject currentHexGameObjForHarbour2 = cubeHexes [harbour2CubePos];
-		UIHex currentHex2 = currentHexGameObjForHarbour2.GetComponent<UIHex> ();
-		GameObject rtEdgeHarbour2 = currentHex2.transform.FindChild ("RTEdge").gameObject;
+		GameObject rtEdgeHarbour2 = currentHexGameObjForHarbour2.transform.FindChild ("RTEdge").gameObject;
 		UIEdge harbour2RTEdge = rtEdgeHarbour2.GetComponent<UIEdge> ();
 		harbour2RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rtEdgeHarbour2, StealableType.Resource_Grain);
@@ -525,8 +523,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 3
 		Vec3 harbour3CubePos = offsetOddRToCubeCoordinate (new Vector2(6,3));
 		GameObject currentHexGameObjForHarbour3 = cubeHexes [harbour3CubePos];
-		UIHex currentHex3 = currentHexGameObjForHarbour3.GetComponent<UIHex> ();
-		GameObject rtEdgeHarbour3 = currentHex3.transform.FindChild ("RTEdge").gameObject;
+		GameObject rtEdgeHarbour3 = currentHexGameObjForHarbour3.transform.FindChild ("RTEdge").gameObject;
 		UIEdge harbour3RTEdge = rtEdgeHarbour3.GetComponent<UIEdge> ();
 		harbour3RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rtEdgeHarbour3, StealableType.Resource_Lumber);
@@ -546,8 +543,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 4
 		Vec3 harbour4CubePos = offsetOddRToCubeCoordinate (new Vector2(7,4));
 		GameObject currentHexGameObjForHarbour4 = cubeHexes [harbour4CubePos];
-		UIHex currentHex4 = currentHexGameObjForHarbour4.GetComponent<UIHex> ();
-		GameObject rEdgeHarbour4 = currentHex4.transform.FindChild ("REdge").gameObject;
+		GameObject rEdgeHarbour4 = currentHexGameObjForHarbour4.transform.FindChild ("REdge").gameObject;
 		UIEdge harbour4REdge = rEdgeHarbour4.GetComponent<UIEdge> ();
 		harbour4REdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rEdgeHarbour4, StealableType.Resource_Ore);
@@ -567,8 +563,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 5
 		Vec3 harbour5CubePos = offsetOddRToCubeCoordinate (new Vector2(6,5));
 		GameObject currentHexGameObjForHarbour5 = cubeHexes [harbour5CubePos];
-		UIHex currentHex5 = currentHexGameObjForHarbour5.GetComponent<UIHex> ();
-		GameObject rbEdgeHarbour5 = currentHex5.transform.FindChild ("RBEdge").gameObject;
+		GameObject rbEdgeHarbour5 = currentHexGameObjForHarbour5.transform.FindChild ("RBEdge").gameObject;
 		UIEdge harbour5RBEdge = rbEdgeHarbour5.GetComponent<UIEdge> ();
 		harbour5RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rbEdgeHarbour5, StealableType.Resource_Wool);
@@ -588,8 +583,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 6
 		Vec3 harbour6CubePos = offsetOddRToCubeCoordinate (new Vector2(5,6));
 		GameObject currentHexGameObjForHarbour6 = cubeHexes [harbour6CubePos];
-		UIHex currentHex6 = currentHexGameObjForHarbour6.GetComponent<UIHex> ();
-		GameObject rbEdgeHarbour6 = currentHex6.transform.FindChild ("RBEdge").gameObject;
+		GameObject rbEdgeHarbour6 = currentHexGameObjForHarbour6.transform.FindChild ("RBEdge").gameObject;
 		UIEdge harbour6RBEdge = rbEdgeHarbour6.GetComponent<UIEdge> ();
 		harbour6RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rbEdgeHarbour6, StealableType.Resource_Brick);
@@ -609,8 +603,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 7
 		Vec3 harbour7CubePos = offsetOddRToCubeCoordinate (new Vector2(4,6));
 		GameObject currentHexGameObjForHarbour7 = cubeHexes [harbour7CubePos];
-		UIHex currentHex7 = currentHexGameObjForHarbour7.GetComponent<UIHex> ();
-		GameObject lbEdgeHarbour7 = currentHex7.transform.FindChild ("LBEdge").gameObject;
+		GameObject lbEdgeHarbour7 = currentHexGameObjForHarbour7.transform.FindChild ("LBEdge").gameObject;
 		UIEdge harbour7LBEdge = lbEdgeHarbour7.GetComponent<UIEdge> ();
 		harbour7LBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lbEdgeHarbour7, StealableType.Resource_Grain);
@@ -630,8 +623,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 8
 		Vec3 harbour8CubePos = offsetOddRToCubeCoordinate (new Vector2(3,5));
 		GameObject currentHexGameObjForHarbour8 = cubeHexes [harbour8CubePos];
-		UIHex currentHex8 = currentHexGameObjForHarbour8.GetComponent<UIHex> ();
-		GameObject lEdgeHarbour8 = currentHex8.transform.FindChild ("LEdge").gameObject;
+		GameObject lEdgeHarbour8 = currentHexGameObjForHarbour8.transform.FindChild ("LEdge").gameObject;
 		UIEdge harbour8LEdge = lEdgeHarbour8.GetComponent<UIEdge> ();
 		harbour8LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lEdgeHarbour8, StealableType.Resource_Wool);
@@ -651,8 +643,7 @@ public class HexGrid : MonoBehaviour {
 		//harbour 9
 		Vec3 harbour9CubePos = offsetOddRToCubeCoordinate (new Vector2(3,3));
 		GameObject currentHexGameObjForHarbour9 = cubeHexes [harbour9CubePos];
-		UIHex currentHex9 = currentHexGameObjForHarbour9.GetComponent<UIHex> ();
-		GameObject lEdgeHarbour9 = currentHex9.transform.FindChild ("LEdge").gameObject;
+		GameObject lEdgeHarbour9 = currentHexGameObjForHarbour9.transform.FindChild ("LEdge").gameObject;
 		UIEdge harbour9LEdge = lEdgeHarbour9.GetComponent<UIEdge> ();
 		harbour9LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lEdgeHarbour9, StealableType.Resource_Wool);
@@ -671,7 +662,55 @@ public class HexGrid : MonoBehaviour {
 	}
 
 	public void buildFishingGrounds () {
-		
+
+		Vec3 fg1 = offsetOddRToCubeCoordinate (new Vector2(3,2));
+		GameObject fg1h = cubeHexes [fg1];
+		GameObject RBEdgeFG1 = fg1h.transform.FindChild ("RBEdge").gameObject;
+		GameObject REdgeFG1 = fg1h.transform.FindChild ("REdge").gameObject;
+		fg1h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg1h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
+		fg1h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
+		Vec3 fg2 = offsetOddRToCubeCoordinate (new Vector2(4,1));
+		GameObject fg2h = cubeHexes [fg2];
+		GameObject LBEdgeFG2 = fg2h.transform.FindChild ("LBEdge").gameObject;
+		GameObject RBEdgeFG2 = fg2h.transform.FindChild ("RBEdge").gameObject;
+		fg2h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg2h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
+		fg2h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
+		Vec3 fg3 = offsetOddRToCubeCoordinate (new Vector2(7,3));
+		GameObject fg3h = cubeHexes [fg3];
+		GameObject LEdgeFG3 = fg3h.transform.FindChild ("LEdge").gameObject;
+		GameObject LBEdgeFG3 = fg3h.transform.FindChild ("LBEdge").gameObject;
+		fg3h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg3h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
+		fg3h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
+		Vec3 fg4 = offsetOddRToCubeCoordinate (new Vector2(7,5));
+		GameObject fg4h = cubeHexes [fg4];
+		GameObject LEdgeFG4 = fg4h.transform.FindChild ("LEdge").gameObject;
+		GameObject LTEdgeFG4 = fg4h.transform.FindChild ("LTEdge").gameObject;
+		fg4h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg4h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
+		fg4h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
+		Vec3 fg5 = offsetOddRToCubeCoordinate (new Vector2(4,7));
+		GameObject fg5h = cubeHexes [fg5];
+		GameObject LTEdgeFG5 = fg5h.transform.FindChild ("LTEdge").gameObject;
+		GameObject RTEdgeFG5 = fg5h.transform.FindChild ("RTEdge").gameObject;
+		fg5h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg5h.GetComponent<HexTile> ().FishingNum = Random.Range (1, 7);
+		fg5h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
+		Vec3 fg6 = offsetOddRToCubeCoordinate (new Vector2(3,6));
+		GameObject fg6h = cubeHexes [fg6];
+		GameObject REdgeFG6 = fg6h.transform.FindChild ("REdge").gameObject;
+		GameObject RTEdgeFG6 = fg6h.transform.FindChild ("RTEdge").gameObject;
+		fg6h.GetComponent<HexTile> ().IsFishingGround = true;
+		fg6h.GetComponent<HexTile> ().FishingNum = Random.Range (8, 13);
+		fg6h.GetComponent<HexTile> ().Resource = StealableType.Resource_Fish;
+
 	}
 
 	// Use this for initialization
@@ -679,6 +718,7 @@ public class HexGrid : MonoBehaviour {
 	{
 		setHexSizes ();
 		buildHarbours();
+		buildFishingGrounds ();
 	}
 
 	// Update is called once per frame

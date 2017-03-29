@@ -20,7 +20,6 @@ public class DisplayNumber : MonoBehaviour {
 
 		var spriteTransform = parent.transform;
 		var text = GetComponent<TextMesh>();
-		var text2 = GetComponents<TextMesh>();
 		var pos = spriteTransform.position;
 
 		UIHex hexScript = parent.GetComponent<UIHex> ();
@@ -35,13 +34,10 @@ public class DisplayNumber : MonoBehaviour {
 		{
 			text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum, pos.x, pos.y);
 		}
-		else if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum != 0 && 
-			GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 != 0 )
+
+		if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].FishingNum != 0)
 		{
-			/*text2[1].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum, pos.x, pos.y);
-			text2[2].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2, pos.x, pos.y);
-			text2[3].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum3, pos.x, pos.y);
-			text2[4].text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum4, pos.x, pos.y);*/
+			text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].FishingNum, pos.x, pos.y);
 		}
 	}
 }
