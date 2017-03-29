@@ -64,6 +64,7 @@ public class UIEdge : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {			
 			Edge e = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
 			if (e == null) { return; }
@@ -71,5 +72,6 @@ public class UIEdge : MonoBehaviour {
 				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
 		}
+
 	}
 }
