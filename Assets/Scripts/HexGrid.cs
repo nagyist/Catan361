@@ -477,9 +477,8 @@ public class HexGrid : MonoBehaviour {
 
 	public void buildHarbours () {
 		
-		//harbourCollection = new Dictionary<string, GameObject>();
-
 		harbours = new Dictionary<GameObject, StealableType> ();
+		harbourCollection = new Dictionary<string, GameObject>();
 
 		//harbour 1
 		Vec3 harbour1CubePos = offsetOddRToCubeCoordinate (new Vector2(4,2));
@@ -490,6 +489,18 @@ public class HexGrid : MonoBehaviour {
 		harbour1LTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (ltEdgeHarbour1, StealableType.Resource_Brick);
 
+		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
+		newHarbour1.transform.parent = this.transform;
+		newHarbour1.transform.position = ltEdgeHarbour1.transform.position;;
+		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
+		harbour1Text.text = "1";
+		harbourCollection.Add("1", newHarbour1);
+		Harbour harbourScript1 = newHarbour1.GetComponent<Harbour> ();
+		harbourScript1.exchangeRate = 4;
+		harbourScript1.returnedResource = StealableType.Resource_Brick;
+		harbourScript1.returnedAmount = 1;
+
+
 		//harbour 2
 		Vec3 harbour2CubePos = offsetOddRToCubeCoordinate (new Vector2(5,2));
 		GameObject currentHexGameObjForHarbour2 = cubeHexes [harbour2CubePos];
@@ -499,6 +510,18 @@ public class HexGrid : MonoBehaviour {
 		harbour2RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rtEdgeHarbour2, StealableType.Resource_Grain);
 
+		GameObject newHarbour2 = (GameObject) Instantiate (Harbour);
+		newHarbour2.transform.parent = this.transform;
+		newHarbour2.transform.position =  rtEdgeHarbour2.transform.position;;
+		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
+		harbour2Text.text = "2";
+		harbourCollection.Add("2", newHarbour2);
+		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
+		harbourScript2.exchangeRate = 4;
+		harbourScript2.returnedResource = StealableType.Resource_Grain;
+		harbourScript2.returnedAmount = 1;
+
+
 		//harbour 3
 		Vec3 harbour3CubePos = offsetOddRToCubeCoordinate (new Vector2(6,3));
 		GameObject currentHexGameObjForHarbour3 = cubeHexes [harbour3CubePos];
@@ -506,7 +529,19 @@ public class HexGrid : MonoBehaviour {
 		GameObject rtEdgeHarbour3 = currentHex3.transform.FindChild ("RTEdge").gameObject;
 		UIEdge harbour3RTEdge = rtEdgeHarbour3.GetComponent<UIEdge> ();
 		harbour3RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rtEdgeHarbour3, StealableType.Resource_Wool);
+		harbours.Add (rtEdgeHarbour3, StealableType.Resource_Lumber);
+
+		GameObject newHarbour3 = (GameObject) Instantiate (Harbour);
+		newHarbour3.transform.parent = this.transform;
+		newHarbour3.transform.position = rtEdgeHarbour3.transform.position;
+		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
+		harbour3Text.text = "3";
+		harbourCollection.Add("3", newHarbour3);
+		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
+		harbourScript3.exchangeRate = 4;
+		harbourScript3.returnedResource = StealableType.Resource_Lumber;
+		harbourScript3.returnedAmount = 1;
+
 
 		//harbour 4
 		Vec3 harbour4CubePos = offsetOddRToCubeCoordinate (new Vector2(7,4));
@@ -515,7 +550,19 @@ public class HexGrid : MonoBehaviour {
 		GameObject rEdgeHarbour4 = currentHex4.transform.FindChild ("REdge").gameObject;
 		UIEdge harbour4REdge = rEdgeHarbour4.GetComponent<UIEdge> ();
 		harbour4REdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rEdgeHarbour4, StealableType.Resource_Lumber);
+		harbours.Add (rEdgeHarbour4, StealableType.Resource_Ore);
+
+		GameObject newHarbour4 = (GameObject) Instantiate (Harbour);
+		newHarbour4.transform.parent = this.transform;
+		newHarbour4.transform.position = rEdgeHarbour4.transform.position;
+		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
+		harbour4Text.text = "4";
+		harbourCollection.Add("4", newHarbour4);
+		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
+		harbourScript4.exchangeRate = 4;
+		harbourScript4.returnedResource = StealableType.Resource_Ore;
+		harbourScript4.returnedAmount = 1;
+
 
 		//harbour 5
 		Vec3 harbour5CubePos = offsetOddRToCubeCoordinate (new Vector2(6,5));
@@ -524,7 +571,19 @@ public class HexGrid : MonoBehaviour {
 		GameObject rbEdgeHarbour5 = currentHex5.transform.FindChild ("RBEdge").gameObject;
 		UIEdge harbour5RBEdge = rbEdgeHarbour5.GetComponent<UIEdge> ();
 		harbour5RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rbEdgeHarbour5, StealableType.Resource_Ore);
+		harbours.Add (rbEdgeHarbour5, StealableType.Resource_Wool);
+
+		GameObject newHarbour5 = (GameObject) Instantiate (Harbour);
+		newHarbour5.transform.parent = this.transform;
+		newHarbour5.transform.position = rbEdgeHarbour5.transform.position;
+		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
+		harbour5Text.text = "5";
+		harbourCollection.Add("5", newHarbour5);
+		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
+		harbourScript5.exchangeRate = 4;
+		harbourScript5.returnedResource = StealableType.Resource_Wool;
+		harbourScript5.returnedAmount = 1;
+
 
 		//harbour 6
 		Vec3 harbour6CubePos = offsetOddRToCubeCoordinate (new Vector2(5,6));
@@ -535,6 +594,18 @@ public class HexGrid : MonoBehaviour {
 		harbour6RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (rbEdgeHarbour6, StealableType.Resource_Brick);
 
+		GameObject newHarbour6 = (GameObject) Instantiate (Harbour);
+		newHarbour6.transform.parent = this.transform;
+		newHarbour6.transform.position = rbEdgeHarbour6.transform.position;
+		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
+		harbour6Text.text = "6";
+		harbourCollection.Add("6", newHarbour6);
+		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
+		harbourScript6.exchangeRate = 4;
+		harbourScript6.returnedResource = StealableType.Resource_Brick;
+		harbourScript6.returnedAmount = 1;
+
+
 		//harbour 7
 		Vec3 harbour7CubePos = offsetOddRToCubeCoordinate (new Vector2(4,6));
 		GameObject currentHexGameObjForHarbour7 = cubeHexes [harbour7CubePos];
@@ -543,6 +614,18 @@ public class HexGrid : MonoBehaviour {
 		UIEdge harbour7LBEdge = lbEdgeHarbour7.GetComponent<UIEdge> ();
 		harbour7LBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lbEdgeHarbour7, StealableType.Resource_Grain);
+
+		GameObject newHarbour7 = (GameObject) Instantiate (Harbour);
+		newHarbour7.transform.parent = this.transform;
+		newHarbour7.transform.position = lbEdgeHarbour7.transform.position;
+		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
+		harbour7Text.text = "7";
+		harbourCollection.Add("7", newHarbour7);
+		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
+		harbourScript7.exchangeRate = 4;
+		harbourScript7.returnedResource = StealableType.Resource_Grain;
+		harbourScript7.returnedAmount = 1;
+
 
 		//harbour 8
 		Vec3 harbour8CubePos = offsetOddRToCubeCoordinate (new Vector2(3,5));
@@ -553,6 +636,18 @@ public class HexGrid : MonoBehaviour {
 		harbour8LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lEdgeHarbour8, StealableType.Resource_Wool);
 
+		GameObject newHarbour8 = (GameObject) Instantiate (Harbour);
+		newHarbour8.transform.parent = this.transform;
+		newHarbour8.transform.position = lEdgeHarbour8.transform.position;
+		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
+		harbour8Text.text = "8";
+		harbourCollection.Add("8", newHarbour8);
+		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
+		harbourScript8.exchangeRate = 4;
+		harbourScript8.returnedResource = StealableType.Resource_Lumber;
+		harbourScript8.returnedAmount = 1;
+
+
 		//harbour 9
 		Vec3 harbour9CubePos = offsetOddRToCubeCoordinate (new Vector2(3,3));
 		GameObject currentHexGameObjForHarbour9 = cubeHexes [harbour9CubePos];
@@ -561,6 +656,17 @@ public class HexGrid : MonoBehaviour {
 		UIEdge harbour9LEdge = lEdgeHarbour9.GetComponent<UIEdge> ();
 		harbour9LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (lEdgeHarbour9, StealableType.Resource_Wool);
+
+		GameObject newHarbour9 = (GameObject) Instantiate (Harbour);
+		newHarbour9.transform.parent = this.transform;
+		newHarbour9.transform.position = lEdgeHarbour9.transform.position;
+		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
+		harbour9Text.text = "9";
+		harbourCollection.Add("9", newHarbour9);
+		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
+		harbourScript9.exchangeRate = 4;
+		harbourScript9.returnedResource = StealableType.Resource_Ore;
+		harbourScript9.returnedAmount = 1;
 
 	}
 
