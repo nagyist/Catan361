@@ -10,7 +10,8 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	public GameObject ore;
 	public GameObject wool;
 	public GameObject lumber;
-	public GameObject harbour;
+	public GameObject fish;
+	public GameObject resource;
 	public Button confirmButton;
 
 	public Text [] brickNum;
@@ -18,9 +19,12 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	public Text [] oreNum;
 	public Text [] woolNum;
 	public Text [] lumberNum;
-	public Text [] harbourNum;
-	public Text [] resourceOffer;
+	public Text [] fishNum;
+	public Text [] resourceType;
 
+	public Dictionary <string, StealableType> resourceDict;
+
+	/*
 	public GameObject findHarbour(string harbourNumber)
 	{
 		HexGrid hexGrid = GameObject.FindGameObjectWithTag ("GameState").GetComponent<HexGrid> ();
@@ -31,15 +35,24 @@ public class MaritimeTradeWindow : MonoBehaviour {
 	{
 		return harbourSelected.GetComponent<Harbour>().returnedResource;
 	}
+	*/
 
-	public void resourceRedistribution (StealableType resourceFromHarbour, string brickNumLost, string grainNumLost, string oreNumLost, string woolNumLost, string lumberNumLost)
+	public void resourceRedistribution (string resourceRequested, string brickNumLost, string grainNumLost, string oreNumLost, string woolNumLost, string lumberNumLost, string fishNumLost)
 	{
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 
-		if (player.playerResources.ContainsKey (resourceFromHarbour) && (int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost)) % 4 == 0) 
+		resourceDict = new Dictionary <string, StealableType> ();
+		resourceDict.Add ("Brick", StealableType.Resource_Brick);
+		resourceDict.Add ("Grain", StealableType.Resource_Grain);
+		resourceDict.Add ("Ore", StealableType.Resource_Ore);
+		resourceDict.Add ("Wool", StealableType.Resource_Wool);
+		resourceDict.Add ("Lumber", StealableType.Resource_Lumber);
+		resourceDict.Add ("Fish", StealableType.Resource_Fish);
+
+		if (resourceDict.ContainsKey(resourceRequested) && (int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost) + int.Parse(fishNumLost)) % 4 == 0) 
 		{
-			int newRes = player.playerResources [resourceFromHarbour] + ((int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost))/4);
-			player.playerResources [resourceFromHarbour] = newRes;
+			int newRes = player.playerResources [resourceDict[resourceRequested]] + ((int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost) + int.Parse(fishNumLost))/4);
+			player.playerResources [resourceDict[resourceRequested]] = newRes;
 		}
 
 		if (player.playerResources.ContainsKey (StealableType.Resource_Brick) && int.Parse(brickNumLost) % 4 == 0)
@@ -66,13 +79,16 @@ public class MaritimeTradeWindow : MonoBehaviour {
 		{
 			player.playerResources[StealableType.Resource_Lumber] =  player.playerResources[StealableType.Resource_Lumber] - int.Parse(lumberNumLost);
 		}
+
+		if (player.playerResources.ContainsKey (StealableType.Resource_Fish) && int.Parse(fishNumLost) % 4 == 0)
+		{
+			player.playerResources[StealableType.Resource_Fish] =  player.playerResources[StealableType.Resource_Fish] - int.Parse(fishNumLost);
+		}
 	}
 
 	void TaskOnClick(){
 		Debug.Log ("You have clicked the button!");
-		GameObject thisHarbour = findHarbour (harbourNum[1].text);
-		StealableType thisHarbourResource = findHarbourResource (thisHarbour);
-		resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
+		resourceRedistribution (resourceType [1].text, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text, fishNum[1].text);
 	}
 
 	// Use this for initialization
@@ -82,18 +98,11 @@ public class MaritimeTradeWindow : MonoBehaviour {
 		oreNum = ore.GetComponentsInChildren<Text>();
 		woolNum = wool.GetComponentsInChildren<Text>();
 		lumberNum = lumber.GetComponentsInChildren<Text>();
-		harbourNum = harbour.GetComponentsInChildren<Text>();
+		fishNum = fish.GetComponentsInChildren<Text> ();
+		resourceType = resource.GetComponentsInChildren<Text>();
 
-		//Text [] resourceOffer = {brickNum[1], grainNum[1], oreNum[1], woolNum[1], lumberNum[1]};
 		Button btn = confirmButton.GetComponent<Button>();
 		btn.onClick.AddListener (TaskOnClick);
-		/*
-		GameObject thisHarbour = findHarbour (harbourNum[1].text);
-		StealableType thisHarbourResource = findHarbourResource (thisHarbour);
-		resourceRedistribution (thisHarbourResource, brickNum [1].text, grainNum [1].text, oreNum [1].text, woolNum [1].text, lumberNum [1].text);
-		*/
-		//confirmButton.onClic
-		
 	}
 
 	// Update is called once per frame
