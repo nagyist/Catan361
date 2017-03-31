@@ -118,8 +118,8 @@ public class HexGrid : MonoBehaviour {
 					refTile.IsLakeTile = true;
 					refTile.SelectedNum2 = Random.Range (1, 4);
 					refTile.SelectedNum3 = Random.Range (4, 7);
-					refTile.SelectedNum4 = Random.Range (7, 10);
-					refTile.SelectedNum5 = Random.Range (10, 13);
+					refTile.SelectedNum4 = Random.Range (8, 11);
+					refTile.SelectedNum5 = Random.Range (11, 13);
 
 				} else if (x == 6 && y > 1 && y < 7) {
 					if (y % 2 == 1) {
@@ -242,6 +242,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (8, 13);
 				}
+
 				// else is water
 				else 
 				{
@@ -465,10 +466,14 @@ public class HexGrid : MonoBehaviour {
 		harbourCollection = new Dictionary<string, GameObject>();
 
 		//harbour 1
-		Vec3 harbour1CubePos = offsetOddRToCubeCoordinate (new Vector2(4,2));
-		GameObject currentHexGameObjForHarbour1 = cubeHexes [harbour1CubePos];
-		GameObject ltEdgeHarbour1 = currentHexGameObjForHarbour1.transform.FindChild ("LTEdge").gameObject;
+		Vec3 harbour1CubePos1 = offsetOddRToCubeCoordinate (new Vector2(3,1));
+		Vec3 harbour1CubePos2 = offsetOddRToCubeCoordinate (new Vector2(4,2));
+		Edge rightEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour1CubePos1, harbour1CubePos2);
+
+		GameObject currentHexGameObjForHarbour1 = cubeHexes [harbour1CubePos1];
+		GameObject ltEdgeHarbour1 = currentHexGameObjForHarbour1.transform.FindChild ("RBEdge").gameObject;
 		UIEdge harbour1LTEdge = ltEdgeHarbour1.GetComponent<UIEdge> ();
+
 		harbour1LTEdge.GetComponent<SpriteRenderer> ().sortingLayerName = "edge";
 		harbour1LTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
 		harbours.Add (ltEdgeHarbour1, StealableType.Resource_Brick);
