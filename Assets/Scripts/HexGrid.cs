@@ -213,34 +213,34 @@ public class HexGrid : MonoBehaviour {
 
 				//fishing tiles
 				else if (x == 3 && y == 2) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (1, 7);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				} 
 				else if (x == 4 && y == 1) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (8, 13);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				}
 				else if (x == 7 && y == 3) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (1, 7);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				}
 				else if (x == 7 && y == 5) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (8, 13);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				}
 				else if (x == 4 && y == 7) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (1, 7);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				}
 				else if (x == 3 && y == 6) {
-					refTile.IsFishingGround = true;
-					refTile.Resource = StealableType.Resource_Fish;
 					refTile.SelectedNum =  Random.Range (8, 13);
+					//refTile.IsFishingGround = true;
+					refTile.Resource = StealableType.Resource_Fish;
 				}
 
 				// else is water
