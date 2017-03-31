@@ -465,6 +465,7 @@ public class HexGrid : MonoBehaviour {
 		harbours = new Dictionary<GameObject, StealableType> ();
 		harbourCollection = new Dictionary<string, GameObject>();
 
+		/*
 		//harbour 1
 		//retrieve top left tile
 		Vector2 harbour1Vec2 = new Vector2(3, 1);
@@ -494,6 +495,7 @@ public class HexGrid : MonoBehaviour {
 
 		//add exchangeable resource to harbour 
 		harbours.Add (firstHarbour, StealableType.Resource_Brick);
+		*/
 
 		//instantiate harbour
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
