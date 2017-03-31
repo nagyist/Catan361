@@ -13,6 +13,8 @@ public class Intersection {
     public IntersectionUnit unit;
 	public String Owner = "";
 
+	//public bool canAccessHarbour { get; set; }
+
 	public Intersection(Vec3 i1, Vec3 i2, Vec3 i3) {
 		adjTile1 = i1;
 		adjTile2 = i2;

@@ -63,6 +63,8 @@ public class GameState : NetworkBehaviour {
             // create the hex grid, and the UI hex grid
 			GetComponent<HexGrid> ().CreateHexGrid (this);
 			GetComponent<HexGrid> ().CreateUIHexGrid ();
+			GetComponent<HexGrid> ().buildHarbours ();
+			//GetComponent<HexGrid> ().buildFishingGroundsUI ();
 
             // set the game's status as grid created
 			CurrentStatus = GameStatus.GRID_CREATED;

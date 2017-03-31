@@ -6,12 +6,13 @@ using UnityEngine.UI;
 
 public class UIIntersection : MonoBehaviour
 {
-
+	public bool canAccessHarbour { get; set; }
     public Vec3 HexPos1;
     public Vec3 HexPos2;
     public Vec3 HexPos3;
     private GameObject intersectionIcon;
     bool selected = false;
+
 
 
     void OnMouseEnter()

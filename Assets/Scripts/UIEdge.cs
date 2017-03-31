@@ -71,6 +71,9 @@ public class UIEdge : MonoBehaviour {
 			if (e.IsOwned) {
 				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
 			}
+			if (e.isHarbour == true) {
+				GetComponent<SpriteRenderer> ().color = Color.yellow;
+			}
 		}
 
 	}

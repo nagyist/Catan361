@@ -465,7 +465,7 @@ public class HexGrid : MonoBehaviour {
 		harbours = new Dictionary<GameObject, StealableType> ();
 		harbourCollection = new Dictionary<string, GameObject>();
 
-		/*
+
 		//harbour 1
 		//retrieve top left tile
 		Vector2 harbour1Vec2 = new Vector2(3, 1);
@@ -476,31 +476,26 @@ public class HexGrid : MonoBehaviour {
 		GameObject h1i1 = currentHexGameObjForHarbour1.transform.FindChild("RBIntersection").gameObject;
 		GameObject h1i2 = currentHexGameObjForHarbour1.transform.FindChild("BIntersection").gameObject;
 
+		h1i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h1i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
 		//vec3 of mainland gameobject
 		Vec3 harbour1CubePos2 = offsetOddRToCubeCoordinate (new Vector2(4,2));
 
 		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
 		Edge harbour1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour1CubePos1, harbour1CubePos2);
+		harbour1.isHarbour = true;
 
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject firstHarbour = currentHexGameObjForHarbour1.transform.FindChild ("RBEdge").gameObject;
 
-		//retrieve the UIEdge script from that edge
-		UIEdge harbour1LTEdge = firstHarbour.GetComponent<UIEdge> ();
-		//sorting layer
-		harbour1LTEdge.GetComponent<SpriteRenderer> ().sortingLayerName = "edge";
-
-		//change colour... this will later be a sprite
-		harbour1LTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-
 		//add exchangeable resource to harbour 
 		harbours.Add (firstHarbour, StealableType.Resource_Brick);
-		*/
 
 		//instantiate harbour
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
 		newHarbour1.transform.parent = this.transform;
-		newHarbour1.transform.position = new Vector3(0.683f, 0.267f, 0);
+		newHarbour1.transform.position = firstHarbour.transform.position;
 
 		//change harbour text
 		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
@@ -513,42 +508,97 @@ public class HexGrid : MonoBehaviour {
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
 
-		/*
+
 
 		//harbour 2
-		Vec3 harbour2CubePos = offsetOddRToCubeCoordinate (new Vector2(5,2));
-		GameObject currentHexGameObjForHarbour2 = cubeHexes [harbour2CubePos];
-		GameObject rtEdgeHarbour2 = currentHexGameObjForHarbour2.transform.FindChild ("RTEdge").gameObject;
-		UIEdge harbour2RTEdge = rtEdgeHarbour2.GetComponent<UIEdge> ();
-		harbour2RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rtEdgeHarbour2, StealableType.Resource_Grain);
+		//retrieve top left tile
+		Vector2 harbour2Vec2 = new Vector2(5, 1);
+		Vec3 harbour2CubePos1 = offsetOddRToCubeCoordinate (harbour2Vec2);
+		GameObject currentHexGameObjForHarbour2 = cubeHexes [harbour2CubePos1];
 
+		Vector2 otherHarbour2Vec2 = new Vector2(4, 1);
+		Vec3 otherHarbour2CubePos1 = offsetOddRToCubeCoordinate (otherHarbour2Vec2);
+		GameObject currentHexGameObj2ForHarbour2 = cubeHexes [otherHarbour2CubePos1];
+
+		//retrieve correct intersections
+		GameObject h2i1 = currentHexGameObj2ForHarbour2.transform.FindChild("BIntersection").gameObject;
+		GameObject h2i2 = currentHexGameObjForHarbour2.transform.FindChild("BIntersection").gameObject;
+
+		h2i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h2i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour2CubePos2 = offsetOddRToCubeCoordinate (new Vector2(5,2));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour2 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour2CubePos2, harbour2CubePos1);
+		harbour2.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject secondHarbour = currentHexGameObjForHarbour2.transform.FindChild ("LBEdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (secondHarbour, StealableType.Resource_Grain);
+
+		//instantiate harbour
 		GameObject newHarbour2 = (GameObject) Instantiate (Harbour);
 		newHarbour2.transform.parent = this.transform;
-		newHarbour2.transform.position =  rtEdgeHarbour2.transform.position;;
+		newHarbour2.transform.position = secondHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
 		harbour2Text.text = "2";
 		harbourCollection.Add("2", newHarbour2);
+
+		//set values in harbour
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
 		harbourScript2.exchangeRate = 3;
 		harbourScript2.returnedResource = StealableType.Resource_Grain;
 		harbourScript2.returnedAmount = 1;
 
 
-		//harbour 3
-		Vec3 harbour3CubePos = offsetOddRToCubeCoordinate (new Vector2(6,3));
-		GameObject currentHexGameObjForHarbour3 = cubeHexes [harbour3CubePos];
-		GameObject rtEdgeHarbour3 = currentHexGameObjForHarbour3.transform.FindChild ("RTEdge").gameObject;
-		UIEdge harbour3RTEdge = rtEdgeHarbour3.GetComponent<UIEdge> ();
-		harbour3RTEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rtEdgeHarbour3, StealableType.Resource_Lumber);
 
+		//harbour 3
+		//retrieve top left tile
+		Vector2 harbour3Vec2 = new Vector2(7, 2);
+		Vec3 harbour3CubePos1 = offsetOddRToCubeCoordinate (harbour3Vec2);
+		GameObject currentHexGameObjForHarbour3 = cubeHexes [harbour3CubePos1];
+
+		Vector2 otherHarbour3Vec2 = new Vector2(6, 2);
+		Vec3 otherHarbour3CubePos1 = offsetOddRToCubeCoordinate (otherHarbour3Vec2);
+		GameObject currentHexGameObj2ForHarbour3 = cubeHexes [otherHarbour3CubePos1];
+
+		//retrieve correct intersections
+		GameObject h3i1 = currentHexGameObj2ForHarbour3.transform.FindChild("RBIntersection").gameObject;
+		GameObject h3i2 = currentHexGameObjForHarbour3.transform.FindChild("BIntersection").gameObject;
+
+		h3i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h3i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour3CubePos2 = offsetOddRToCubeCoordinate (new Vector2(6,3));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour3CubePos1, harbour3CubePos2);
+		harbour3.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject thirdHarbour = currentHexGameObjForHarbour3.transform.FindChild ("LBEdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (thirdHarbour, StealableType.Resource_Lumber);
+
+		//instantiate harbour
 		GameObject newHarbour3 = (GameObject) Instantiate (Harbour);
 		newHarbour3.transform.parent = this.transform;
-		newHarbour3.transform.position = rtEdgeHarbour3.transform.position;
+		newHarbour3.transform.position = thirdHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
 		harbour3Text.text = "3";
 		harbourCollection.Add("3", newHarbour3);
+
+		//set values in harbour
 		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
 		harbourScript3.exchangeRate = 3;
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
@@ -556,19 +606,46 @@ public class HexGrid : MonoBehaviour {
 
 
 		//harbour 4
-		Vec3 harbour4CubePos = offsetOddRToCubeCoordinate (new Vector2(7,4));
-		GameObject currentHexGameObjForHarbour4 = cubeHexes [harbour4CubePos];
-		GameObject rEdgeHarbour4 = currentHexGameObjForHarbour4.transform.FindChild ("REdge").gameObject;
-		UIEdge harbour4REdge = rEdgeHarbour4.GetComponent<UIEdge> ();
-		harbour4REdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rEdgeHarbour4, StealableType.Resource_Ore);
+		//retrieve top left tile
+		Vector2 harbour4Vec2 = new Vector2(7, 4);
+		Vec3 harbour4CubePos1 = offsetOddRToCubeCoordinate (harbour4Vec2);
+		GameObject currentHexGameObjForHarbour4 = cubeHexes [harbour4CubePos1];
 
+		Vector2 otherHarbour4Vec2 = new Vector2(7, 3);
+		Vec3 otherHarbour4CubePos1 = offsetOddRToCubeCoordinate (otherHarbour4Vec2);
+		GameObject currentHexGameObj2ForHarbour4 = cubeHexes [otherHarbour4CubePos1];
+
+		//retrieve correct intersections
+		GameObject h4i1 = currentHexGameObjForHarbour4.transform.FindChild("RBIntersection").gameObject;
+		GameObject h4i2 = currentHexGameObj2ForHarbour4.transform.FindChild("BIntersection").gameObject;
+
+		h4i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h4i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour4CubePos2 = offsetOddRToCubeCoordinate (new Vector2(8,4));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour4 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour4CubePos1, harbour4CubePos2);
+		harbour4.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject fourthHarbour = currentHexGameObjForHarbour4.transform.FindChild ("REdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (fourthHarbour, StealableType.Resource_Ore);
+
+		//instantiate harbour
 		GameObject newHarbour4 = (GameObject) Instantiate (Harbour);
 		newHarbour4.transform.parent = this.transform;
-		newHarbour4.transform.position = rEdgeHarbour4.transform.position;
+		newHarbour4.transform.position = fourthHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
 		harbour4Text.text = "4";
 		harbourCollection.Add("4", newHarbour4);
+
+		//set values in harbour
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
 		harbourScript4.exchangeRate = 3;
 		harbourScript4.returnedResource = StealableType.Resource_Ore;
@@ -576,59 +653,134 @@ public class HexGrid : MonoBehaviour {
 
 
 		//harbour 5
-		Vec3 harbour5CubePos = offsetOddRToCubeCoordinate (new Vector2(6,5));
-		GameObject currentHexGameObjForHarbour5 = cubeHexes [harbour5CubePos];
-		GameObject rbEdgeHarbour5 = currentHexGameObjForHarbour5.transform.FindChild ("RBEdge").gameObject;
-		UIEdge harbour5RBEdge = rbEdgeHarbour5.GetComponent<UIEdge> ();
-		harbour5RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rbEdgeHarbour5, StealableType.Resource_Wool);
+		//retrieve top left tile
+		Vector2 harbour5Vec2 = new Vector2(6, 5);
+		Vec3 harbour5CubePos1 = offsetOddRToCubeCoordinate (harbour5Vec2);
+		GameObject currentHexGameObjForHarbour5 = cubeHexes [harbour5CubePos1];
 
+		//retrieve correct intersections
+		GameObject h5i1 = currentHexGameObjForHarbour5.transform.FindChild("RBIntersection").gameObject;
+		GameObject h5i2 = currentHexGameObjForHarbour5.transform.FindChild("BIntersection").gameObject;
+
+		h5i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h5i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour5CubePos2 = offsetOddRToCubeCoordinate (new Vector2(7,6));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour5 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour5CubePos1, harbour5CubePos2);
+		harbour5.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject fifthHarbour = currentHexGameObjForHarbour5.transform.FindChild ("RBEdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (fifthHarbour, StealableType.Resource_Wool);
+
+		//instantiate harbour
 		GameObject newHarbour5 = (GameObject) Instantiate (Harbour);
 		newHarbour5.transform.parent = this.transform;
-		newHarbour5.transform.position = rbEdgeHarbour5.transform.position;
+		newHarbour5.transform.position = fifthHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
 		harbour5Text.text = "5";
 		harbourCollection.Add("5", newHarbour5);
+
+		//set values in harbour
 		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
 		harbourScript5.exchangeRate = 3;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
 
 
-		//harbour 6
-		Vec3 harbour6CubePos = offsetOddRToCubeCoordinate (new Vector2(5,6));
-		GameObject currentHexGameObjForHarbour6 = cubeHexes [harbour6CubePos];
-		GameObject rbEdgeHarbour6 = currentHexGameObjForHarbour6.transform.FindChild ("RBEdge").gameObject;
-		UIEdge harbour6RBEdge = rbEdgeHarbour6.GetComponent<UIEdge> ();
-		harbour6RBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (rbEdgeHarbour6, StealableType.Resource_Brick);
 
+		//harbour 6
+		//retrieve tile
+		Vector2 harbour6Vec2 = new Vector2(5, 6);
+		Vec3 harbour6CubePos1 = offsetOddRToCubeCoordinate (harbour6Vec2);
+		GameObject currentHexGameObjForHarbour6 = cubeHexes [harbour6CubePos1];
+
+		//retrieve correct intersections
+		GameObject h6i1 = currentHexGameObjForHarbour6.transform.FindChild("RBIntersection").gameObject;
+		GameObject h6i2 = currentHexGameObjForHarbour6.transform.FindChild("BIntersection").gameObject;
+
+		h6i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h6i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour6CubePos2 = offsetOddRToCubeCoordinate (new Vector2(5,7));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour6 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour6CubePos1, harbour6CubePos2);
+		harbour6.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject sixthHarbour = currentHexGameObjForHarbour6.transform.FindChild ("RBEdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (sixthHarbour, StealableType.Resource_Brick);
+
+		//instantiate harbour
 		GameObject newHarbour6 = (GameObject) Instantiate (Harbour);
 		newHarbour6.transform.parent = this.transform;
-		newHarbour6.transform.position = rbEdgeHarbour6.transform.position;
+		newHarbour6.transform.position = sixthHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
 		harbour6Text.text = "6";
 		harbourCollection.Add("6", newHarbour6);
+
+		//set values in harbour
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 3;
 		harbourScript6.returnedResource = StealableType.Resource_Brick;
 		harbourScript6.returnedAmount = 1;
 
 
-		//harbour 7
-		Vec3 harbour7CubePos = offsetOddRToCubeCoordinate (new Vector2(4,6));
-		GameObject currentHexGameObjForHarbour7 = cubeHexes [harbour7CubePos];
-		GameObject lbEdgeHarbour7 = currentHexGameObjForHarbour7.transform.FindChild ("LBEdge").gameObject;
-		UIEdge harbour7LBEdge = lbEdgeHarbour7.GetComponent<UIEdge> ();
-		harbour7LBEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (lbEdgeHarbour7, StealableType.Resource_Grain);
 
+		//harbour 7
+		//retrieve tile
+		Vector2 harbour7Vec2 = new Vector2(4, 6);
+		Vec3 harbour7CubePos1 = offsetOddRToCubeCoordinate (harbour7Vec2);
+		GameObject currentHexGameObjForHarbour7 = cubeHexes [harbour7CubePos1];
+
+		Vector2 otherHarbour7Vec2 = new Vector2(3, 6);
+		Vec3 otherHarbour7CubePos1 = offsetOddRToCubeCoordinate (otherHarbour7Vec2);
+		GameObject currentHexGameObj2ForHarbour7 = cubeHexes [otherHarbour7CubePos1];
+
+		//retrieve correct intersections
+		GameObject h7i1 = currentHexGameObj2ForHarbour7.transform.FindChild("RBIntersection").gameObject;
+		GameObject h7i2 = currentHexGameObjForHarbour7.transform.FindChild("BIntersection").gameObject;
+
+		h7i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h7i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour7CubePos2 = offsetOddRToCubeCoordinate (new Vector2(3,7));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour7 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour7CubePos1, harbour7CubePos2);
+		harbour7.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject seventhHarbour = currentHexGameObjForHarbour7.transform.FindChild ("LBEdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (seventhHarbour, StealableType.Resource_Grain);
+
+		//instantiate harbour
 		GameObject newHarbour7 = (GameObject) Instantiate (Harbour);
 		newHarbour7.transform.parent = this.transform;
-		newHarbour7.transform.position = lbEdgeHarbour7.transform.position;
+		newHarbour7.transform.position = seventhHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
 		harbour7Text.text = "7";
 		harbourCollection.Add("7", newHarbour7);
+
+		//set values in harbour
 		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
 		harbourScript7.exchangeRate = 3;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
@@ -636,19 +788,46 @@ public class HexGrid : MonoBehaviour {
 
 
 		//harbour 8
-		Vec3 harbour8CubePos = offsetOddRToCubeCoordinate (new Vector2(3,5));
-		GameObject currentHexGameObjForHarbour8 = cubeHexes [harbour8CubePos];
-		GameObject lEdgeHarbour8 = currentHexGameObjForHarbour8.transform.FindChild ("LEdge").gameObject;
-		UIEdge harbour8LEdge = lEdgeHarbour8.GetComponent<UIEdge> ();
-		harbour8LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (lEdgeHarbour8, StealableType.Resource_Lumber);
+		//retrieve tile
+		Vector2 harbour8Vec2 = new Vector2(2, 5);
+		Vec3 harbour8CubePos1 = offsetOddRToCubeCoordinate (harbour8Vec2);
+		GameObject currentHexGameObjForHarbour8 = cubeHexes [harbour8CubePos1];
 
+		Vector2 otherHarbour8Vec2 = new Vector2(3, 4);
+		Vec3 otherHarbour8CubePos1 = offsetOddRToCubeCoordinate (otherHarbour8Vec2);
+		GameObject currentHexGameObj2ForHarbour8 = cubeHexes [otherHarbour8CubePos1];
+
+		//retrieve correct intersections
+		GameObject h8i1 = currentHexGameObjForHarbour8.transform.FindChild("RBIntersection").gameObject;
+		GameObject h8i2 = currentHexGameObj2ForHarbour8.transform.FindChild("BIntersection").gameObject;
+
+		h8i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h8i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour8CubePos2 = offsetOddRToCubeCoordinate (new Vector2(3,5));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour8 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour8CubePos1, harbour8CubePos2);
+		harbour8.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject eigthHarbour = currentHexGameObjForHarbour8.transform.FindChild ("REdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (eigthHarbour, StealableType.Resource_Lumber);
+
+		//instantiate harbour
 		GameObject newHarbour8 = (GameObject) Instantiate (Harbour);
 		newHarbour8.transform.parent = this.transform;
-		newHarbour8.transform.position = lEdgeHarbour8.transform.position;
+		newHarbour8.transform.position = eigthHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
 		harbour8Text.text = "8";
 		harbourCollection.Add("8", newHarbour8);
+
+		//set values in harbour
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 3;
 		harbourScript8.returnedResource = StealableType.Resource_Lumber;
@@ -656,28 +835,57 @@ public class HexGrid : MonoBehaviour {
 
 
 		//harbour 9
-		Vec3 harbour9CubePos = offsetOddRToCubeCoordinate (new Vector2(3,3));
-		GameObject currentHexGameObjForHarbour9 = cubeHexes [harbour9CubePos];
-		GameObject lEdgeHarbour9 = currentHexGameObjForHarbour9.transform.FindChild ("LEdge").gameObject;
-		UIEdge harbour9LEdge = lEdgeHarbour9.GetComponent<UIEdge> ();
-		harbour9LEdge.GetComponent<SpriteRenderer> ().color = new Color32 (220, 20, 60, 1);
-		harbours.Add (lEdgeHarbour9, StealableType.Resource_Ore);
+		//retrieve tile
+		Vector2 harbour9Vec2 = new Vector2(2, 3);
+		Vec3 harbour9CubePos1 = offsetOddRToCubeCoordinate (harbour9Vec2);
+		GameObject currentHexGameObjForHarbour9 = cubeHexes [harbour9CubePos1];
 
+		Vector2 otherHarbour9Vec2 = new Vector2(3, 2);
+		Vec3 otherHarbour9CubePos1 = offsetOddRToCubeCoordinate (otherHarbour9Vec2);
+		GameObject currentHexGameObj2ForHarbour9 = cubeHexes [otherHarbour9CubePos1];
+
+		//retrieve correct intersections
+		GameObject h9i1 = currentHexGameObjForHarbour9.transform.FindChild("RBIntersection").gameObject;
+		GameObject h9i2 = currentHexGameObj2ForHarbour9.transform.FindChild("BIntersection").gameObject;
+
+		h9i1.GetComponent<UIIntersection> ().canAccessHarbour = true;
+		h9i2.GetComponent<UIIntersection> ().canAccessHarbour = true;
+
+		//vec3 of mainland gameobject
+		Vec3 harbour9CubePos2 = offsetOddRToCubeCoordinate (new Vector2(3,3));
+
+		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		Edge harbour9 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour9CubePos1, harbour9CubePos2);
+		harbour9.isHarbour = true;
+
+		//retrieve the correct edge gameobject (will use for location of harbour sprite)
+		GameObject ninthHarbour = currentHexGameObjForHarbour9.transform.FindChild ("REdge").gameObject;
+
+		//add exchangeable resource to harbour 
+		harbours.Add (ninthHarbour, StealableType.Resource_Ore);
+
+		//instantiate harbour
 		GameObject newHarbour9 = (GameObject) Instantiate (Harbour);
 		newHarbour9.transform.parent = this.transform;
-		newHarbour9.transform.position = lEdgeHarbour9.transform.position;
+		newHarbour9.transform.position = ninthHarbour.transform.position;
+
+		//change harbour text
 		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
 		harbour9Text.text = "9";
 		harbourCollection.Add("9", newHarbour9);
+
+		//set values in harbour
 		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
 		harbourScript9.exchangeRate = 3;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
-		*/
+
+
 	}
 
 	public void buildFishingGroundsUI () {
 
+		/*
 		Vec3 fg1 = offsetOddRToCubeCoordinate (new Vector2(3,2));
 		GameObject fg1h = cubeHexes [fg1];
 		GameObject RBEdgeFG1 = fg1h.transform.FindChild ("RBEdge").gameObject;
@@ -712,7 +920,7 @@ public class HexGrid : MonoBehaviour {
 		GameObject fg6h = cubeHexes [fg6];
 		GameObject REdgeFG6 = fg6h.transform.FindChild ("REdge").gameObject;
 		GameObject RTEdgeFG6 = fg6h.transform.FindChild ("RTEdge").gameObject;
-
+		*/
 
 	}
 
@@ -720,8 +928,8 @@ public class HexGrid : MonoBehaviour {
 	void Start () 
 	{
 		setHexSizes ();
-		buildHarbours();
-		buildFishingGroundsUI ();
+		//buildHarbours();
+		//buildFishingGroundsUI ();
 	}
 
 	// Update is called once per frame
