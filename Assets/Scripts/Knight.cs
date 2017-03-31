@@ -1,23 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Knight : MonoBehaviour {
+[Serializable]
+public class Knight : IntersectionUnit {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	bool active {get; set;}
-	bool hasMovedThisTurn {get; set;}
-	int level {get; set;}
-	bool hasBeenPromotedThisTurn {get; set;}
+	public bool active;
+	public bool hasMovedThisTurn;
+	public int level;
+	public bool hasBeenPromotedThisTurn;
 
 	public Knight() {
 		this.active = false;
@@ -26,5 +18,5 @@ public class Knight : MonoBehaviour {
 		this.hasBeenPromotedThisTurn = false;
 	}
 
-	
+
 }
