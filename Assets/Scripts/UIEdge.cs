@@ -37,7 +37,7 @@ public class UIEdge : MonoBehaviour {
 
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 		if (GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase () && localPlayer.placedRoad) {
-			Debug.Log ("You already placed a road");
+			StartCoroutine (GameManager.GUI.ShowMessage ("You already placed a road during this round."));
 			return;
 		}
 
@@ -53,7 +53,7 @@ public class UIEdge : MonoBehaviour {
 			};
 
 			if (!localPlayer.HasEnoughResources (requiredRes)) {
-				Debug.Log ("Not enough resources");
+				StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough resources."));
 				return;
 			}
 
@@ -71,27 +71,35 @@ public class UIEdge : MonoBehaviour {
 
 	private bool isConnectedToOwnedUnit() {
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		List<List<Vec3>> adjIntersections1 = UIHex.getIntersectionsAdjacentPos (this.HexPos1);
-		List<List<Vec3>> adjIntersections2 = UIHex.getIntersectionsAdjacentPos (this.HexPos2);
+		List<List<Vec3>> adjIntersectionsPos1 = UIHex.getIntersectionsAdjacentPos (this.HexPos1);
+		List<List<Vec3>> adjIntersectionsPos2 = UIHex.getIntersectionsAdjacentPos (this.HexPos2);
+		List<Intersection> adjIntersections = new List<Intersection> ();
+		List<Intersection> intersectionsIntersection = new List<Intersection> ();
 
 		// get the intersection of both list
-		Dictionary<Intersection, List<Vec3>> potentialIntersectionsIntersection = new Dictionary<Intersection, List<Vec3>>(); // hacky way of doing an intersection lel
-		foreach (List<Vec3> intersection1 in adjIntersections1) {
+		foreach (List<Vec3> intersection1 in adjIntersectionsPos1) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (intersection1);
-			if (!potentialIntersectionsIntersection.ContainsKey (i)) {
-				potentialIntersectionsIntersection.Add(i, intersection1);
-			}
+			adjIntersections.Add (i);
 		}
-		foreach (List<Vec3> intersection2 in adjIntersections2) {
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsPos2) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (intersection2);
-			if (!potentialIntersectionsIntersection.ContainsKey (i)) {
-				potentialIntersectionsIntersection.Add(i, intersection2);
+			if (adjIntersections.Contains (i)) {
+				intersectionsIntersection.Add (i);
 			}
 		}
 
 		// check if any of the intersections intersection is owned by the local player
-		foreach(Intersection i in potentialIntersectionsIntersection.Keys) {
+		foreach(Intersection i in intersectionsIntersection) {
 			if (i.Owner == localPlayer.myName) {
+				return true;
+			}
+
+			Edge roadTest1 = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (i.adjTile1, i.adjTile2);
+			Edge roadTest2 = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (i.adjTile1, i.adjTile3);
+			Edge roadTest3 = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (i.adjTile2, i.adjTile3);
+
+			if (roadTest1.Owner == localPlayer.myName || roadTest2.Owner == localPlayer.myName || roadTest3.Owner == localPlayer.myName) {
 				return true;
 			}
 		}
