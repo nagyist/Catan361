@@ -27,7 +27,7 @@ public class GameStatusScript : MonoBehaviour {
 				if(GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase()) {
 					turnStatus = "Setup Phase";
 				}
-				turnStatus += GameManager.Instance.GetCurrentGameState().CurrentTurn.OrderedPlayers[playerIdx] + " turn";
+				turnStatus += GameManager.Instance.GetCurrentGameState().CurrentTurn.OrderedPlayers()[playerIdx] + " turn";
 			}
 
 			turnStatusGameObj.GetComponent<Text>().text = turnStatus;
