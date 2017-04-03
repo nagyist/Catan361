@@ -11,7 +11,7 @@ public class UIIntersection : MonoBehaviour
     public Vec3 HexPos2;
     public Vec3 HexPos3;
     private GameObject intersectionIcon;
-    bool selected = false;
+	public bool IsSelected = false;
 
     void OnMouseEnter()
     {
@@ -150,7 +150,7 @@ public class UIIntersection : MonoBehaviour
             StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
             // reset the intersection selection
             localPlayer.selectedUIIntersection = null;
-            selected = false;
+			IsSelected = false;
 
             return;
         }
@@ -230,7 +230,7 @@ public class UIIntersection : MonoBehaviour
         localPlayer.placedKnight = true;
         // reset intersection selection
         localPlayer.selectedUIIntersection = null;
-        selected = false;
+        IsSelected = false;
 
         return;
     }
@@ -309,7 +309,7 @@ public class UIIntersection : MonoBehaviour
                     // local player has now placed settlement
                     localPlayer.placedSettlement = true;
                     localPlayer.selectedUIIntersection = null;
-                    selected = false;
+                    IsSelected = false;
 
                     return;
                 }
@@ -348,7 +348,7 @@ public class UIIntersection : MonoBehaviour
             // local player has now placed settlement
             localPlayer.placedSettlement = true;
             localPlayer.selectedUIIntersection = null;
-            selected = false;
+            IsSelected = false;
 
             return;
         }
@@ -371,7 +371,7 @@ public class UIIntersection : MonoBehaviour
             Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
             // show yellow if selected
-            if (selected)
+            if (IsSelected)
             {
                 intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ore_f_b_03");
                 intersectionIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
@@ -402,31 +402,7 @@ public class UIIntersection : MonoBehaviour
     {
 
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-
-        // if player had no previous selection
-        if (localPlayer.selectedUIIntersection == null)
-        {
-            localPlayer.selectedUIIntersection = this;
-            selected = true;
-        }
-        // if the player had a previous selection
-        else
-        {
-            // if this is the player's previous selection
-            if (selected)
-            {
-                selected = false;
-                localPlayer.selectedUIIntersection = null;
-            }
-            // otherwise
-            else
-            {
-                localPlayer.selectedUIIntersection.selected = false;
-                localPlayer.selectedUIIntersection = this;
-                selected = true;
-            }
-        }
-
+		localPlayer.SetBuildSelection (this);
         return;
     }
 }

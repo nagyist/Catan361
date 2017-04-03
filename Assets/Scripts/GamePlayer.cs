@@ -18,6 +18,33 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasFortress = false;
 
     public UIIntersection selectedUIIntersection = null;
+	public UIEdge selectedUIEdge = null;
+
+	private void resetBuildSelection() {
+		if (this.selectedUIIntersection != null) {
+			this.selectedUIIntersection.IsSelected = false;
+			this.selectedUIIntersection = null;
+		}
+
+		if (this.selectedUIEdge != null) {
+			this.selectedUIEdge.IsSelected = false;
+			this.selectedUIEdge = null;
+		}
+	}
+
+	public void SetBuildSelection(UIIntersection intersection) {
+		resetBuildSelection ();
+
+		this.selectedUIIntersection = intersection;
+		intersection.IsSelected = true;
+	}
+
+	public void SetBuildSelection(UIEdge edge) {
+		resetBuildSelection ();
+
+		this.selectedUIEdge = edge;
+		edge.IsSelected = true;
+	}
 
     // dictionary containing playe colors
     private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {

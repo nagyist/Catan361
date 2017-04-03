@@ -6,16 +6,19 @@ public class UIEdge : MonoBehaviour {
 
 	public Vec3 HexPos1 { get; set; }
 	public Vec3 HexPos2 { get; set; }
+	public bool IsSelected = false;
 
 	void OnMouseEnter() {
 		GetComponent<SpriteRenderer> ().color = Color.red;
 	}
 
 	void OnMouseDown() {
-		ConstructRoad ();
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+		localPlayer.SetBuildSelection (this);
+		return;
 	}
 
-	void ConstructRoad() {
+	public void ConstructRoad() {
 		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			Debug.Log ("Grid not created");
 			return;
@@ -107,16 +110,29 @@ public class UIEdge : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {			
-			Edge e = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
-			if (e == null) { return; }
-			if (e.IsOwned) {
-				GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
-			}
-			if (e.isHarbour == true) {
-				GetComponent<SpriteRenderer> ().color = Color.yellow;
-			}
+		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {			
+			return;
+		}
+
+		Edge e = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
+		if (e == null) { return; }
+
+		if (e.IsOwned) {
+			GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
+			return;
+		}
+
+		if (e.isHarbour == true) {
+			GetComponent<SpriteRenderer> ().color = Color.yellow;
+			return;
+		}
+
+		if (this.IsSelected) {
+			GetComponent<SpriteRenderer> ().color = Color.green;
+			return;
+		} else {
+			GetComponent<SpriteRenderer> ().color = new Color(0, 0, 0, 55);
+			return;
 		}
 
 	}
