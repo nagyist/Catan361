@@ -57,7 +57,7 @@ public class UIEdge : MonoBehaviour {
 				return;
 			}
 
-			localPlayer.ConsumeResources (requiredRes);
+			localPlayer.CmdConsumeResources (requiredRes);
 		} else {
 			if (!localPlayer.placedSettlement) {
 				StartCoroutine(GameManager.GUI.ShowMessage ("You must place a settlement first."));

@@ -20,6 +20,25 @@ public class GamePlayer : NetworkBehaviour {
     public UIIntersection selectedUIIntersection = null;
 	public UIEdge selectedUIEdge = null;
 
+    // dictionary containing playe colors
+    private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {
+		{"Player1", new Color32(100, 149, 237, 255)},
+		{"Player2", new Color32(255, 165, 0, 255)},
+		{"Player3", new Color32(152, 251, 152, 255)}
+	};
+
+    // add the the current player game object to the list of connected players
+	public override void OnStartClient() {
+		// register itself as a connected player
+		GameManager.PlayerConnected (gameObject);
+	}
+
+    // set the current game object as the local player 
+	public override void OnStartLocalPlayer() {
+		// register as local player
+		GameManager.SetLocalPlayer (gameObject);
+	}
+
 	private void resetBuildSelection() {
 		if (this.selectedUIIntersection != null) {
 			this.selectedUIIntersection.IsSelected = false;
@@ -46,33 +65,8 @@ public class GamePlayer : NetworkBehaviour {
 		edge.IsSelected = true;
 	}
 
-    // dictionary containing playe colors
-    private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {
-		{"Player1", new Color32(100, 149, 237, 255)},
-		{"Player2", new Color32(255, 165, 0, 255)},
-		{"Player3", new Color32(152, 251, 152, 255)}
-	};
-
-    // dictionary holding players stealable resources
-	public Dictionary<StealableType, int> playerResources = new Dictionary<StealableType, int> () {
-		{StealableType.Resource_Brick, 100},
-		{StealableType.Resource_Grain, 100},
-		{StealableType.Resource_Lumber, 100},
-		{StealableType.Resource_Ore, 100},
-		{StealableType.Resource_Wool, 100}
-		// Now must include Fish, possibly gold?
-	};
-
-    // add the the current player game object to the list of connected players
-	public override void OnStartClient() {
-		// register itself as a connected player
-		GameManager.PlayerConnected (gameObject);
-	}
-
-    // set the current game object as the local player 
-	public override void OnStartLocalPlayer() {
-		// register as local player
-		GameManager.SetLocalPlayer (gameObject);
+	public ResourceCollection.PlayerResourcesCollection GetPlayerResources() {
+		return GameManager.Instance.GetCurrentGameState ().CurrentResources.GetPlayerResources (myName);
 	}
 
     // remake of the equals function
@@ -257,39 +251,35 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcPublishEdge (vec3Serialized, SerializationUtils.ObjectToByteArray (currentEdge));
 	}
 
-    // returns true if the player's resources are more than the requiredRes arguments
-	public bool HasEnoughResources(Dictionary<StealableType, int> requiredRes) {
-
-        // iterate through required resources
-		foreach(StealableType key in requiredRes.Keys) {
-            // return false if player lacks any of the resource types 
-			if(!this.playerResources.ContainsKey(key)) {
-				return false;
-			}
-            // return false if the player doesn't have enough of the current resource
-			int playerAmount = this.playerResources[key];
-			if(playerAmount < requiredRes[key]) {
-				return false;
-			}
-		}
-
-		return true;
+	[Command]
+	public void CmdUpdateResource(StealableType type, int newAmount) {
+		// update on server
+		GameManager.Instance.GetCurrentGameState ().CurrentResources.UpdateResource (myName, type, newAmount);
+		// post update to clients
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostResourceUpdate (myName, type, newAmount);
 	}
 
-    // consumes player resources defiend by requiredRes
-	public bool ConsumeResources(Dictionary<StealableType, int> requiredRes) {
+    // returns true if the player's resources are more than the requiredRes arguments
+	public bool HasEnoughResources(Dictionary<StealableType, int> requiredRes) {
+		return GameManager.Instance.GetCurrentGameState ().CurrentResources.PlayerHasEnoughResources (myName, requiredRes);
+	}
 
-        // returns false if the player does the required resouces
-		if(!HasEnoughResources(requiredRes)) { return false; }
+	[Command]
+	public void CmdConsumeResources(byte[] requiredResSerialized) {
+		Dictionary<StealableType, int> requiredRes = (Dictionary<StealableType, int>) SerializationUtils.ByteArrayToObject (requiredResSerialized);
+		// update server game state
+		bool result = GameManager.Instance.GetCurrentGameState ().CurrentResources.PlayerConsumeResources (myName, requiredRes);
+		if (result) {
+			foreach (StealableType key in requiredRes.Keys) {
+				int newAmount = GetPlayerResources () [key];
+				// push update to clients
+				GameManager.Instance.GetCurrentGameState ().RpcClientPostResourceUpdate (myName, key, newAmount);
+			}
+		} 
+	}
 
-        // iterate though the required resources and decrement the player's amounts
-		foreach(StealableType key in requiredRes.Keys) {
-			int playerAmount = this.playerResources[key];
-			int newAmount = playerAmount - requiredRes[key];
-			this.playerResources[key] = newAmount;
-		}
-
-		return true;
+	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
+		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}
 
 	void Start () {
@@ -297,6 +287,6 @@ public class GamePlayer : NetworkBehaviour {
 	}
 	
 	void Update () {
-		
+		 
 	}
 }

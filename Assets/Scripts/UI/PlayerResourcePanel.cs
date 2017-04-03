@@ -26,8 +26,9 @@ public class PlayerResourcePanel : MonoBehaviour {
 
 	private void displayPlayerResource(StealableType type) {
 		int resValue = 0;
-		if (getPlayer ().playerResources.ContainsKey (type)) {
-			resValue = getPlayer ().playerResources [type];
+		ResourceCollection.PlayerResourcesCollection playerResources = getPlayer ().GetPlayerResources ();
+		if (playerResources.ContainsKey (type)) {
+			resValue = playerResources [type];
 		}
 
 		resourcesGameObjs [type].GetComponentInChildren<Text> ().text = "" + resValue;
@@ -40,8 +41,9 @@ public class PlayerResourcePanel : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // check if the game is ready  (if the grid is created)
+		ResourceCollection.PlayerResourcesCollection playerResources = getPlayer ().GetPlayerResources ();
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
-			foreach (StealableType type in getPlayer().playerResources.Keys) {
+			foreach (StealableType type in playerResources.Keys) {
 				displayPlayerResource (type);
 			}
 		}

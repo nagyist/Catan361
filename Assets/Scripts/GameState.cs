@@ -45,6 +45,7 @@ public class GameState : NetworkBehaviour {
 	public Dictionary<Vec3, HexTile> CurrentBoard;
 	public EdgeCollection CurrentEdges;
 	public IntersectionCollection CurrentIntersections;
+	public ResourceCollection CurrentResources = new ResourceCollection();
     public GameTurn CurrentTurn = new GameTurn();
     public GameStatus CurrentStatus { get; private set; }
 
@@ -154,6 +155,11 @@ public class GameState : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcClientPostStatusMessage(string msg) {
 		GameManager.GUI.PostStatusMessage (msg);
+	}
+
+	[ClientRpc]
+	public void RpcClientPostResourceUpdate(string playerName, StealableType type, int newAmount) {
+		CurrentResources.UpdateResource (playerName, type, newAmount);
 	}
 
     // this function si used to sync the gameboard

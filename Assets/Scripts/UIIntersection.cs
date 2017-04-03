@@ -141,7 +141,7 @@ public class UIIntersection : MonoBehaviour
             }
             
             // consume resources
-            localPlayer.ConsumeResources(requiredRes);
+            localPlayer.CmdConsumeResources(requiredRes);
 
             GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeKnight(
                 SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
@@ -213,7 +213,7 @@ public class UIIntersection : MonoBehaviour
             StartCoroutine(GameManager.GUI.ShowMessage("Not enough resources."));
             return;
         }
-        localPlayer.ConsumeResources(requiredRes);
+        localPlayer.CmdConsumeResources(requiredRes);
 
 
         // here we're supposed to call the cmd function
@@ -297,7 +297,7 @@ public class UIIntersection : MonoBehaviour
                             return;
                         }
 
-                        localPlayer.ConsumeResources(requiredRes);
+                        localPlayer.CmdConsumeResources(requiredRes);
                     }
 
 
@@ -335,7 +335,7 @@ public class UIIntersection : MonoBehaviour
                     return;
                 }
 
-                localPlayer.ConsumeResources(requiredRes);
+                localPlayer.CmdConsumeResources(requiredRes);
             }
 
             localPlayer.placedSettlement = true;

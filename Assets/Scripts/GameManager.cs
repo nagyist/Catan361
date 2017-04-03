@@ -97,16 +97,13 @@ public class GameManager : Singleton<GameManager> {
 
     // this function is used update player resources accordingly
     public bool RollDice(int roll) {
-
-        GamePlayer player = LocalPlayer.GetComponent<GamePlayer>();
-
-        // returns false if game isn't ready
+		// returns false if game isn't ready
         if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED))
 			return false;
 
 		// roll the dice
 		StartCoroutine (GameManager.GUI.ShowMessage("You rolled " + roll));
-		GetCurrentGameState ().RpcClientPostStatusMessage (player.myName + " rolled " + roll);
+		GetCurrentGameState ().RpcClientPostStatusMessage (LocalPlayer.GetComponent<GamePlayer>().myName + " rolled " + roll);
 
 		/* 
          * TODO:
@@ -121,7 +118,7 @@ public class GameManager : Singleton<GameManager> {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
 
             // check to see if it isn't empty
-            if (i.unit != null)
+			if (i.unit != null && i.Owner != null)
             {
                 // check to see if its a village
                 if (i.unit.GetType() == typeof(Village))
@@ -133,32 +130,25 @@ public class GameManager : Singleton<GameManager> {
                     else if (currentVillage.myKind == Village.VillageKind.City)
                         amountToAdd = 2;
 
-                    // if the intetersecion has a settlement and that settlement is owned by the local player
-                    if (i.Owner == player.myName)
-                    {
-                        // go through all the adjacent hexes
-                        List<Vec3> adjHexes = new List<Vec3>(new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
-                        foreach (Vec3 hex in adjHexes)
-                        {
-                            HexTile tile = GameManager.Instance.GetCurrentGameState().CurrentBoard[hex];
+					GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer>();
 
-                            // continue if the tile number's don't match the rolled number
-                            if (tile.IsWater) { continue; }
-							if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
+					List<Vec3> adjHexes = new List<Vec3>(new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
+					foreach (Vec3 hex in adjHexes)
+					{
+						HexTile tile = GameManager.Instance.GetCurrentGameState().CurrentBoard[hex];
+						int newAmount = amountToAdd;
 
-                            // to to see if the player's resrouces already contain the key for the resource
-                            // if so then add the appropriate amount of resources
-                            if (player.playerResources.ContainsKey(tile.Resource))
-                            {
-                                player.playerResources[tile.Resource] = player.playerResources[tile.Resource] + amountToAdd;
-                            }
-                            // if the player's resource don't already contain the key for the resource then add it
-                            else
-                            {
-                                player.playerResources.Add(tile.Resource, amountToAdd);
-                            }
-                        }
-                    }
+						// continue if the tile number's don't match the rolled number
+						if (tile.IsWater) { continue; }
+						if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
+
+						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
+						if (playerResources.ContainsKey (tile.Resource)) {
+							newAmount = playerResources [tile.Resource] + amountToAdd;
+						}
+
+						intersectionOwner.CmdUpdateResource (tile.Resource, newAmount);
+					}
                 }
             }
             
