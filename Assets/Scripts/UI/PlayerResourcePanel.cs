@@ -41,6 +41,10 @@ public class PlayerResourcePanel : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // check if the game is ready  (if the grid is created)
+		if(getPlayer() == null || getPlayer().GetPlayerResources() == null) {
+			return;
+		}
+
 		ResourceCollection.PlayerResourcesCollection playerResources = getPlayer ().GetPlayerResources ();
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			foreach (StealableType type in playerResources.Keys) {

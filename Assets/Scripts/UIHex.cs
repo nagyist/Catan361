@@ -11,15 +11,15 @@ public class UIHex : MonoBehaviour {
 	private int oldIndex = 0;
 
     // Dictionary containing the resource type and it's specific index
-	public Dictionary<StealableType, int> resourceSpriteIndex = new Dictionary<StealableType, int>()
+	public Dictionary<StealableType, int[]> resourceSpriteIndex = new Dictionary<StealableType, int[]>()
 	{
-		{StealableType.Resource_Wool, 28},
-		{StealableType.Resource_Lumber, 12},
-		{StealableType.Resource_Ore, 24},
-		{StealableType.Resource_Brick, 11},
-		{StealableType.Resource_Grain, 28},
-		{StealableType.Resource_Fish, 32 },
-		{StealableType.Resource_Gold, 4}
+		{StealableType.Resource_Wool, new int[] { 0 }},
+		{StealableType.Resource_Lumber, new int[] { 16, 17, 18, 19 }},
+		{StealableType.Resource_Ore, new int[] { 8, 11 }},
+		{StealableType.Resource_Brick, new int [] { 12, 13, 14, 15 }},
+		{StealableType.Resource_Grain, new int[] { 1, 2, 3 }},
+		{StealableType.Resource_Fish, new int[] { 4 } },
+		{StealableType.Resource_Gold, new int[] { 20, 21 }}
 	};
 
     // Enum for the Adjacent Hex postitions
@@ -77,13 +77,13 @@ public class UIHex : MonoBehaviour {
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
 		int newIndex = 0;
 		if (refTile.IsWater) {
-			GetComponent<SpriteRenderer>().sprite = loadedSprites[36];
-			newIndex = 36;
+			GetComponent<SpriteRenderer>().sprite = loadedSprites[5];
+			newIndex = 5 + Random.Range(0, 3);
 		} else {
-			newIndex = resourceSpriteIndex [refTile.Resource];
+			int[] indexes = resourceSpriteIndex [refTile.Resource];
+			newIndex = indexes[Random.Range(0, indexes.Length - 1)];
 		}
 
-		newIndex += Random.Range(0, 4);
 		if (System.Math.Abs (newIndex - this.oldIndex) > 3) {
 			this.oldIndex = newIndex;
 		} else {
