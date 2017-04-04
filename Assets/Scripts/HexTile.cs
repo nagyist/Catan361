@@ -21,6 +21,6 @@ public class HexTile
 
 
 	public HexTile() {
-		
+
 	}
 }

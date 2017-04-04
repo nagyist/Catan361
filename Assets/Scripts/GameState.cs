@@ -162,6 +162,16 @@ public class GameState : NetworkBehaviour {
 		CurrentResources.UpdateResource (playerName, type, newAmount);
 	}
 
+	[ClientRpc]
+	public void RpcClientTradeRequest(byte[] tradeObjSerialized) {
+		Trade currentTrade = (Trade) SerializationUtils.ByteArrayToObject (tradeObjSerialized);
+		if (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName != currentTrade.Player2) {
+			return;
+		}
+
+		GameManager.GUI.ShowTradeRequest (currentTrade);
+	}
+
     // this function si used to sync the gameboard
 	public void SyncGameBoard() {
 
