@@ -1,24 +1,3 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class HexGrid : MonoBehaviour {
-
-	public GameObject Hex;
-	public GameObject Harbour;
-
-	private GameObject hexGridObject;
-
-	public int gridWidth = 10;
-	public int gridHeight = 9;
-
-	private Dictionary<Vec3, GameObject> cubeHexes;
-	public Dictionary<string, GameObject> harbourCollection;
-	public Dictionary<GameObject, StealableType> harbours;
-
-	public Dictionary<int, int> landNums;
-	public Dictionary<int, int> seaNums;
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
