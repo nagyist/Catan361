@@ -19,6 +19,27 @@ public class HexGrid : MonoBehaviour {
 	public Dictionary<int, int> landNums;
 	public Dictionary<int, int> seaNums;
 
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HexGrid : MonoBehaviour {
+
+	public GameObject Hex;
+	public GameObject Harbour;
+
+	private GameObject hexGridObject;
+
+	public int gridWidth = 10;
+	public int gridHeight = 9;
+
+	private Dictionary<Vec3, GameObject> cubeHexes;
+	public Dictionary<string, GameObject> harbourCollection;
+	public Dictionary<GameObject, StealableType> harbours;
+
+	public Dictionary<int, int> landNums;
+	public Dictionary<int, int> seaNums;
+
 	private float hexWidth;
 	private float hexHeight;
 
@@ -29,27 +50,7 @@ public class HexGrid : MonoBehaviour {
 		{3, StealableType.Resource_Ore},
 		{4, StealableType.Resource_Brick},
 		{5, StealableType.Resource_Grain},
-		{6, StealableType.Resource_Wool},
-		{7, StealableType.Resource_Lumber},
-		{8, StealableType.Resource_Ore},
-		{9, StealableType.Resource_Brick},
-		{10, StealableType.Resource_Grain},
-		{11, StealableType.Resource_Wool},
-		{12, StealableType.Resource_Lumber},
-		{13, StealableType.Resource_Ore},
-		{14, StealableType.Resource_Brick},
-		{15, StealableType.Resource_Grain},
-		{16, StealableType.Resource_Wool},
-		{17, StealableType.Resource_Lumber},
-		{18, StealableType.Resource_Ore},
-		{19, StealableType.Resource_Brick},
-		{20, StealableType.Resource_Grain},
-		{21, StealableType.Resource_Gold},
-		{22, StealableType.Resource_Lumber},
-		{23, StealableType.Resource_Ore},
-		{24, StealableType.Resource_Brick},
-		{25, StealableType.Resource_Grain},
-		{26, StealableType.Resource_Gold}
+		{6, StealableType.Resource_Gold}
 	};
 
 	private void setHexSizes () 
@@ -124,10 +125,10 @@ public class HexGrid : MonoBehaviour {
 		int numW_4 = 1;
 		int numW_5 = 1;
 		int numW_6 = 1;
-		int numW_8 = 2;
-		int numW_9 = 2;
-		int numW_10 = 2;
-		int numW_11 = 2;
+		int numW_8 = 1;
+		int numW_9 = 1;
+		int numW_10 = 1;
+		int numW_11 = 1;
 
 		seaNums.Add(2, numW_2);
 		seaNums.Add(3, numW_3);
@@ -139,11 +140,46 @@ public class HexGrid : MonoBehaviour {
 		seaNums.Add(10, numW_10);
 		seaNums.Add(11, numW_11);
 
+		Dictionary <int, int> resourceLandTiles = new Dictionary <int, int> () 
+		{
+			/*
+			{ 1, StealableType.Resource_Wool },
+			{ 2, StealableType.Resource_Lumber },
+			{ 3, StealableType.Resource_Ore },
+			{ 4, StealableType.Resource_Brick },
+			{ 5, StealableType.Resource_Grain },
+			*/
+
+			{ 1, 4 },
+			{ 2, 4 },
+			{ 3, 3 },
+			{ 4, 3 },
+			{ 5, 4 },
+		};
+
+		Dictionary <int, int> resourceSeaTiles = new Dictionary <int, int> () 
+		{
+			/*
+			{ 1, StealableType.Resource_Wool },
+			{ 2, StealableType.Resource_Lumber },
+			{ 3, StealableType.Resource_Ore },
+			{ 4, StealableType.Resource_Brick },
+			{ 5, StealableType.Resource_Grain },
+			*/
+
+			{ 1, 1 },
+			{ 2, 1 },
+			{ 3, 2 },
+			{ 4, 2 },
+			{ 5, 1 },
+		};
+
 
 		for (int y = 0; y < gridHeight; y++) {
 			for (int x = 0; x < gridWidth; x++) {
 				HexTile refTile = new HexTile ();
-				refTile.Resource = resourceType [Random.Range (1, 21)];
+
+				int resourceTypeNum = Random.Range (1, 6);
 
 				int randomNumTile1 = Random.Range (2, 7);
 				int randomNumTile2 = Random.Range (8, 13);
@@ -151,239 +187,545 @@ public class HexGrid : MonoBehaviour {
 				int randomNumSeaTile2 = Random.Range (8, 12);
 
 				//Land tiles
-				if (x == 3 && y > 2 && y < 6) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
+				if (x == 3 && y > 2 && y < 6) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+						
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					}
+				} 
+				else if (x == 4 && y > 1 && y < 7) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
 
-					} else {
-						if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumTile1;
 							landNums [randomNumTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
 							}
 						}
 					}
-				} else if (x == 4 && y > 1 && y < 7) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0)
+				} 
+				else if (x == 5 && y > 1 && y < 7 && y != 4) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
 						{
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
-					} else {
-						if (landNums [randomNumTile2] > 0) {
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumTile2;
 							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0)
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
 						{
 							refTile.SelectedNum = randomNumTile1;
 							landNums [randomNumTile1]--;
 						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
 							}
 						}
 					}
-				} else if (x == 5 && y > 1 && y < 7 && y != 4) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0)
-						{
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					} else {
-						if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0)
-						{
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					}
-				} else if (x == 5 && y == 4) {
+				} 
+				else if (x == 5 && y == 4) 
+				{
 					refTile.Resource = StealableType.Resource_Fish;
 					refTile.IsLakeTile = true;
 					refTile.SelectedNum2 = Random.Range (1, 4);
 					refTile.SelectedNum3 = Random.Range (4, 7);
 					refTile.SelectedNum4 = Random.Range (8, 11);
 					refTile.SelectedNum5 = Random.Range (11, 13);
-
-				} else if (x == 6 && y > 1 && y < 7) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0)
+				} 
+				else if (x == 6 && y > 1 && y < 7) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
 						{
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					} else {
-						if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0)
-						{
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					}
-
-				} else if (x == 6 && y > 3 && y < 7) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0)
-						{
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					} else {
-						if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0)
-						{
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
-						}
-					}
-
-				} else if (x == 7 && y > 3 && y < 5) {
-					if (y % 2 == 1) {
-						if (landNums [randomNumTile1] > 0) {
-							refTile.SelectedNum = randomNumTile1;
-							landNums [randomNumTile1]--;
-						} else if (landNums [randomNumTile2] > 0)
+							if (entry.Value != 0 && changeCount > 0) 
 							{
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
-					} else {
-						if (landNums [randomNumTile2] > 0) {
-							refTile.SelectedNum = randomNumTile2;
-							landNums [randomNumTile2]--;
-						} else if (landNums [randomNumTile1] > 0)
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
 						{
 							refTile.SelectedNum = randomNumTile1;
 							landNums [randomNumTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					}
+				} 
+				else if (x == 6 && y > 3 && y < 7) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					}
+				} 
+				else if (x == 7 && y > 3 && y < 5) 
+				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
+							}
+						}
+					} 
+					else 
+					{
+						if (landNums [randomNumTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} 
+						else if (landNums [randomNumTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in landNums) 
+							{
+								if (entry.Value != 0 && changeCount > 0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								landNums [entry.Key]--;
 							}
 						}
 					}
@@ -391,345 +733,741 @@ public class HexGrid : MonoBehaviour {
 
 
 				// Islands
-				else if (x == 9 && y == 6) {
+				else if (x == 9 && y == 6) 
+				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in seaNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									seaNums [entry.Key]--;
-									continue;
-								}
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
 						}
 					}
-				} else if (x == 8 && y == 7) {
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
 							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
 					}
-				} else if (x == 8 && y == 8) {
+				} 
+				else if (x == 8 && y == 7) 
+				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
 						}
 					}
-				} else if (x == 9 && y == 7) {
 
-					refTile.Resource = resourceType [26];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
 							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
 					}
-				} else if (x == 9 && y == 5) {
+				} 
+				else if (x == 8 && y == 8) 
+				{
 
-					refTile.Resource = resourceType [26];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
 							}
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
-							refTile.SelectedNum = randomNumSeaTile2;
-							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
-							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
-									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
-								}
-							}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
 						}
 					}
-				} else if (x == 9 && y == 2) {
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
-
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
 							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
 					}
-				} else if (x == 8 && y == 1) {
+				} 
+				else if (x == 9 && y == 7) 
+				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					refTile.Resource = resourceType [6];
 
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
 							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
 					}
-				} else if (x < 4 && x > 1 && y == 8) {
+				} 
+				else if (x == 9 && y == 5) 
+				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					refTile.Resource = resourceType [6];
 
-					if (y % 2 == 1) {
-						if (seaNums [randomNumSeaTile1] > 0) {
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
 							seaNums [randomNumSeaTile1]--;
-						} else if (seaNums [randomNumSeaTile2] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
-					} else {
-						if (seaNums [randomNumSeaTile2] > 0) {
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile2;
 							seaNums [randomNumSeaTile2]--;
-						} else if (seaNums [randomNumSeaTile1] > 0) {
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
 							refTile.SelectedNum = randomNumSeaTile1;
-							landNums [randomNumSeaTile1]--;
-						}
-						else {
-							foreach (KeyValuePair<int, int> entry in landNums) {
-								if (entry.Value != 0) {
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
 									refTile.SelectedNum = entry.Key;
-									landNums [entry.Key]--;
-									continue;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
 								}
 							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					}
+				} 
+				else if (x == 9 && y == 2) 
+				{
+
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					}
+				} 
+				else if (x == 8 && y == 1) 
+				{
+
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					}
+				} 
+				else if (x < 4 && x > 1 && y == 8) 
+				{
+
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
+
+					if (y % 2 == 1) 
+					{
+						if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
+						}
+					} 
+					else 
+					{
+						if (seaNums [randomNumSeaTile2] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} 
+						else if (seaNums [randomNumSeaTile1] > 0) 
+						{
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} 
+						else 
+						{
+							int changeCount = 1;
+							Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+							foreach (KeyValuePair<int, int> entry in seaNums) 
+							{
+								if (entry.Value != 0 && changeCount>0) 
+								{
+									refTile.SelectedNum = entry.Key;
+									keysToNuke.Add(entry.Key, entry.Value);
+									changeCount--;
+								}
+							}
+							foreach (KeyValuePair <int, int> entry in keysToNuke)
+							{
+								seaNums [entry.Key]--;
+							}
+
 						}
 					}
 				}
 
 				//fishing tiles
-				else if (x == 3 && y == 2) {
+				else if (x == 3 && y == 2) 
+				{
 					refTile.SelectedNum = Random.Range (1, 7);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} else if (x == 4 && y == 1) {
+					refTile.FishingReturnNum = Random.Range (1, 4);
+				} 
+				else if (x == 4 && y == 1) 
+				{
 					refTile.SelectedNum = Random.Range (8, 13);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} else if (x == 7 && y == 3) {
+					refTile.FishingReturnNum = Random.Range (1, 4);
+				} 
+				else if (x == 7 && y == 3) 
+				{
 					refTile.SelectedNum = Random.Range (1, 7);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} else if (x == 7 && y == 5) {
+					refTile.FishingReturnNum = Random.Range (1, 4);
+				} 
+				else if (x == 7 && y == 5) 
+				{
 					refTile.SelectedNum = Random.Range (8, 13);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} else if (x == 4 && y == 7) {
+					refTile.FishingReturnNum = Random.Range (1, 4);
+				} 
+				else if (x == 4 && y == 7) 
+				{
 					refTile.SelectedNum = Random.Range (1, 7);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} else if (x == 3 && y == 6) {
+					refTile.FishingReturnNum = Random.Range (1, 4);
+				} 
+				else if (x == 3 && y == 6) 
+				{
 					refTile.SelectedNum = Random.Range (8, 13);
-					//refTile.IsFishingGround = true;
+					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.FishingReturnNum = Random.Range (1, 4);
 				}
 
 				// else is water
