@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+﻿using System.Collections;
+=======
 using System.Collections;
+>>>>>>> 600114aca5a9b5eb74c64469ada7fc3142f2fbb6
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -191,6 +195,7 @@ public class HexGrid : MonoBehaviour {
 							resourceLandTiles [entry.Key]--;
 						}
 					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
