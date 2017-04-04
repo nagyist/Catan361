@@ -159,7 +159,6 @@ public class HexGrid : MonoBehaviour {
 				HexTile refTile = new HexTile ();
 
 				int resourceTypeNum = Random.Range (1, 6);
-				//refTile.Resource = resourceType [Random.Range (1, 6)];
 
 				int randomNumTile1 = Random.Range (2, 7);
 				int randomNumTile2 = Random.Range (8, 13);
