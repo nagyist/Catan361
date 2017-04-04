@@ -1701,17 +1701,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour1.transform.parent = this.transform;
 		newHarbour1.transform.position = firstHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
-		harbour1Text.text = "1";
-		harbourCollection.Add("1", newHarbour1);
-
 		//set values in harbour
 		Harbour harbourScript1 = newHarbour1.GetComponent<Harbour> ();
-		harbourScript1.exchangeRate = 3;
+		harbourScript1.exchangeRate = 2;
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
 
+		//change harbour text
+		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
+		harbour1Text.text = harbourScript1.exchangeRate + ":" + harbourScript1.returnedAmount + " Brick";
+		harbourCollection.Add("1", newHarbour1);
 
 
 		//harbour 2
@@ -1749,16 +1748,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour2.transform.parent = this.transform;
 		newHarbour2.transform.position = secondHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
-		harbour2Text.text = "2";
-		harbourCollection.Add("2", newHarbour2);
-
 		//set values in harbour
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
 		harbourScript2.exchangeRate = 3;
 		harbourScript2.returnedResource = StealableType.Resource_Grain;
 		harbourScript2.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
+		harbour2Text.text = harbourScript2.exchangeRate + ":" + harbourScript2.returnedAmount + " Any";
+		harbourCollection.Add("2", newHarbour2);
 
 
 
@@ -1797,16 +1796,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour3.transform.parent = this.transform;
 		newHarbour3.transform.position = thirdHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
-		harbour3Text.text = "3";
-		harbourCollection.Add("3", newHarbour3);
-
 		//set values in harbour
 		Harbour harbourScript3 = newHarbour3.GetComponent<Harbour> ();
-		harbourScript3.exchangeRate = 3;
+		harbourScript3.exchangeRate = 2;
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
 		harbourScript3.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
+		harbour3Text.text = harbourScript3.exchangeRate + ":" + harbourScript3.returnedAmount + " Lumber";
+		harbourCollection.Add("3", newHarbour3);
 
 
 		//harbour 4
@@ -1844,16 +1843,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour4.transform.parent = this.transform;
 		newHarbour4.transform.position = fourthHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
-		harbour4Text.text = "4";
-		harbourCollection.Add("4", newHarbour4);
-
 		//set values in harbour
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
 		harbourScript4.exchangeRate = 3;
 		harbourScript4.returnedResource = StealableType.Resource_Ore;
 		harbourScript4.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
+		harbour4Text.text = harbourScript4.exchangeRate + ":" + harbourScript4.returnedAmount + " Any";
+		harbourCollection.Add("4", newHarbour4);
 
 
 		//harbour 5
@@ -1887,16 +1886,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour5.transform.parent = this.transform;
 		newHarbour5.transform.position = fifthHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
-		harbour5Text.text = "5";
-		harbourCollection.Add("5", newHarbour5);
-
 		//set values in harbour
 		Harbour harbourScript5 = newHarbour5.GetComponent<Harbour> ();
-		harbourScript5.exchangeRate = 3;
+		harbourScript5.exchangeRate = 2;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
+		harbour5Text.text = harbourScript5.exchangeRate + ":" + harbourScript5.returnedAmount + " Wool";
+		harbourCollection.Add("5", newHarbour5);
 
 
 
@@ -1931,16 +1930,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour6.transform.parent = this.transform;
 		newHarbour6.transform.position = sixthHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
-		harbour6Text.text = "6";
-		harbourCollection.Add("6", newHarbour6);
-
 		//set values in harbour
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 3;
-		harbourScript6.returnedResource = StealableType.Resource_Brick;
+		//harbourScript6.returnedResource = StealableType.Resource_Brick;
 		harbourScript6.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
+		harbour6Text.text = harbourScript6.exchangeRate + ":" + harbourScript6.returnedAmount + " Any";
+		harbourCollection.Add("6", newHarbour6);
 
 
 
@@ -1979,16 +1978,16 @@ public class HexGrid : MonoBehaviour {
 		newHarbour7.transform.parent = this.transform;
 		newHarbour7.transform.position = seventhHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
-		harbour7Text.text = "7";
-		harbourCollection.Add("7", newHarbour7);
-
 		//set values in harbour
 		Harbour harbourScript7 = newHarbour7.GetComponent<Harbour> ();
-		harbourScript7.exchangeRate = 3;
+		harbourScript7.exchangeRate = 2;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
 		harbourScript7.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
+		harbour7Text.text = harbourScript7.exchangeRate + ":" + harbourScript7.returnedAmount + " Grain";
+		harbourCollection.Add("7", newHarbour7);
 
 
 		//harbour 8
@@ -2026,16 +2025,17 @@ public class HexGrid : MonoBehaviour {
 		newHarbour8.transform.parent = this.transform;
 		newHarbour8.transform.position = eigthHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
-		harbour8Text.text = "8";
-		harbourCollection.Add("8", newHarbour8);
-
 		//set values in harbour
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 3;
-		harbourScript8.returnedResource = StealableType.Resource_Lumber;
+		//harbourScript8.returnedResource = StealableType.Resource_Lumber;
 		harbourScript8.returnedAmount = 1;
+
+		//change harbour text
+		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
+		harbour8Text.text = harbourScript8.exchangeRate + ":" + harbourScript8.returnedAmount + " Any";
+		harbourCollection.Add("8", newHarbour8);
+
 
 
 		//harbour 9
@@ -2073,67 +2073,23 @@ public class HexGrid : MonoBehaviour {
 		newHarbour9.transform.parent = this.transform;
 		newHarbour9.transform.position = ninthHarbour.transform.position;
 
-		//change harbour text
-		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
-		harbour9Text.text = "9";
-		harbourCollection.Add("9", newHarbour9);
-
 		//set values in harbour
 		Harbour harbourScript9 = newHarbour9.GetComponent<Harbour> ();
-		harbourScript9.exchangeRate = 3;
+		harbourScript9.exchangeRate = 2;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
 
-
+		//change harbour text
+		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
+		harbour9Text.text = harbourScript9.exchangeRate + ":" + harbourScript9.returnedAmount + " Ore";
+		harbourCollection.Add("9", newHarbour9);
 	}
-
-	public void buildFishingGroundsUI () {
-
-		/*
-		Vec3 fg1 = offsetOddRToCubeCoordinate (new Vector2(3,2));
-		GameObject fg1h = cubeHexes [fg1];
-		GameObject RBEdgeFG1 = fg1h.transform.FindChild ("RBEdge").gameObject;
-		GameObject REdgeFG1 = fg1h.transform.FindChild ("REdge").gameObject;
-
-
-		Vec3 fg2 = offsetOddRToCubeCoordinate (new Vector2(4,1));
-		GameObject fg2h = cubeHexes [fg2];
-		GameObject LBEdgeFG2 = fg2h.transform.FindChild ("LBEdge").gameObject;
-		GameObject RBEdgeFG2 = fg2h.transform.FindChild ("RBEdge").gameObject;
-
-
-		Vec3 fg3 = offsetOddRToCubeCoordinate (new Vector2(7,3));
-		GameObject fg3h = cubeHexes [fg3];
-		GameObject LEdgeFG3 = fg3h.transform.FindChild ("LEdge").gameObject;
-		GameObject LBEdgeFG3 = fg3h.transform.FindChild ("LBEdge").gameObject;
-
-
-		Vec3 fg4 = offsetOddRToCubeCoordinate (new Vector2(7,5));
-		GameObject fg4h = cubeHexes [fg4];
-		GameObject LEdgeFG4 = fg4h.transform.FindChild ("LEdge").gameObject;
-		GameObject LTEdgeFG4 = fg4h.transform.FindChild ("LTEdge").gameObject;
-
-
-		Vec3 fg5 = offsetOddRToCubeCoordinate (new Vector2(4,7));
-		GameObject fg5h = cubeHexes [fg5];
-		GameObject LTEdgeFG5 = fg5h.transform.FindChild ("LTEdge").gameObject;
-		GameObject RTEdgeFG5 = fg5h.transform.FindChild ("RTEdge").gameObject;
-
-
-		Vec3 fg6 = offsetOddRToCubeCoordinate (new Vector2(3,6));
-		GameObject fg6h = cubeHexes [fg6];
-		GameObject REdgeFG6 = fg6h.transform.FindChild ("REdge").gameObject;
-		GameObject RTEdgeFG6 = fg6h.transform.FindChild ("RTEdge").gameObject;
-		*/
-
-	}
+		
 
 	// Use this for initialization
 	void Start () 
 	{
 		setHexSizes ();
-		//buildHarbours();
-		//buildFishingGroundsUI ();
 	}
 
 	// Update is called once per frame
