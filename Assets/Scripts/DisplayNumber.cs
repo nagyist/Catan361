@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DisplayNumber : MonoBehaviour {
 
@@ -39,5 +40,15 @@ public class DisplayNumber : MonoBehaviour {
 		{
 			text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].FishingNum, pos.x, pos.y);
 		}
+
+		if(GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 != 0)
+		{
+			text.text = string.Format("" + GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum2 + "|" +
+				GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum3 + Environment.NewLine +  
+				GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum4 + "|" +
+				GameManager.Instance.GetCurrentGameState().CurrentBoard[hexScript.HexGridCubePosition].SelectedNum5, pos.x, pos.y);
+		}
+
+
 	}
 }
