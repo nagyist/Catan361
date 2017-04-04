@@ -160,10 +160,10 @@ public class HexGrid : MonoBehaviour {
 							refTile.SelectedNum = randomNumTile2;
 							landNums [randomNumTile2]--;
 						} else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -178,10 +178,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -198,10 +198,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -216,10 +216,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -236,10 +236,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -254,10 +254,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -282,10 +282,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -300,10 +300,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -321,10 +321,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -339,10 +339,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -360,10 +360,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -378,10 +378,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -482,10 +482,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -499,10 +499,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -521,10 +521,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -538,10 +538,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -560,10 +560,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -577,10 +577,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -599,10 +599,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -616,10 +616,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -638,10 +638,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -655,10 +655,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -677,10 +677,10 @@ public class HexGrid : MonoBehaviour {
 							seaNums [randomNumSeaTile2]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
@@ -694,10 +694,10 @@ public class HexGrid : MonoBehaviour {
 							landNums [randomNumSeaTile1]--;
 						}
 						else {
-							foreach (int key in landNums.Keys) {
-								if (landNums[key] != 0) {
-									refTile.SelectedNum = key;
-									landNums [key]--;
+							foreach (KeyValuePair<int, int> entry in landNums) {
+								if (entry.Value != 0) {
+									refTile.SelectedNum = entry.Key;
+									landNums [entry.Key]--;
 									continue;
 								}
 							}
