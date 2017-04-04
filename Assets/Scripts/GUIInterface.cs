@@ -56,6 +56,11 @@ public class GUIInterface : MonoBehaviour {
 		return tooltipObj;
 	}
 
+	public void ShowTradeRequest(Trade currentTrade) {
+		GameObject tradeRequestObj = guiCanvas.transform.FindChild ("TradeRequestPopup").gameObject;
+		tradeRequestObj.GetComponent<UIWindow> ().Show ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		

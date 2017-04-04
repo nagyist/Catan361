@@ -145,6 +145,8 @@ public class GameManager : Singleton<GameManager> {
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
 						if (playerResources.ContainsKey (tile.Resource)) {
 							newAmount = playerResources [tile.Resource] + amountToAdd;
+						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround) {
+							newAmount = playerResources [tile.Resource] + tile.FishingReturnNum;
 						}
 
 						intersectionOwner.CmdUpdateResource (tile.Resource, newAmount);

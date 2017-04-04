@@ -278,6 +278,11 @@ public class GamePlayer : NetworkBehaviour {
 		} 
 	}
 
+	[Command]
+	public void CmdRequestPlayerTrade(string fromPlayer) {
+		
+	}
+
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}
