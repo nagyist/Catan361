@@ -19,7 +19,6 @@ using System;
 // serializable means that the object can be converted into a stream of bytes
 // used for networking purposes
 [Serializable]
-
 // this class is used as the gameboard's sync message
 // it holds information about the map
 public class GameboardSyncMessage {

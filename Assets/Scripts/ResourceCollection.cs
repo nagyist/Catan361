@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 [Serializable]
 public class ResourceCollection
@@ -8,7 +9,16 @@ public class ResourceCollection
 	private Dictionary<string, PlayerResourcesCollection> PlayerResources = new Dictionary<string, PlayerResourcesCollection> ();
 
 	[Serializable]
-	public class PlayerResourcesCollection : Dictionary<StealableType, int> {  }
+	public class PlayerResourcesCollection : Dictionary<StealableType, int> {
+        public PlayerResourcesCollection()
+        {
+
+        }
+        public PlayerResourcesCollection(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+
+        }
+    }
 
 	public void InitPlayerResources(string playerName) {
 		if (PlayerResources.ContainsKey (playerName)) {

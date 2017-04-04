@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 // This is where hacky stuff used for debug goes
-public class Cheats : MonoBehaviour {
+public class Cheats : NetworkBehaviour {
 
     GameObject goldPopup;
 
@@ -25,6 +26,15 @@ public class Cheats : MonoBehaviour {
 		if (Input.GetKey(KeyCode.G))
         {
             goldPopup.SetActive(true);
+        }
+        // Press S for quicksave (only invokes if server) and L for quickload (also server-only)
+        if (Input.GetKey(KeyCode.S) && isServer)
+        {
+            SaveAndLoad.save();
+        }
+        if (Input.GetKey(KeyCode.L) && isServer)
+        {
+            SaveAndLoad.load();
         }
 	}
 }
