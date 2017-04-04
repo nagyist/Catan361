@@ -16,6 +16,9 @@ public class HexGrid : MonoBehaviour {
 	public Dictionary<string, GameObject> harbourCollection;
 	public Dictionary<GameObject, StealableType> harbours;
 
+	public Dictionary<int, int> landNums;
+	public Dictionary<int, int> seaNums;
+
 	private float hexWidth;
 	private float hexHeight;
 
@@ -90,28 +93,175 @@ public class HexGrid : MonoBehaviour {
 		createdGameState.CurrentEdges = new EdgeCollection ();
 		createdGameState.CurrentIntersections = new IntersectionCollection ();
 
+		int numL_2 = 1;
+		int numL_3 = 2;
+		int numL_4 = 2;
+		int numL_5 = 2;
+		int numL_6 = 2;
+		int numL_8 = 2;
+		int numL_9 = 2;
+		int numL_10 = 2;
+		int numL_11 = 2;
+		int numL_12 = 1;
+
+		landNums = new Dictionary <int, int> ();
+
+		landNums.Add(2, numL_2);
+		landNums.Add(3, numL_3);
+		landNums.Add(4, numL_4);
+		landNums.Add(5, numL_5);
+		landNums.Add(6, numL_6);
+		landNums.Add(8, numL_8);
+		landNums.Add(9, numL_9);
+		landNums.Add(10, numL_10);
+		landNums.Add(11, numL_11);
+		landNums.Add(12, numL_12);
+
+		seaNums = new Dictionary <int, int> () ;
+
+		int numW_2 = 1;
+		int numW_3 = 1;
+		int numW_4 = 1;
+		int numW_5 = 1;
+		int numW_6 = 1;
+		int numW_8 = 2;
+		int numW_9 = 2;
+		int numW_10 = 2;
+		int numW_11 = 2;
+
+		seaNums.Add(2, numW_2);
+		seaNums.Add(3, numW_3);
+		seaNums.Add(4, numW_4);
+		seaNums.Add(5, numW_5);
+		seaNums.Add(6, numW_6);
+		seaNums.Add(8, numW_8);
+		seaNums.Add(9, numW_9);
+		seaNums.Add(10, numW_10);
+		seaNums.Add(11, numW_11);
+
+
 		for (int y = 0; y < gridHeight; y++) {
 			for (int x = 0; x < gridWidth; x++) {
 				HexTile refTile = new HexTile ();
 				refTile.Resource = resourceType [Random.Range (1, 21)];
 
+				int randomNumTile1 = Random.Range (2, 7);
+				int randomNumTile2 = Random.Range (8, 13);
+				int randomNumSeaTile1 = Random.Range (2, 7);
+				int randomNumSeaTile2 = Random.Range (8, 12);
+
+				//Land tiles
 				if (x == 3 && y > 2 && y < 6) {
-					if (x % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+					if (y % 2 == 1) {
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
+
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x == 4 && y > 1 && y < 7) {
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0)
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0)
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x == 5 && y > 1 && y < 7 && y != 4) {
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0)
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0)
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x == 5 && y == 4) {
 					refTile.Resource = StealableType.Resource_Fish;
@@ -123,129 +273,473 @@ public class HexGrid : MonoBehaviour {
 
 				} else if (x == 6 && y > 1 && y < 7) {
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0)
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0)
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 
 				} else if (x == 6 && y > 3 && y < 7) {
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0)
+						{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0)
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 
 				} else if (x == 7 && y > 3 && y < 5) {
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
+						if (landNums [randomNumTile1] > 0) {
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						} else if (landNums [randomNumTile2] > 0)
+							{
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
+						if (landNums [randomNumTile2] > 0) {
+							refTile.SelectedNum = randomNumTile2;
+							landNums [randomNumTile2]--;
+						} else if (landNums [randomNumTile1] > 0)
+						{
+							refTile.SelectedNum = randomNumTile1;
+							landNums [randomNumTile1]--;
+						}
+						else {
+							for (int i = 0; i < landNums.Count; i++) {
+								if (landNums [landNums.Keys[i]] != 0) {
+									refTile.SelectedNum = landNums.Keys[i];
+									landNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} 
 
+
 				// Islands
 				else if (x == 9 && y == 6) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
-				} 
-				else if (x == 8 && y == 7) {
+				} else if (x == 8 && y == 7) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
-				}else if (x == 8 && y == 8) {
+				} else if (x == 8 && y == 8) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x == 9 && y == 7) {
+
+					refTile.Resource = resourceType [26];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [26];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [26];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
+
+
+					
 				} else if (x == 9 && y == 5) {
+
+					refTile.Resource = resourceType [26];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [26];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [26];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
+						
+
 				} else if (x == 9 && y == 2) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x == 8 && y == 1) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
 				} else if (x < 4 && x > 1 && y == 8) {
+
+					refTile.Resource = resourceType [Random.Range (1, 21)];
+
 					if (y % 2 == 1) {
-						refTile.SelectedNum = Random.Range (1, 7);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							seaNums [randomNumSeaTile1]--;
+						} else if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					} else {
-						refTile.SelectedNum = Random.Range (8, 13);
-						refTile.Resource = resourceType [Random.Range (1, 21)];
+						if (seaNums [randomNumSeaTile2] > 0) {
+							refTile.SelectedNum = randomNumSeaTile2;
+							seaNums [randomNumSeaTile2]--;
+						} else if (seaNums [randomNumSeaTile1] > 0) {
+							refTile.SelectedNum = randomNumSeaTile1;
+							landNums [randomNumSeaTile1]--;
+						}
+						else {
+							for (int i = 0; i < seaNums.Count; i++) {
+								if (seaNums [seaNums.Keys[i]] != 0) {
+									refTile.SelectedNum = seaNums.Keys[i];
+									seaNums [i]--;
+									continue;
+								}
+							}
+						}
 					}
+
 				}
 
 				//fishing tiles
 				else if (x == 3 && y == 2) {
-					refTile.SelectedNum =  Random.Range (1, 7);
+					refTile.SelectedNum = Random.Range (1, 7);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				} 
-				else if (x == 4 && y == 1) {
-					refTile.SelectedNum =  Random.Range (8, 13);
+				} else if (x == 4 && y == 1) {
+					refTile.SelectedNum = Random.Range (8, 13);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				}
-				else if (x == 7 && y == 3) {
-					refTile.SelectedNum =  Random.Range (1, 7);
+				} else if (x == 7 && y == 3) {
+					refTile.SelectedNum = Random.Range (1, 7);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				}
-				else if (x == 7 && y == 5) {
-					refTile.SelectedNum =  Random.Range (8, 13);
+				} else if (x == 7 && y == 5) {
+					refTile.SelectedNum = Random.Range (8, 13);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				}
-				else if (x == 4 && y == 7) {
-					refTile.SelectedNum =  Random.Range (1, 7);
+				} else if (x == 4 && y == 7) {
+					refTile.SelectedNum = Random.Range (1, 7);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
-				}
-				else if (x == 3 && y == 6) {
-					refTile.SelectedNum =  Random.Range (8, 13);
+				} else if (x == 3 && y == 6) {
+					refTile.SelectedNum = Random.Range (8, 13);
 					//refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
 				}
 
 				// else is water
-				else 
-				{
+				else {
 					refTile.SelectedNum = 0;
 					refTile.IsWater = true;
 				}
