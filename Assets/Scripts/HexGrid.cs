@@ -29,27 +29,7 @@ public class HexGrid : MonoBehaviour {
 		{3, StealableType.Resource_Ore},
 		{4, StealableType.Resource_Brick},
 		{5, StealableType.Resource_Grain},
-		{6, StealableType.Resource_Wool},
-		{7, StealableType.Resource_Lumber},
-		{8, StealableType.Resource_Ore},
-		{9, StealableType.Resource_Brick},
-		{10, StealableType.Resource_Grain},
-		{11, StealableType.Resource_Wool},
-		{12, StealableType.Resource_Lumber},
-		{13, StealableType.Resource_Ore},
-		{14, StealableType.Resource_Brick},
-		{15, StealableType.Resource_Grain},
-		{16, StealableType.Resource_Wool},
-		{17, StealableType.Resource_Lumber},
-		{18, StealableType.Resource_Ore},
-		{19, StealableType.Resource_Brick},
-		{20, StealableType.Resource_Grain},
-		{21, StealableType.Resource_Gold},
-		{22, StealableType.Resource_Lumber},
-		{23, StealableType.Resource_Ore},
-		{24, StealableType.Resource_Brick},
-		{25, StealableType.Resource_Grain},
-		{26, StealableType.Resource_Gold}
+		{6, StealableType.Resource_Gold}
 	};
 
 	private void setHexSizes () 
@@ -139,11 +119,47 @@ public class HexGrid : MonoBehaviour {
 		seaNums.Add(10, numW_10);
 		seaNums.Add(11, numW_11);
 
+		Dictionary <int, int> resourceLandTiles = new Dictionary <int, int> () 
+		{
+			/*
+			{ 1, StealableType.Resource_Wool },
+			{ 2, StealableType.Resource_Lumber },
+			{ 3, StealableType.Resource_Ore },
+			{ 4, StealableType.Resource_Brick },
+			{ 5, StealableType.Resource_Grain },
+			*/
+
+			{ 1, 4 },
+			{ 2, 4 },
+			{ 3, 3 },
+			{ 4, 3 },
+			{ 5, 4 },
+		};
+
+		Dictionary <int, int> resourceSeaTiles = new Dictionary <int, int> () 
+		{
+			/*
+			{ 1, StealableType.Resource_Wool },
+			{ 2, StealableType.Resource_Lumber },
+			{ 3, StealableType.Resource_Ore },
+			{ 4, StealableType.Resource_Brick },
+			{ 5, StealableType.Resource_Grain },
+			*/
+
+			{ 1, 1 },
+			{ 2, 1 },
+			{ 3, 2 },
+			{ 4, 2 },
+			{ 5, 1 },
+		};
+
 
 		for (int y = 0; y < gridHeight; y++) {
 			for (int x = 0; x < gridWidth; x++) {
 				HexTile refTile = new HexTile ();
-				refTile.Resource = resourceType [Random.Range (1, 21)];
+
+				int resourceTypeNum = Random.Range (1, 6);
+				//refTile.Resource = resourceType [Random.Range (1, 6)];
 
 				int randomNumTile1 = Random.Range (2, 7);
 				int randomNumTile2 = Random.Range (8, 13);
@@ -153,6 +169,30 @@ public class HexGrid : MonoBehaviour {
 				//Land tiles
 				if (x == 3 && y > 2 && y < 6) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+						
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -218,6 +258,30 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 4 && y > 1 && y < 7) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -283,6 +347,30 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -357,6 +445,30 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 6 && y > 1 && y < 7) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -422,6 +534,30 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 6 && y > 3 && y < 7) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -487,6 +623,30 @@ public class HexGrid : MonoBehaviour {
 				} 
 				else if (x == 7 && y > 3 && y < 5) 
 				{
+					if (resourceLandTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceLandTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceLandTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceLandTiles [entry.Key]--;
+						}
+					}
+
 					if (y % 2 == 1) 
 					{
 						if (landNums [randomNumTile1] > 0) 
@@ -556,7 +716,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 9 && y == 6) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
@@ -626,7 +808,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 8 && y == 7) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
@@ -696,7 +900,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 8 && y == 8) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
@@ -766,7 +992,7 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 9 && y == 7) 
 				{
 
-					refTile.Resource = resourceType [26];
+					refTile.Resource = resourceType [6];
 
 					if (y % 2 == 1) 
 					{
@@ -836,7 +1062,7 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 9 && y == 5) 
 				{
 
-					refTile.Resource = resourceType [26];
+					refTile.Resource = resourceType [6];
 
 					if (y % 2 == 1) 
 					{
@@ -906,7 +1132,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 9 && y == 2) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
@@ -976,7 +1224,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 8 && y == 1) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
@@ -1046,7 +1316,29 @@ public class HexGrid : MonoBehaviour {
 				else if (x < 4 && x > 1 && y == 8) 
 				{
 
-					refTile.Resource = resourceType [Random.Range (1, 21)];
+					if (resourceSeaTiles [resourceTypeNum] > 0) 
+					{
+						refTile.Resource = resourceType [resourceTypeNum];
+						resourceSeaTiles [resourceTypeNum]--;
+					} 
+					else 
+					{
+						int changeCount = 1;
+						Dictionary <int, int> keysToNuke = new Dictionary<int, int> ();
+						foreach (KeyValuePair<int, int> entry in resourceSeaTiles) 
+						{
+							if (entry.Value != 0 && changeCount > 0) 
+							{
+								refTile.Resource = resourceType [entry.Key];
+								keysToNuke.Add(entry.Key, entry.Value);
+								changeCount--;
+							}
+						}
+						foreach (KeyValuePair <int, int> entry in keysToNuke)
+						{
+							resourceSeaTiles [entry.Key]--;
+						}
+					}
 
 					if (y % 2 == 1) 
 					{
