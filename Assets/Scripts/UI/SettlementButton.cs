@@ -13,10 +13,19 @@ public class SettlementButton : MonoBehaviour
 		if (localPlayer.selectedUIEdge != null) { // build a road
 			UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
 			selectedUIEdge.ConstructRoad ();
-		} else if(localPlayer.selectedUIIntersection != null) { // build a settlement
-			UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
-			selectedUIIntersection.CreateSettlement();
-		}
+		} else if(localPlayer.selectedUIIntersection != null) {
+            UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
+            Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
+                (new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
+            
+            if (intersection.unit == null)
+                selectedUIIntersection.CreateSettlement();
+            if (intersection.unit.GetType() == typeof(Knight))
+                selectedUIIntersection.UpgradeKnight();
+            else
+                selectedUIIntersection.CreateSettlement();
+
+        }
         
     }
 
@@ -66,11 +75,17 @@ public class SettlementButton : MonoBehaviour
 				GetComponentInChildren<Text>().text = "BUILD SETTLEMENT";
 				return;
 			}
+            else if (intersection.unit.GetType() == typeof(Knight))
+            {
+                GetComponent<Button>().enabled = true;
+                GetComponentInChildren<Text>().text = "UPGRADE KNIGHT";
+                return;
+            }
 			// if someone already owns the intersection
 			else
 			{
 				GetComponent<Button>().enabled = false;
-				GetComponentInChildren<Text>().text = "INTERSECTION OWNED";
+				GetComponentInChildren<Text>().text = "INTERSECTION NOT OWNED";
 				return;
 
 			}

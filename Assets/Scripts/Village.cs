@@ -7,7 +7,7 @@ using UnityEngine;
 public class Village : IntersectionUnit {
 
     public VillageKind myKind;
-    public bool cityWall;
+    public bool cityWall = false;
 
     public enum VillageKind
     {
@@ -21,7 +21,6 @@ public class Village : IntersectionUnit {
     public Village()
     {
         myKind = VillageKind.Settlement;
-        cityWall = false;
     }
 
 }
