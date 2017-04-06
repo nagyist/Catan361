@@ -307,8 +307,7 @@ public class UIIntersection : MonoBehaviour
         localPlayer.CmdConsumeResources(requiredRes);
 
 
-        // here we're supposed to call the cmd function
-        // not created yet
+        // call the cmd function for hiring a knight 
         GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdHireKnight(
             SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
         );
@@ -320,7 +319,7 @@ public class UIIntersection : MonoBehaviour
         // local player has now placed knight
         localPlayer.placedKnight = true;
         // reset intersection selection
-        intersection.Owner = localPlayerName;
+        //intersection.Owner = localPlayerName;
         localPlayer.selectedUIIntersection = null;
         IsSelected = false;
 

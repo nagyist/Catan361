@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatusButtonScript : MonoBehaviour {
+/*  Unit button 2 is used for:
+ *      hiring knights on empty intersections
+ *      activating knights
+ *      adding city walls 
+ */
+
+public class UnitButton2 : MonoBehaviour {
 
     string localPlayerName;
 
