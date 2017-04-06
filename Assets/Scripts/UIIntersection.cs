@@ -172,16 +172,16 @@ public class UIIntersection : MonoBehaviour
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
             Debug.Log("Does not have enough resource to upgrade knight");
-            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
+            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resources."));
             return;
         }
         localPlayer.CmdConsumeResources(requiredRes);
-        
+
         knight.active = true;
         StartCoroutine(GameManager.GUI.ShowMessage("You have activated your knight."));
         localPlayer.CmdActivateKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-        
+
         return;
     }
 
@@ -257,7 +257,7 @@ public class UIIntersection : MonoBehaviour
         localPlayer.CmdConsumeResources(requiredRes);
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
         localPlayer.CmdUpgradeKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-        
+
         return;
 
     }
@@ -300,11 +300,11 @@ public class UIIntersection : MonoBehaviour
             return;
         }
         localPlayer.CmdConsumeResources(requiredRes);
-        
-        
+
+
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a knight."));
         localPlayer.CmdHireKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
-        
+
         return;
     }
 
@@ -337,7 +337,7 @@ public class UIIntersection : MonoBehaviour
             StartCoroutine(GameManager.GUI.ShowMessage("City already has a city wall."));
             return;
         }
-        
+
 
         // check resources
         Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
@@ -350,7 +350,7 @@ public class UIIntersection : MonoBehaviour
         }
         localPlayer.CmdConsumeResources(requiredRes);
 
-        
+
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));
         localPlayer.CmdBuildCityWall(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
@@ -464,7 +464,6 @@ public class UIIntersection : MonoBehaviour
             // show yellow if selected
             if (IsSelected)
             {
-                intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ore_f_b_03");
                 intersectionIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
                 return;
             }

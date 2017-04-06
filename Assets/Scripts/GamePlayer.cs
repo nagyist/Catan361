@@ -113,9 +113,25 @@ public class GamePlayer : NetworkBehaviour {
 			CmdShowMessage (this.myName + " turn begins.", 2.0f);
 			GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (this.myName + " took his turn.");
 		}
+		
 		this.placedKnight = false;
+
+        // go through all the intersections
+        foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys)
+        {
+            Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections[key];
+            // check to see if it isn't empty
+            if (i.Owner == myName && i.unit.GetType() == typeof(Knight))
+            {
+                Knight k = (Knight)i.unit;
+                k.hasBeenPromotedThisTurn = false;
+                k.hasMovedThisTurn = false;
+            }
+        }
+
+
         // synchronize game turns
-		GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();
+        GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();
 	}
 
     // command function for ending a player turn
@@ -130,9 +146,10 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
     
+	// command function for building settlement
     [Command]
-	public void CmdBuildSettlement(byte[] vec3sSerialized) {
-
+	public void CmdBuildSettlement(byte[] vec3sSerialized) 
+	{
 		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
 		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
@@ -151,15 +168,15 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (intersection));
 	}
 
+	// command for building a city wall
     [Command]
     public void CmdBuildCityWall(byte[] vec3sSerialized)
     {
-
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
-        // build a new village
+        // add city wall to village
         Village village = (Village)intersection.unit;
         village.cityWall = true;
         numCityWalls++;
@@ -170,10 +187,10 @@ public class GamePlayer : NetworkBehaviour {
         GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
     }
 
+	// command for hiring a knight
     [Command]
     public void CmdHireKnight(byte[] vec3sSerialized)
     {
-        // unserialize the argument
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
 
@@ -195,10 +212,10 @@ public class GamePlayer : NetworkBehaviour {
     [Command]
     public void CmdActivateKnight(byte[] vec3sSerialized)
     {
-        // unserialize the argument
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
         
+		// activate the knight
         Knight knight = (Knight)intersection.unit;
         knight.active = true;
         resetBuildSelection();
@@ -217,8 +234,10 @@ public class GamePlayer : NetworkBehaviour {
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
 
+		// upgrade the knight
         Knight knight = (Knight)intersection.unit;
         knight.level++;
+        knight.hasBeenPromotedThisTurn = true;
         resetBuildSelection();
 
         // set and publish the intersection
@@ -229,11 +248,12 @@ public class GamePlayer : NetworkBehaviour {
 
     // command function for upgrading a settlement 
 	[Command]
-	public void CmdUpgradeSettlement(byte[] vec3sSerialized) {
-
+	public void CmdUpgradeSettlement(byte[] vec3sSerialized) 
+	{
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
 		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
 
+		// upgrade the settlement to a city
         Village village = (Village)(intersection.unit);
         village.myKind = Village.VillageKind.City;
         resetBuildSelection();
@@ -245,10 +265,9 @@ public class GamePlayer : NetworkBehaviour {
 
     // command function for building a road
     [Command]
-	public void CmdBuildRoad(byte[] vec3Serialized) {
-        // get the vector position where the player has clicked
+	public void CmdBuildRoad(byte[] vec3Serialized) 
+	{
 		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3Serialized) as Vec3[];
-        // get the edge at that position
 		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (vec3Pos [0], vec3Pos [1]);
 
         // create the road on the edge
@@ -256,9 +275,8 @@ public class GamePlayer : NetworkBehaviour {
 		currentEdge.IsOwned = true;
         resetBuildSelection();
 
-        // add the adge to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
-        // publish the edge though an rpc function call
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
 		GameManager.Instance.GetCurrentGameState ().RpcPublishEdge (vec3Serialized, SerializationUtils.ObjectToByteArray (currentEdge));
 	}
 
