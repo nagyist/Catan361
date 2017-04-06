@@ -17,7 +17,7 @@ public class UIHex : MonoBehaviour {
 		{StealableType.Resource_Lumber, new int[] { 16, 17, 18, 19 }},
 		{StealableType.Resource_Ore, new int[] { 8, 11 }},
 		{StealableType.Resource_Brick, new int [] { 12, 13, 14, 15 }},
-		{StealableType.Resource_Grain, new int[] { 1, 2, 3 }},
+		{StealableType.Resource_Grain, new int[] { 24 }},
 		{StealableType.Resource_Fish, new int[] { 4 } },
 		{StealableType.Resource_Gold, new int[] { 20, 21 }}
 	};
