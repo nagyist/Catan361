@@ -244,7 +244,6 @@ public class UIIntersection : MonoBehaviour
             // update local player's number of knights
             localPlayer.numStrongKnights--;
             localPlayer.numMightyKnights++;
-            localPlayer.CmdConsumeResources(requiredRes);
         }
         else if (knight.level == 1)
         {
@@ -257,14 +256,14 @@ public class UIIntersection : MonoBehaviour
             // update local player's number of knights
             localPlayer.numBasicKnights--;
             localPlayer.numStrongKnights++;
-            localPlayer.CmdConsumeResources(requiredRes);
         }
+
         localPlayer.CmdConsumeResources(requiredRes);
+        StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
         GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeKnight(
             SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
         );
-
-        StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
+        
         return;
 
     }
