@@ -262,6 +262,7 @@ public class UIIntersection : MonoBehaviour
         // check for setup phase
         if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
         {
+            Debug.Log("Can't place knight in setup phase.");
             StartCoroutine(GameManager.GUI.ShowMessage("Can't place knight in setup phase."));
             return;
         }
