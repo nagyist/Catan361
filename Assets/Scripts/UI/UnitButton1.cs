@@ -15,29 +15,33 @@ public class UnitButton1 : MonoBehaviour
 
     public void ClickBuild()
     {
-		GamePlayer localPlayer = getLocalPlayer ();
-		if (localPlayer.selectedUIEdge != null) { // build a road
-			UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
-			selectedUIEdge.ConstructRoad ();
-		} else if(localPlayer.selectedUIIntersection != null) {
+        GamePlayer localPlayer = getLocalPlayer();
+        if (localPlayer.selectedUIEdge != null)
+        { // build a road
+            UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
+            selectedUIEdge.ConstructRoad();
+        }
+        else if (localPlayer.selectedUIIntersection != null)
+        {
             UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
             Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
                 (new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
-            
+
             if (intersection.unit == null)
                 selectedUIIntersection.CreateSettlement();
             else if (intersection.unit.GetType() == typeof(Knight))
                 selectedUIIntersection.UpgradeKnight();
             else
-                selectedUIIntersection.CreateSettlement();
+                selectedUIIntersection.UpgradeSettlement();
 
         }
-        
+
     }
 
-	private GamePlayer getLocalPlayer() {
-		return GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-	}
+    private GamePlayer getLocalPlayer()
+    {
+        return GameManager.LocalPlayer.GetComponent<GamePlayer>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -49,61 +53,78 @@ public class UnitButton1 : MonoBehaviour
 
         if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
         {
-			GetComponent<Button>().enabled = false;
-			GetComponentInChildren<Text>().text = "NOT YOUR TURN";
-			return;
+            GetComponent<Button>().enabled = false;
+            GetComponentInChildren<Text>().text = "NOT YOUR TURN";
+            return;
         }
 
-		GamePlayer localPlayer = getLocalPlayer();
+        GamePlayer localPlayer = getLocalPlayer();
 
-		if (localPlayer.selectedUIEdge != null) {
-			UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
-			Edge edge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (selectedUIEdge.HexPos1, selectedUIEdge.HexPos2);
+        if (localPlayer.selectedUIEdge != null)
+        {
+            UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
+            Edge edge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(selectedUIEdge.HexPos1, selectedUIEdge.HexPos2);
 
-			if (edge.IsOwned) {
-				GetComponent<Button>().enabled = false;
-				GetComponentInChildren<Text>().text = "ROAD OWNED";
-				return;
-			}
+            if (edge.IsOwned)
+            {
+                GetComponent<Button>().enabled = false;
+                GetComponentInChildren<Text>().text = "ROAD OWNED";
+                return;
+            }
 
-			GetComponent<Button>().enabled = true;
-			if (edge.IsShip ()) {
-				GetComponentInChildren<Text>().text = "BUILD SHIP";
-			} else {
-				GetComponentInChildren<Text>().text = "BUILD ROAD";
-			}
-			return;
-		} else if (localPlayer.selectedUIIntersection != null) {
-			UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
-			Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
-				(new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
+            GetComponent<Button>().enabled = true;
+            if (edge.IsShip())
+            {
+                GetComponentInChildren<Text>().text = "BUILD SHIP";
+            }
+            else
+            {
+                GetComponentInChildren<Text>().text = "BUILD ROAD";
+            }
+            return;
+        }
+        else if (localPlayer.selectedUIIntersection != null)
+        {
+            UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
+            Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
+                (new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
 
-			// if intersection is empty
-			if (intersection.unit == null)
-			{
-				GetComponent<Button>().enabled = true;
-				GetComponentInChildren<Text>().text = "BUILD SETTLEMENT";
-				return;
-			}
+            
+
+            // if intersection is empty
+            if (intersection.unit == null)
+            {
+                GetComponent<Button>().enabled = true;
+                GetComponentInChildren<Text>().text = "BUILD SETTLEMENT";
+                return;
+            }
+			else if (intersection.Owner != localPlayer.myName)
+            {
+                GetComponent<Button>().enabled = false;
+                GetComponentInChildren<Text>().text = "INTERSECTION NOT OWNED";
+                return;
+            }
             else if (intersection.unit.GetType() == typeof(Knight))
             {
                 GetComponent<Button>().enabled = true;
                 GetComponentInChildren<Text>().text = "UPGRADE KNIGHT";
                 return;
             }
-			// if someone already owns the intersection
-			else
-			{
-				GetComponent<Button>().enabled = false;
-				GetComponentInChildren<Text>().text = "INTERSECTION NOT OWNED";
-				return;
+            // if someone already owns the intersection
+            else
+            {
+                GetComponent<Button>().enabled = true;
+                GetComponentInChildren<Text>().text = "UPGRADE SETTLEMENT";
+                return;
 
-			}
-		} else {
-			GetComponent<Button>().enabled = false;
-			GetComponentInChildren<Text>().text = "NO BUILD SELECTION";
-			return;
-		}
+            }
+        }
+        else
+        {
+            GetComponent<Button>().enabled = false;
+            GetComponentInChildren<Text>().text = "NO BUILD SELECTION";
+            return;
+        }
 
 
     }

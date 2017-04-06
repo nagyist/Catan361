@@ -28,7 +28,7 @@ public class UnitButton2 : MonoBehaviour {
         else if (intersection.unit.GetType() == typeof(Knight))
             selectedUIIntersection.ActivateKnight();
         else if (intersection.unit.GetType() == typeof(Village))
-            selectedUIIntersection.BuiltCityWall();
+            selectedUIIntersection.BuildCityWall();
 
     }
 

@@ -130,154 +130,118 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
     
-
-    // command function for building a settlement 
     [Command]
 	public void CmdBuildSettlement(byte[] vec3sSerialized) {
 
-        Village village = new Village();
-
-        // get the position where the player has clicked
 		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-        // get the intersection located at that at that intersection
-		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
-
-
-        // if in round two, place city, otherwise place settlement
+		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
+
+        // build a new village
+        Village village = new Village();
+        placedSettlement = true;
         if (roundCount == 1)
-        {
-            // create the settlement at the intersection
             village.myKind = Village.VillageKind.City;
-            i.Owner = this.myName;
-            i.unit = village;
-        } 
-        else
-        {
-            // create the settlement at the intersection
-            village.myKind = Village.VillageKind.Settlement;
-            i.Owner = this.myName;
-            i.unit = village;
-        }
-	
+        intersection.Owner = myName;
+        intersection.unit = village;
+        resetBuildSelection();
 
-        // add the intersection to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-        // publish the intersection through an rpc function call
-		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, intersection);
+		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (intersection));
 	}
 
-	// command function for hiring a knight  
-	[Command]
-	public void CmdHireKnight(byte[] vec3sSerialized) {
+    [Command]
+    public void CmdBuildCityWall(byte[] vec3sSerialized)
+    {
 
-		// create a new knight
+        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+        int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
+
+        // build a new village
+        Village village = (Village)intersection.unit;
+        village.cityWall = true;
+        numCityWalls++;
+        resetBuildSelection();
+
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+    }
+
+    [Command]
+    public void CmdHireKnight(byte[] vec3sSerialized)
+    {
+        // unserialize the argument
+        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+
+        // hire a knight
         Knight knight = new Knight();
+        numBasicKnights++;
+        placedKnight = true;
+        intersection.unit = knight;
+        intersection.Owner = myName;
+        resetBuildSelection();
 
-        // get the position where the player has clicked
-		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-        // get the intersection located at that at that intersection
-		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
 
-		// add the owner and the new knight to the intersection
-		i.Owner = this.myName;
-		i.unit = knight;
-	
-        // add the intersection to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-        // publish the intersection through an rpc function call
-		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
-	}
+    }
 
     // command function for activating a knight
     [Command]
     public void CmdActivateKnight(byte[] vec3sSerialized)
     {
-     
-        // get the position where the player has clicked
+        // unserialize the argument
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
-        // get the intersection located at that at that intersection
-        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
-
-        Knight knight = (Knight)(i.unit);
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+        
+        Knight knight = (Knight)intersection.unit;
         knight.active = true;
-
-        // add the intersection to the game manager
-        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, i);
-        // publish the intersection through an rpc function call
-        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(i));
+        resetBuildSelection();
     
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+
     }
 
-    // command function for hiring a knight  
+    // command function for activating a knight
     [Command]
-	public void CmdUpgradeKnight(byte[] vec3sSerialized) {
+    public void CmdUpgradeKnight(byte[] vec3sSerialized)
+    {
+        // unserialize the argument
+        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
 
-        // get the position where the player has clicked
-		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-        // get the intersection located at that at that intersection
-		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
+        Knight knight = (Knight)intersection.unit;
+        knight.level++;
+        resetBuildSelection();
 
-		// increment the knight level
-		Knight knight = (Knight)(i.unit);
-		knight.level++;
-	
-        // add the intersection to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-        // publish the intersection through an rpc function call
-		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
-	}
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+
+    }
 
     // command function for upgrading a settlement 
 	[Command]
 	public void CmdUpgradeSettlement(byte[] vec3sSerialized) {
-        // get the vector position where the player has clicked
+
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-        // get the intersecion at that postition
-		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
+		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
 
-        // increment the settlement count
-        if (i.unit.GetType() == typeof(Village))
-        {
-            Village village = (Village)(i.unit);
-            if (village.myKind == Village.VillageKind.Settlement)
-            {
-                village.myKind = Village.VillageKind.City;
-            }
-            else
-            {
-                Debug.Log("The village is not a settlement, it might have been upgrade already.");
-            }
-                
-        }
+        Village village = (Village)(intersection.unit);
+        village.myKind = Village.VillageKind.City;
+        resetBuildSelection();
 
-        // add the new intersetcion to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-        // publish the intersection through an rpc function call
-		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
+        // set and publish the intersection
+		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, intersection);
+		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (intersection));
 	}
-
-    // command function for upgrading a settlement 
-    [Command]
-    public void CmdBuildCityWall(byte[] vec3sSerialized)
-    {
-        // get the vector position where the player has clicked
-        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
-        // get the intersecion at that postition
-        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
-
-        if (i.unit == null || i.unit.GetType() != typeof(Village))
-            return;
-
-        Village v = (Village)(i.unit);
-        v.cityWall = true;
-      
-
-        // add the new intersetcion to the game manager
-        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, i);
-        // publish the intersection through an rpc function call
-        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(i));
-    }
 
     // command function for building a road
     [Command]
@@ -290,6 +254,7 @@ public class GamePlayer : NetworkBehaviour {
         // create the road on the edge
 		currentEdge.Owner = this.myName;
 		currentEdge.IsOwned = true;
+        resetBuildSelection();
 
         // add the adge to the game manager
 		GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
