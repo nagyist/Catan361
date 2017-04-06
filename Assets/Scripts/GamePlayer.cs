@@ -10,15 +10,22 @@ public class GamePlayer : NetworkBehaviour {
     // initialize some variables
     public string myName;
     public Color myColor;
+
+    // vars to check if the player has placed anything during the current turn
     public bool placedSettlement = false;
     public bool placedRoad = false;
 	public bool placedKnight = false;
+
+    // player can have maximum of 3 basic, strong, might knights and city walls each
 	public int numBasicKnights = 0;
 	public int numStrongKnights = 0;
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
-	public bool hasFortress = false;
 
+    // boolean used to represent check if the player has the following city improvements
+	public bool hasFortress = false;    
+
+    // vars to hold to player's selection depending on what the player clicks on 
     public UIIntersection selectedUIIntersection = null;
 	public UIEdge selectedUIEdge = null;
 
@@ -41,6 +48,7 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.SetLocalPlayer (gameObject);
 	}
 
+    // function used to reset the player's selection
 	private void resetBuildSelection() {
 		if (this.selectedUIIntersection != null) {
 			this.selectedUIIntersection.IsSelected = false;
@@ -53,13 +61,14 @@ public class GamePlayer : NetworkBehaviour {
 		}
 	}
 
+
+    // functions to add a player's game selection
 	public void SetBuildSelection(UIIntersection intersection) {
 		resetBuildSelection ();
 
 		this.selectedUIIntersection = intersection;
 		intersection.IsSelected = true;
 	}
-
 	public void SetBuildSelection(UIEdge edge) {
 		resetBuildSelection ();
 
@@ -67,6 +76,7 @@ public class GamePlayer : NetworkBehaviour {
 		edge.IsSelected = true;
 	}
 
+    // getter for player's resources
 	public ResourceCollection.PlayerResourcesCollection GetPlayerResources() {
 		return GameManager.Instance.GetCurrentGameState ().CurrentResources.GetPlayerResources (myName);
 	}
@@ -97,15 +107,17 @@ public class GamePlayer : NetworkBehaviour {
 		}
 	}
 
-	[Command]
-	public void CmdShowMessage(string message, float delay) {
-		GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage (message, delay);
-	}
-
     /* [Command] tag means this is a command function
      * Command functions are called form the client and run on the server
      * Function name must start with Cmd
      */
+     // command to show a message to everyone
+    [Command]
+	public void CmdShowMessage(string message, float delay) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage (message, delay);
+	}
+
+    // command to take a turn
 	[Command]
 	public void CmdTakeTurn() {
 		// make sure that it is the current player turn
@@ -171,23 +183,57 @@ public class GamePlayer : NetworkBehaviour {
 	[Command]
 	public void CmdHireKnight(byte[] vec3sSerialized) {
 
-		// create a new knight
+        // transform argument into intersection
+        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
+        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+
+        // check for non-empty intersection
+        if (i.unit != null)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Intersection already contains a " + i.unit.GetType().ToString() +"."));
+            return;
+        }
+        // check for max number of basic knights 
+        else if (numBasicKnights >= 2)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("You already have the maximum number of basic knights"));
+            return;
+        }
+        // check if local player has already placed knight 
+        else if (placedKnight)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("You already placed a knight during your turn"));
+            return;
+        }
+
+
+        // check resources
+        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+            {StealableType.Resource_Ore, 1},
+            {StealableType.Resource_Wool, 1},
+        };
+        if (!HasEnoughResources(requiredRes))
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Not enough resources."));
+            return;
+        }
+
+        // hire a basic knight
+        CmdConsumeResources(requiredRes);
         Knight knight = new Knight();
-
-        // get the position where the player has clicked
-		Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-        // get the intersection located at that at that intersection
-		Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
-
-		// add the owner and the new knight to the intersection
 		i.Owner = this.myName;
 		i.unit = knight;
-	
-        // add the intersection to the game manager
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
-        // publish the intersection through an rpc function call
+        numBasicKnights++;
+        placedKnight = true;
+        resetBuildSelection();
+        StartCoroutine(GameManager.GUI.ShowMessage("You have hired a knight."));
+
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, i);
 		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (i));
-	}
+
+        return;
+    }
 
     // command function for activating a knight
     [Command]
@@ -264,19 +310,72 @@ public class GamePlayer : NetworkBehaviour {
         // get the vector position where the player has clicked
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         // get the intersecion at that postition
-        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
 
-        if (i.unit == null || i.unit.GetType() != typeof(Village))
-            return;
+        // check to see if there's currently a unit on the intersection
+        if (intersection.unit != null)
+        {
+            if (intersection.Owner != myName)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("You do not own this intersection."));
+                return;
+            }
+            // check for non-village unit
+            else if (intersection.unit.GetType() != typeof(Village))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("The intersection contains a knight."));
+                return;
+            }
+            // check for max number of walls 
+            else if (numCityWalls >= 3)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("You already have 3 city walls."));
+                return;
+            }
 
-        Village v = (Village)(i.unit);
-        v.cityWall = true;
-      
+            Village village = (Village)intersection.unit;
+            // if the player's village is a settlement
+            if (village.myKind == Village.VillageKind.Settlement)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Settlements cannot have a city wall."));
+                return;
+            }
+            else if (village.cityWall)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("City already has a city wall."));
+                return;
+            }
+            else
+            {
+                // check for resources
+                Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+                        {StealableType.Resource_Brick, 2},
+                    };
+                if (!HasEnoughResources(requiredRes))
+                {
+                    Debug.Log("Does not have enough resource to upgrade to city");
+                    return;
+                }
 
-        // add the new intersetcion to the game manager
-        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, i);
-        // publish the intersection through an rpc function call
-        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(i));
+                // build city walls
+                CmdConsumeResources(requiredRes);
+                village.cityWall = true;
+                numCityWalls++;
+                resetBuildSelection();
+                StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));           
+
+                // set and publish the intersection         
+                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+
+                return;
+            }
+            
+        }
+       
+        StartCoroutine(GameManager.GUI.ShowMessage("You have selected an empty intersection."));
+        return;
+        
     }
 
     // command function for building a road
