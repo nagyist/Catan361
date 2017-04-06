@@ -157,8 +157,6 @@ public class UIIntersection : MonoBehaviour
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-        
-
         Knight knight = (Knight)intersection.unit;
         if (knight.active)
         {
@@ -181,9 +179,7 @@ public class UIIntersection : MonoBehaviour
         
         knight.active = true;
         StartCoroutine(GameManager.GUI.ShowMessage("You have activated your knight."));
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdActivateKnight(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdActivateKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         
         return;
@@ -260,9 +256,7 @@ public class UIIntersection : MonoBehaviour
 
         localPlayer.CmdConsumeResources(requiredRes);
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeKnight(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdUpgradeKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
         
         return;
 
@@ -309,9 +303,7 @@ public class UIIntersection : MonoBehaviour
         
         
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a knight."));
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdHireKnight(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdHireKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
         
         return;
     }
@@ -360,12 +352,9 @@ public class UIIntersection : MonoBehaviour
 
         
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdBuildCityWall(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdBuildCityWall(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
-        
     }
 
     public void CreateSettlement()
@@ -406,9 +395,7 @@ public class UIIntersection : MonoBehaviour
             StartCoroutine(GameManager.GUI.ShowMessage("You have placed a settlement."));
 
         // update the intersection
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdBuildSettlement(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdBuildSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
     }
@@ -453,9 +440,7 @@ public class UIIntersection : MonoBehaviour
         }
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a settlement."));
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeSettlement(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
+        localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
     }
