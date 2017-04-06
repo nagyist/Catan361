@@ -113,7 +113,7 @@ public class GamePlayer : NetworkBehaviour {
 			CmdShowMessage (this.myName + " turn begins.", 2.0f);
 			GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (this.myName + " took his turn.");
 		}
-		
+
 		this.placedKnight = false;
 
         // go through all the intersections
@@ -161,6 +161,7 @@ public class GamePlayer : NetworkBehaviour {
             village.myKind = Village.VillageKind.City;
         intersection.Owner = myName;
         intersection.unit = village;
+        this.placedSettlement = true;
         resetBuildSelection();
 
         // set and publish the intersection
@@ -179,7 +180,24 @@ public class GamePlayer : NetworkBehaviour {
         // add city wall to village
         Village village = (Village)intersection.unit;
         village.cityWall = true;
-        numCityWalls++;
+        this.numCityWalls++;
+        resetBuildSelection();
+
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+    }
+
+    // command function for upgrading a settlement 
+    [Command]
+    public void CmdUpgradeSettlement(byte[] vec3sSerialized)
+    {
+        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
+
+        // upgrade the settlement to a city
+        Village village = (Village)(intersection.unit);
+        village.myKind = Village.VillageKind.City;
         resetBuildSelection();
 
         // set and publish the intersection
@@ -245,23 +263,6 @@ public class GamePlayer : NetworkBehaviour {
         GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
 
     }
-
-    // command function for upgrading a settlement 
-	[Command]
-	public void CmdUpgradeSettlement(byte[] vec3sSerialized) 
-	{
-        Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject (vec3sSerialized) as Vec3[];
-		Intersection intersection = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.getIntersection (new List<Vec3> (vec3Pos));
-
-		// upgrade the settlement to a city
-        Village village = (Village)(intersection.unit);
-        village.myKind = Village.VillageKind.City;
-        resetBuildSelection();
-
-        // set and publish the intersection
-		GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, intersection);
-		GameManager.Instance.GetCurrentGameState ().RpcPublishIntersection (vec3sSerialized, SerializationUtils.ObjectToByteArray (intersection));
-	}
 
     // command function for building a road
     [Command]

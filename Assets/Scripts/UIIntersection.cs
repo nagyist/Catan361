@@ -371,6 +371,12 @@ public class UIIntersection : MonoBehaviour
         bool setup = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
+        if (setup && localPlayer.placedSettlement)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("You have already placed a settlment."));
+            return;
+        }
+
         // only consume resources if not in setup phase
         if (!setup)
         {
@@ -432,14 +438,14 @@ public class UIIntersection : MonoBehaviour
 
             if (!localPlayer.HasEnoughResources(requiredRes))
             {
-                Debug.Log("Does not have enough resource to upgrade to city");
+                StartCoroutine(GameManager.GUI.ShowMessage("You do not have enough resources."));
                 return;
             }
 
             localPlayer.CmdConsumeResources(requiredRes);
         }
 
-        StartCoroutine(GameManager.GUI.ShowMessage("You have placed a settlement."));
+        StartCoroutine(GameManager.GUI.ShowMessage("You have upgraded your settlement."));
         localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
