@@ -18,19 +18,17 @@ public class UnitButton2 : MonoBehaviour {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
-  
 
         // call the upgrade or hire function depending on the level of the knight
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
                 (new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
 
         if (intersection.unit == null)
-            if (selectedUIIntersection.ReadyToBuild())
-                localPlayer.CmdHireKnight( SerializationUtils.ObjectToByteArray(new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
-            else if (intersection.unit.GetType() == typeof(Knight))
+            selectedUIIntersection.HireKnight();
+        else if (intersection.unit.GetType() == typeof(Knight))
             selectedUIIntersection.ActivateKnight();
         else if (intersection.unit.GetType() == typeof(Village))
-                localPlayer.CmdBuildCityWall(SerializationUtils.ObjectToByteArray(new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
+            selectedUIIntersection.BuiltCityWall();
 
     }
 
