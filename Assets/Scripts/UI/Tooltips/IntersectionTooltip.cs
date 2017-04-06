@@ -30,7 +30,19 @@ public class IntersectionTooltip : MonoBehaviour {
             {
                 Village ReferencedVillage = (Village)(ReferencedIntersection.unit);
                 // change the text to the kind of setlement
-                txtIntersectionType.GetComponent<Text>().text = ReferencedVillage.myKind.ToString();
+                if (ReferencedVillage.cityWall)
+                    txtIntersectionType.GetComponent<Text>().text = "Walled " + ReferencedVillage.myKind.ToString();
+                else
+                    txtIntersectionType.GetComponent<Text>().text = ReferencedVillage.myKind.ToString();
+            }
+            else if (ReferencedIntersection.unit.GetType() == typeof(Knight))
+            {
+                Knight refKnight = (Knight)(ReferencedIntersection.unit);
+                if (refKnight.active)
+                    txtIntersectionType.GetComponent<Text>().text = "Active Knight Level " + refKnight.level;
+                else
+                    txtIntersectionType.GetComponent<Text>().text = "Inactive Knight Level " + refKnight.level;
+
             }
             // add the player's name
             txtIntersectionOwner.GetComponent<Text>().text = ReferencedIntersection.Owner;
