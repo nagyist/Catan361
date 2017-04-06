@@ -12,7 +12,7 @@ public class HexGrid : MonoBehaviour {
 	public int gridWidth = 10;
 	public int gridHeight = 9;
 
-	private Dictionary<Vec3, GameObject> cubeHexes;
+	public Dictionary<Vec3, GameObject> cubeHexes;
 	public Dictionary<string, GameObject> harbourCollection;
 	public Dictionary<GameObject, StealableType> harbours;
 
@@ -1410,6 +1410,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
 				else if (x == 4 && y == 1) 
@@ -1417,6 +1418,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
 				else if (x == 7 && y == 3) 
@@ -1424,6 +1426,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
 				else if (x == 7 && y == 5) 
@@ -1431,6 +1434,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
 				else if (x == 4 && y == 7) 
@@ -1438,6 +1442,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
 				else if (x == 3 && y == 6) 
@@ -1445,6 +1450,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				}
 
@@ -1590,7 +1596,9 @@ public class HexGrid : MonoBehaviour {
 			leftTopIntersectionUi.HexPos2 = leftTopIntersection.adjTile2;
 			leftTopIntersectionUi.HexPos3 = leftTopIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (leftTopIntersection)) {
-				leftTopGameObj.SetActive (true);
+				if (!leftTopIntersection.IsSurroundedByWater ()) {
+					leftTopGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (leftTopIntersection, leftTopGameObj);
 			}
 
@@ -1600,7 +1608,9 @@ public class HexGrid : MonoBehaviour {
 			topIntersectionUi.HexPos2 = topIntersection.adjTile2;
 			topIntersectionUi.HexPos3 = topIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (topIntersection)) {
-				topGameObj.SetActive (true);
+				if (!topIntersection.IsSurroundedByWater ()) {
+					topGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (topIntersection, topGameObj);
 			}
 
@@ -1610,7 +1620,9 @@ public class HexGrid : MonoBehaviour {
 			rightTopIntersectionUi.HexPos2 = rightTopIntersection.adjTile2;
 			rightTopIntersectionUi.HexPos3 = rightTopIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (rightTopIntersection)) {
-				rightTopGameObj.SetActive (true);
+				if (!rightTopIntersection.IsSurroundedByWater ()) {
+					rightTopGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (rightTopIntersection, rightTopGameObj);
 			}
 
@@ -1620,7 +1632,9 @@ public class HexGrid : MonoBehaviour {
 			rightBottomIntersectionUi.HexPos2 = rightBottomIntersection.adjTile2;
 			rightBottomIntersectionUi.HexPos3 = rightBottomIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (rightBottomIntersection)) {
-				rightBottomGameObj.SetActive (true);
+				if (!rightBottomIntersection.IsSurroundedByWater ()) {
+					rightBottomGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (rightBottomIntersection, rightBottomGameObj);
 			}
 
@@ -1630,7 +1644,9 @@ public class HexGrid : MonoBehaviour {
 			bottomIntersectionUi.HexPos2 = bottomIntersection.adjTile2;
 			bottomIntersectionUi.HexPos3 = bottomIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (bottomIntersection)) {
-				bottomGameObj.SetActive (true);
+				if (!bottomIntersection.IsSurroundedByWater ()) {
+					bottomGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (bottomIntersection, bottomGameObj);
 			}
 
@@ -1640,9 +1656,12 @@ public class HexGrid : MonoBehaviour {
 			leftBottomIntersectionUi.HexPos2 = leftBottomIntersection.adjTile2;
 			leftBottomIntersectionUi.HexPos3 = leftBottomIntersection.adjTile3;
 			if (!instanciatedUiIntersections.ContainsKey (leftBottomIntersection)) {
-				leftBottomGameObj.SetActive (true);
+				if (!leftBottomIntersection.IsSurroundedByWater ()) {
+					leftBottomGameObj.SetActive (true);
+				}
 				instanciatedUiIntersections.Add (leftBottomIntersection, leftBottomGameObj);
 			}
+
 		}
 	}
 

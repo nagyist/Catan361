@@ -40,16 +40,32 @@ public class UIHex : MonoBehaviour {
 		BOTTOM,
 		LEFT_BOTTOM
 	}
+
+	private HexTile getHexTile() {
+		return GameManager.Instance.GetCurrentGameState ().CurrentBoard [this.HexGridCubePosition];
+	}
+
     // When the mouse hover's over a tile, log the hex position
 	void OnMouseEnter () {
 		displayPosition ();
+		if (GameEventManager.Instance.IsEventMoveRobberPirateEntitySet && GameEventManager.Instance.EventMoveRobberPirateEntityType == "robber" && !getHexTile().IsWater) {
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 0, 0, 255);
+		} else if(GameEventManager.Instance.IsEventMoveRobberPirateEntitySet && GameEventManager.Instance.EventMoveRobberPirateEntityType == "pirate" && getHexTile().IsWater) {
+			GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 255, 255);
+		}
 	}
 
 	void OnMouseExit () {
+		if (GameEventManager.Instance.IsEventMoveRobberPirateEntitySet) {
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+		}
 	}
 
 	void OnMouseDown() {
-		//GameManager.Instance.gui.ShowHexActionWindow (this);
+		if (GameEventManager.Instance.IsEventMoveRobberPirateEntitySet) {
+			GameEventManager.Instance.HandleMoveRobberPirate (this);
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+		}
 	}
 
     // Display the coordinates of the hex
@@ -72,6 +88,26 @@ public class UIHex : MonoBehaviour {
 		if(! GameManager.Instance.GameStateReady() ||
 		   GameManager.Instance.GetCurrentGameState().CurrentStatus < GameState.GameStatus.GRID_CREATED) {
 			return;
+		}
+
+		RobberPiratePlacement robberPlacement = GameManager.Instance.GetCurrentGameState ().CurrentRobberPosition;
+		RobberPiratePlacement piratePlacement = GameManager.Instance.GetCurrentGameState ().CurrentPiratePosition;
+
+		if (robberPlacement.IsPlaced && robberPlacement.PlacementPos.Equals(this.HexGridCubePosition)) {
+			GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 0, 255);
+		} else {
+			if (!GameEventManager.Instance.IsEventMoveRobberPirateEntitySet) {
+				GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+			}
+
+		}
+
+		if (piratePlacement.IsPlaced && piratePlacement.PlacementPos.Equals(this.HexGridCubePosition)) {
+			GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 255, 255);
+		} else {
+			if (!GameEventManager.Instance.IsEventMoveRobberPirateEntitySet) {
+				GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+			}
 		}
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];

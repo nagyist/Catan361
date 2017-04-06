@@ -61,8 +61,19 @@ public class GUIInterface : MonoBehaviour {
 		tradeRequestObj.GetComponent<UIWindow> ().Show ();
 	}
 
+	public GameObject GetRoadShipPopup() {
+		return guiCanvas.transform.FindChild ("RoadShipConfirm").gameObject;
+	}
+
+	public GameObject ShowMoveRobberPiratePopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("RobberPirateWindow").gameObject;
+		popup.GetComponent<UIWindow> ().Show();
+
+		return popup;
+	}
+
 	// Update is called once per frame
 	void Update () {
-		
+		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();
 	}
 }

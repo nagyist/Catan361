@@ -52,4 +52,11 @@ public class Edge {
 
 		return firstVal + secondVal;
 	}
+
+	public bool IsShip() {
+		HexTile adjHex1 = GameManager.Instance.GetCurrentGameState ().CurrentBoard [this.adjTile1];
+		HexTile adjHex2 = GameManager.Instance.GetCurrentGameState ().CurrentBoard [this.adjTile2];
+
+		return adjHex1.IsWater && adjHex2.IsWater;
+	}
 }

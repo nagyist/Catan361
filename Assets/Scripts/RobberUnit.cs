@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RobberUnit : MonoBehaviour {
+public class RobberUnit : Singleton<RobberUnit> {
 
     public Vector2 HexGridPosition;
     public Vec3 HexGridCubePosition;
@@ -14,14 +14,24 @@ public class RobberUnit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(! GameManager.Instance.GameStateReady() ||
+			GameManager.Instance.GetCurrentGameState().CurrentStatus < GameState.GameStatus.GRID_CREATED) {
+			return;
+		}
 
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
-        {
-            return;
-        }
+		if (GameManager.Instance.GetCurrentGameState ().CurrentRobberPosition.IsPlaced) {
+			HexGrid currentGrid = GameManager.Instance.GetCurrentGameState().GetComponent<HexGrid> ();
 
-
+			MoveTo (currentGrid.cubeHexes [GameManager.Instance.GetCurrentGameState ().CurrentRobberPosition.PlacementPos].GetComponent<UIHex>());
+		}
     }
+
+	public void MoveTo(UIHex moveTo) {
+		HexGridPosition = moveTo.HexGridPosition;
+		HexGridCubePosition = moveTo.HexGridCubePosition;
+
+		transform.position = moveTo.GetComponentInChildren<TextMesh>().transform.position;
+	}
 
     public RobberUnit(Vector2 HexGridPosition, Vec3 HexGridCubePosition)
     {

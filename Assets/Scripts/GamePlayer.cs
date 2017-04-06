@@ -279,6 +279,11 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
+	public void CmdHandleMoveRobberPirateEntity(string entityType, byte[] moveToPosSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientMoveRobberPirateEntity (entityType, moveToPosSerialized);
+	}
+
+	[Command]
 	public void CmdRequestPlayerTrade(string fromPlayer) {
 		
 	}

@@ -52,7 +52,11 @@ public class SettlementButton : MonoBehaviour
 			}
 
 			GetComponent<Button>().enabled = true;
-			GetComponentInChildren<Text>().text = "BUILD ROAD";
+			if (edge.IsShip ()) {
+				GetComponentInChildren<Text>().text = "BUILD SHIP";
+			} else {
+				GetComponentInChildren<Text>().text = "BUILD ROAD";
+			}
 			return;
 		} else if (localPlayer.selectedUIIntersection != null) {
 			UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;

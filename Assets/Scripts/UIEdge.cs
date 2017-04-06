@@ -47,10 +47,19 @@ public class UIEdge : MonoBehaviour {
 		}
 
 		if (!GameManager.Instance.GetCurrentGameState ().CurrentTurn.IsInSetupPhase ()) {
-			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
-				{ StealableType.Resource_Brick, 1 },
-				{ StealableType.Resource_Lumber, 1 }
-			};
+			Dictionary<StealableType, int> requiredRes;
+
+			if (currentEdge.IsShip ()) {
+				requiredRes = new Dictionary<StealableType, int> () {
+					{ StealableType.Resource_Wool, 1 },
+					{ StealableType.Resource_Lumber, 1 }
+				};
+			} else {
+				requiredRes = new Dictionary<StealableType, int> () {
+					{ StealableType.Resource_Brick, 1 },
+					{ StealableType.Resource_Lumber, 1 }
+				};
+			}
 
 			if (!localPlayer.HasEnoughResources (requiredRes)) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough resources."));

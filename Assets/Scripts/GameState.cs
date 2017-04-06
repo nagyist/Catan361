@@ -47,6 +47,8 @@ public class GameState : NetworkBehaviour {
 	public ResourceCollection CurrentResources = new ResourceCollection();
     public GameTurn CurrentTurn = new GameTurn();
     public GameStatus CurrentStatus { get; private set; }
+	public RobberPiratePlacement CurrentRobberPosition;
+	public RobberPiratePlacement CurrentPiratePosition;
 
     // called once for initialization
     void Start() {
@@ -169,6 +171,17 @@ public class GameState : NetworkBehaviour {
 		}
 
 		GameManager.GUI.ShowTradeRequest (currentTrade);
+	}
+
+	[ClientRpc]
+	public void RpcClientMoveRobberPirateEntity(string entityType, byte[] posSerialized) {
+		Vec3 moveToPos = (Vec3)SerializationUtils.ByteArrayToObject (posSerialized);
+
+		if (entityType == "robber") {
+			this.CurrentRobberPosition = new RobberPiratePlacement(entityType, moveToPos);
+		} else if (entityType == "pirate") {
+			this.CurrentPiratePosition = new RobberPiratePlacement(entityType, moveToPos);
+		}
 	}
 
     // this function si used to sync the gameboard

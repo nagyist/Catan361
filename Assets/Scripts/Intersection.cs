@@ -21,6 +21,25 @@ public class Intersection {
 		adjTile3 = i3;
 	}
 
+	public bool IsSurroundedByWater() {
+		bool allWater = true;
+		Dictionary<Vec3, HexTile> board = GameManager.Instance.GetCurrentGameState ().CurrentBoard;
+
+		if (board.ContainsKey(this.adjTile1)) {
+			allWater = allWater && GameManager.Instance.GetCurrentGameState ().CurrentBoard [adjTile1].IsWater;
+		}
+
+		if (board.ContainsKey(this.adjTile2)) {
+			allWater = allWater && GameManager.Instance.GetCurrentGameState ().CurrentBoard [adjTile2].IsWater;
+		}
+
+			if (board.ContainsKey(this.adjTile3)) {
+			allWater = allWater && GameManager.Instance.GetCurrentGameState ().CurrentBoard [adjTile3].IsWater;
+		}
+
+		return allWater;
+	}
+
 	public override bool Equals(System.Object obj) {
 		if (obj == null || GetType () != obj.GetType ())
 			return false;
