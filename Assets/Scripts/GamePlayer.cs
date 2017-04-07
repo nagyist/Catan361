@@ -156,7 +156,6 @@ public class GamePlayer : NetworkBehaviour {
 
         // build a new village
         Village village = new Village();
-        placedSettlement = true;
         if (roundCount == 1)
             village.myKind = Village.VillageKind.City;
         intersection.Owner = myName;
@@ -215,7 +214,7 @@ public class GamePlayer : NetworkBehaviour {
         // hire a knight
         Knight knight = new Knight();
         numBasicKnights++;
-        placedKnight = true;
+        this.placedKnight = true;
         intersection.unit = knight;
         intersection.Owner = myName;
         resetBuildSelection();
@@ -272,8 +271,9 @@ public class GamePlayer : NetworkBehaviour {
 		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (vec3Pos [0], vec3Pos [1]);
 
         // create the road on the edge
-		currentEdge.Owner = this.myName;
-		currentEdge.IsOwned = true;
+        this.placedRoad = true;
+        currentEdge.Owner = this.myName;
+		//currentEdge.IsOwned = true;
         resetBuildSelection();
 
         // set and publish the intersection

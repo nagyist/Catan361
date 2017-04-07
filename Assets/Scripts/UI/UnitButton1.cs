@@ -65,12 +65,13 @@ public class UnitButton1 : MonoBehaviour
             UIEdge selectedUIEdge = localPlayer.selectedUIEdge;
             Edge edge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(selectedUIEdge.HexPos1, selectedUIEdge.HexPos2);
 
-            if (edge.IsOwned)
-            {
-                GetComponent<Button>().enabled = false;
-                GetComponentInChildren<Text>().text = "ROAD OWNED";
-                return;
-            }
+            if (edge.Owner != "")
+                if (edge.Owner != localPlayer.myName)
+                {
+                    GetComponent<Button>().enabled = false;
+                    GetComponentInChildren<Text>().text = "ROAD OWNED";
+                    return;
+                }
 
             GetComponent<Button>().enabled = true;
             if (edge.IsShip())
@@ -89,7 +90,7 @@ public class UnitButton1 : MonoBehaviour
             Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>
                 (new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 }));
 
-            
+
 
             // if intersection is empty
             if (intersection.unit == null)
@@ -98,7 +99,7 @@ public class UnitButton1 : MonoBehaviour
                 GetComponentInChildren<Text>().text = "BUILD SETTLEMENT";
                 return;
             }
-			else if (intersection.Owner != localPlayer.myName)
+            else if (intersection.Owner != localPlayer.myName)
             {
                 GetComponent<Button>().enabled = false;
                 GetComponentInChildren<Text>().text = "INTERSECTION NOT OWNED";
