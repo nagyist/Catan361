@@ -317,6 +317,11 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcClientAnswerTradeRequest (tradeSerialized, answer);
 	}
 
+	[Command]
+	public void CmdUpdateTradeOffer(byte[] tradeSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateTradeOffer (tradeSerialized);
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));

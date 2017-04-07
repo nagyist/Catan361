@@ -12,10 +12,6 @@ public class TradeItemQty : MonoBehaviour {
 	void Start () {
 		
 	}
-
-	public void ClickChangeQty() {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {

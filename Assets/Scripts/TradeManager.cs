@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TradeManager : Singleton<TradeManager> {
+	private GameObject currentTrade = null;
+
 	public void SendTradeRequest(string fromPlayerName, string toPlayerName) {
 		GamePlayer player1 = GameManager.ConnectedPlayersByName [fromPlayerName].GetComponent<GamePlayer> ();
 		GamePlayer player2 = GameManager.ConnectedPlayersByName [toPlayerName].GetComponent<GamePlayer> ();
@@ -30,7 +32,11 @@ public class TradeManager : Singleton<TradeManager> {
 		} else {
 			GameManager.GUI.PostStatusMessage ("Trade with " + trade.Player1 + " started");
 		}
-		GameManager.GUI.ShowPlayer2PlayerTradeWindow (trade);
+		currentTrade = GameManager.GUI.ShowPlayer2PlayerTradeWindow (trade);
+	}
+
+	public void ReceivedTradeUpdate(Trade updatedTrade) {
+		currentTrade.GetComponent<Player2PlayerTrade> ().currentTrade = updatedTrade;
 	}
 
 	// Use this for initialization

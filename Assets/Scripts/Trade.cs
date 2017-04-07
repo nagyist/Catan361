@@ -11,6 +11,25 @@ public class Trade {
 	public bool Player1Accepted = false;
 	public bool Player2Accepted = false;
 
+	public Dictionary<StealableType, int> Player1Offer = new Dictionary<StealableType, int>();
+	public Dictionary<StealableType, int> Player2Offer = new Dictionary<StealableType, int>();
+
+	public int GetPlayer1OfferingFor(StealableType type) {
+		if (!Player1Offer.ContainsKey (type)) {
+			return 0;
+		}
+
+		return Player1Offer [type];
+	}
+
+	public int GetPlayer2OfferingFor(StealableType type) {
+		if (!Player1Offer.ContainsKey (type)) {
+			return 0;
+		}
+
+		return Player1Offer [type];
+	}
+
 	// Use this for initialization
 	void Start () {
 		
