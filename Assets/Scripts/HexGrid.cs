@@ -1681,7 +1681,7 @@ public class HexGrid : MonoBehaviour {
 		yoffset = 0.85f;
 		float y = initPos.y - gridPos.y * hexHeight * yoffset;
         x *= 1.1F;
-        y *= 1.1F;
+        y *= 1.05F;
         return new Vector3(x, y, 0);
 	}
 
