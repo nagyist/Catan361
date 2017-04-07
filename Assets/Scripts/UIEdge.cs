@@ -45,17 +45,6 @@ public class UIEdge : MonoBehaviour
         return true;
     }
 
-    void OnMouseDown()
-    {
-        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-
-		if (localPlayer.selectedUIEdge == this)
-            localPlayer.resetBuildSelection();
-		else
-        	localPlayer.SetBuildSelection(this);
-			
-        return;
-    }
 
     public void ConstructRoad()
     {
@@ -112,6 +101,8 @@ public class UIEdge : MonoBehaviour
 			StartCoroutine(GameManager.GUI.ShowMessage("You have placed a ship."));
 		else
 			StartCoroutine(GameManager.GUI.ShowMessage("You have placed a road."));
+
+        GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject.SetActive(true);
 
         // localPlayer.placedRoad = true;
         localPlayer.CmdBuildRoad(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2 }));
@@ -171,6 +162,49 @@ public class UIEdge : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sortingLayerName = "edge";
         GetComponent<SpriteRenderer>().color = new Color((20F / 255), (20F / 255), (20F / 255), 1F);
+    }
+
+
+    void OnMouseDown()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+
+        if (localPlayer.selectedUIEdge == this)
+            localPlayer.resetBuildSelection();
+        else
+            localPlayer.SetBuildSelection(this);
+
+        updateGUI();
+    }
+
+    void updateGUI()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        GameObject selectionInfo = GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject;
+        GameObject unitBtn1 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton1").gameObject;
+        GameObject unitBtn2 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton2").gameObject;
+        if (localPlayer.selectedUIEdge == null)
+        {
+            unitBtn1.SetActive(false);
+            unitBtn2.SetActive(false);
+            selectionInfo.SetActive(false);
+        }
+
+        else
+        {
+            Edge currentEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(HexPos1, HexPos2);
+
+            unitBtn2.SetActive(false);
+            selectionInfo.SetActive(true);
+
+            if (currentEdge.Owner == "")
+                unitBtn1.SetActive(true);
+            else
+                unitBtn1.SetActive(false);
+
+
+        }
+
     }
 
     // Update is called once per frame
