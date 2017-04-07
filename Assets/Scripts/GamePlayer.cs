@@ -41,7 +41,7 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.SetLocalPlayer (gameObject);
 	}
 
-	private void resetBuildSelection() {
+	public void resetBuildSelection() {
 		if (this.selectedUIIntersection != null) {
 			this.selectedUIIntersection.IsSelected = false;
 			this.selectedUIIntersection = null;
@@ -115,6 +115,8 @@ public class GamePlayer : NetworkBehaviour {
 		}
 
 		this.placedKnight = false;
+        this.selectedUIEdge = null;
+        this.selectedUIIntersection = null;
 
         // go through all the intersections
         foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys)
@@ -156,13 +158,11 @@ public class GamePlayer : NetworkBehaviour {
 
         // build a new village
         Village village = new Village();
-        placedSettlement = true;
         if (roundCount == 1)
             village.myKind = Village.VillageKind.City;
         intersection.Owner = myName;
         intersection.unit = village;
         this.placedSettlement = true;
-        resetBuildSelection();
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState ().CurrentIntersections.setIntersection (vec3Pos, intersection);
@@ -181,7 +181,6 @@ public class GamePlayer : NetworkBehaviour {
         Village village = (Village)intersection.unit;
         village.cityWall = true;
         this.numCityWalls++;
-        resetBuildSelection();
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
@@ -198,7 +197,6 @@ public class GamePlayer : NetworkBehaviour {
         // upgrade the settlement to a city
         Village village = (Village)(intersection.unit);
         village.myKind = Village.VillageKind.City;
-        resetBuildSelection();
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
@@ -215,10 +213,9 @@ public class GamePlayer : NetworkBehaviour {
         // hire a knight
         Knight knight = new Knight();
         numBasicKnights++;
-        placedKnight = true;
+        this.placedKnight = true;
         intersection.unit = knight;
         intersection.Owner = myName;
-        resetBuildSelection();
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
@@ -236,7 +233,6 @@ public class GamePlayer : NetworkBehaviour {
 		// activate the knight
         Knight knight = (Knight)intersection.unit;
         knight.active = true;
-        resetBuildSelection();
     
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
@@ -256,7 +252,6 @@ public class GamePlayer : NetworkBehaviour {
         Knight knight = (Knight)intersection.unit;
         knight.level++;
         knight.hasBeenPromotedThisTurn = true;
-        resetBuildSelection();
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
@@ -272,9 +267,8 @@ public class GamePlayer : NetworkBehaviour {
 		Edge currentEdge = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (vec3Pos [0], vec3Pos [1]);
 
         // create the road on the edge
-		currentEdge.Owner = this.myName;
-		currentEdge.IsOwned = true;
-        resetBuildSelection();
+        this.placedRoad = true;
+        currentEdge.Owner = this.myName;
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState ().CurrentEdges.setEdge (vec3Pos[0], vec3Pos[1], currentEdge);
@@ -309,21 +303,21 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdSendTradeRequest(byte[] tradeSerialized) {
-		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (tradeSerialized);
-	}
-
-	[Command]
 	public void CmdHandleMoveRobberPirateEntity(string entityType, byte[] moveToPosSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientMoveRobberPirateEntity (entityType, moveToPosSerialized);
 	}
 
 	[Command]
-	public void CmdRequestPlayerTrade(string fromPlayer) {
-		
+	public void CmdSendTradeRequest(byte[] tradeSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (tradeSerialized);
 	}
 
-    
+	[Command]
+	public void CmdAnswerTradeRequest(byte[] tradeSerialized, bool answer) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientAnswerTradeRequest (tradeSerialized, answer);
+	}
+
+	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}

@@ -467,38 +467,41 @@ public class UIIntersection : MonoBehaviour
         {
             Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-            // show yellow if selected
-            if (IsSelected)
+            if (i.unit == null)
             {
-                intersectionIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
-                return;
+                intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("sprite_empty_selection");
+
+                if (IsSelected)
+                    intersectionIcon.GetComponent<SpriteRenderer>().color = Color.green;   
+                else
+                    intersectionIcon.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+                
             }
-
-
-            // set to player color if there is a unit there
-            if (i.unit != null)
-            {
-                if (i.unit.GetType() == typeof(Knight))
-                    intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("cobbler's_hammer_b");
-                else if (i.unit.GetType() == typeof(Village))
-                    intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ore_f_b_03");
-
-                intersectionIcon.GetComponent<SpriteRenderer>().color = GameManager.ConnectedPlayersByName[i.Owner].GetComponent<GamePlayer>().GetPlayerColor();
-            }
-            // set to black if there are no units 
             else
             {
-                intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ore_f_b_03");
-                intersectionIcon.GetComponent<SpriteRenderer>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-            }
+                if (i.unit.GetType() == typeof(Knight))
+                    intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("sprite_knight");
+                else if (i.unit.GetType() == typeof(Village))
+                    intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("sprite_village");
+
+
+                if (IsSelected)
+                    intersectionIcon.GetComponent<SpriteRenderer>().color = Color.green;
+                else
+                    intersectionIcon.GetComponent<SpriteRenderer>().color = GameManager.ConnectedPlayersByName[i.Owner].GetComponent<GamePlayer>().GetPlayerColor();
+            }   
         }
     }
 
     void OnMouseDown()
     {
-
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        localPlayer.SetBuildSelection(this);
+        
+        if(localPlayer.selectedUIIntersection == this)
+            localPlayer.resetBuildSelection();
+        else
+            localPlayer.SetBuildSelection(this);
+
         return;
     }
 }

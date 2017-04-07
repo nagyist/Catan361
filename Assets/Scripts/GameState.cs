@@ -164,6 +164,17 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
+	public void RpcClientMoveRobberPirateEntity(string entityType, byte[] posSerialized) {
+		Vec3 moveToPos = (Vec3)SerializationUtils.ByteArrayToObject (posSerialized);
+
+		if (entityType == "robber") {
+			this.CurrentRobberPosition = new RobberPiratePlacement(entityType, moveToPos);
+		} else if (entityType == "pirate") {
+			this.CurrentPiratePosition = new RobberPiratePlacement(entityType, moveToPos);
+		}
+	}
+
+	[ClientRpc]
 	public void RpcClientTradeRequest(byte[] tradeObjSerialized) {
 		Trade currentTrade = (Trade) SerializationUtils.ByteArrayToObject (tradeObjSerialized);
 		if (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName != currentTrade.Player2) {
@@ -174,14 +185,14 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void RpcClientMoveRobberPirateEntity(string entityType, byte[] posSerialized) {
-		Vec3 moveToPos = (Vec3)SerializationUtils.ByteArrayToObject (posSerialized);
-
-		if (entityType == "robber") {
-			this.CurrentRobberPosition = new RobberPiratePlacement(entityType, moveToPos);
-		} else if (entityType == "pirate") {
-			this.CurrentPiratePosition = new RobberPiratePlacement(entityType, moveToPos);
+	public void RpcClientAnswerTradeRequest(byte[] tradeObjSerialized, bool answer) {
+		Trade currentTrade = (Trade)SerializationUtils.ByteArrayToObject (tradeObjSerialized);
+		string localPlayerName = GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName;
+		if (localPlayerName != currentTrade.Player1 || localPlayerName != currentTrade.Player2) {
+			return;
 		}
+
+		TradeManager.Instance.ReceivedAnswerForTradeRequest (currentTrade, answer);
 	}
 
     // this function si used to sync the gameboard
