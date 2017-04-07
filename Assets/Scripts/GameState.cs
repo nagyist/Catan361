@@ -188,7 +188,7 @@ public class GameState : NetworkBehaviour {
 	public void RpcClientAnswerTradeRequest(byte[] tradeObjSerialized, bool answer) {
 		Trade currentTrade = (Trade)SerializationUtils.ByteArrayToObject (tradeObjSerialized);
 		string localPlayerName = GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName;
-		if (localPlayerName != currentTrade.Player1 || localPlayerName != currentTrade.Player2) {
+		if (localPlayerName != currentTrade.Player1 && localPlayerName != currentTrade.Player2) {
 			return;
 		}
 

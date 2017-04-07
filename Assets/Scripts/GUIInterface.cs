@@ -74,6 +74,14 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowPlayer2PlayerTradeWindow(Trade currentTrade) {
+		GameObject tradeWindow = guiCanvas.transform.FindChild ("Player2PlayerTrade").gameObject;
+		tradeWindow.GetComponent<Player2PlayerTrade> ().currentTrade = currentTrade;
+
+		tradeWindow.GetComponent<UIWindow> ().Show ();
+		return tradeWindow;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();
