@@ -496,12 +496,37 @@ public class UIIntersection : MonoBehaviour
     void OnMouseDown()
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        
-        if(localPlayer.selectedUIIntersection == this)
+
+        if (localPlayer.selectedUIIntersection == this)
             localPlayer.resetBuildSelection();
         else
             localPlayer.SetBuildSelection(this);
 
-        return;
+        updateGUI();
+    }
+
+
+    void updateGUI()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        GameObject selectionInfo = GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject;
+        GameObject unitBtn1 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton1").gameObject;
+        GameObject unitBtn2 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton2").gameObject;
+        
+
+        if (localPlayer.selectedUIIntersection == null)
+        {
+            selectionInfo.SetActive(false);
+            unitBtn1.SetActive(false);
+            unitBtn2.SetActive(false);
+        }
+        else
+        {
+            Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+            unitBtn1.SetActive(true);
+            unitBtn2.SetActive(true);
+            selectionInfo.SetActive(true);
+
+        }
     }
 }
