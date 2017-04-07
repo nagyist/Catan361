@@ -11,6 +11,14 @@ public class TradeRequestPopup : MonoBehaviour {
 	void Start () {
 		
 	}
+
+	public void ClickAcceptTradeRequest() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAnswerTradeRequest (SerializationUtils.ObjectToByteArray (tradeObj), true);
+	}
+
+	public void ClickDeclineTradeRequest() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAnswerTradeRequest (SerializationUtils.ObjectToByteArray (tradeObj), true);
+	}
 	
 	// Update is called once per frame
 	void Update () {

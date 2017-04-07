@@ -309,21 +309,21 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdSendTradeRequest(byte[] tradeSerialized) {
-		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (tradeSerialized);
-	}
-
-	[Command]
 	public void CmdHandleMoveRobberPirateEntity(string entityType, byte[] moveToPosSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientMoveRobberPirateEntity (entityType, moveToPosSerialized);
 	}
 
 	[Command]
-	public void CmdRequestPlayerTrade(string fromPlayer) {
-		
+	public void CmdSendTradeRequest(byte[] tradeSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (tradeSerialized);
 	}
 
-    
+	[Command]
+	public void CmdAnswerTradeRequest(byte[] tradeSerialized, bool answer) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientAnswerTradeRequest (tradeSerialized, answer);
+	}
+
+	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}

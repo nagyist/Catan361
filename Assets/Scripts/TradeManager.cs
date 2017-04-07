@@ -12,6 +12,17 @@ public class TradeManager : Singleton<TradeManager> {
 		newTrade.Player2 = player2.myName;
 
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdSendTradeRequest (SerializationUtils.ObjectToByteArray (newTrade));
+		GameManager.GUI.PostStatusMessage ("You sent a trade request to " + player2);
+	}
+
+	public void ReceivedAnswerForTradeRequest(Trade trade, bool answer) {
+		if (!answer) {
+			StartCoroutine (GameManager.GUI.ShowMessage (trade.Player2 + " declined your trade request."));
+			GameManager.GUI.PostStatusMessage (trade.Player2 + " declined your trade request.");
+			return;
+		}
+
+		GameManager.GUI.PostStatusMessage (trade.Player2 + " accepted your trade request.");
 	}
 
 	// Use this for initialization
