@@ -41,7 +41,7 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.SetLocalPlayer (gameObject);
 	}
 
-	private void resetBuildSelection() {
+	public void resetBuildSelection() {
 		if (this.selectedUIIntersection != null) {
 			this.selectedUIIntersection.IsSelected = false;
 			this.selectedUIIntersection = null;

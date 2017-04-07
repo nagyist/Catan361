@@ -48,7 +48,12 @@ public class UIEdge : MonoBehaviour
     void OnMouseDown()
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        localPlayer.SetBuildSelection(this);
+
+		if (localPlayer.selectedUIEdge == this)
+            localPlayer.resetBuildSelection();
+		else
+        	localPlayer.SetBuildSelection(this);
+			
         return;
     }
 
@@ -107,7 +112,7 @@ public class UIEdge : MonoBehaviour
 			StartCoroutine(GameManager.GUI.ShowMessage("You have placed a ship."));
 		else
 			StartCoroutine(GameManager.GUI.ShowMessage("You have placed a road."));
-			
+
         // localPlayer.placedRoad = true;
         localPlayer.CmdBuildRoad(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2 }));
     }
