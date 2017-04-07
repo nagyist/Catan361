@@ -8,9 +8,9 @@ public class UIEdge : MonoBehaviour {
 	public Vec3 HexPos2 { get; set; }
 	public bool IsSelected = false;
 
-	void OnMouseEnter() {
-		GetComponent<SpriteRenderer> ().color = Color.red;
-	}
+	// void OnMouseEnter() {
+	// 	GetComponent<SpriteRenderer> ().color = Color.red;
+	// }
 
 	void OnMouseDown() {
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
@@ -116,13 +116,14 @@ public class UIEdge : MonoBehaviour {
 		return false;
 	}
 
-	void OnMouseExit() {
-		GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
-	}
+	// void OnMouseExit() {
+	// 	GetComponent<SpriteRenderer> ().color = new Color (0.0f, 0.0f, 0.0f, 0.3f);
+	// }
 
 	// Use this for initialization
 	void Start () {
 		GetComponent<SpriteRenderer>().sortingLayerName = "edge";
+		GetComponent<SpriteRenderer>().color = new Color(0.1F, 0.1F, 0.1F, 1F);
 	}
 	
 	// Update is called once per frame
@@ -134,23 +135,29 @@ public class UIEdge : MonoBehaviour {
 		Edge e = GameManager.Instance.GetCurrentGameState ().CurrentEdges.getEdge (HexPos1, HexPos2);
 		if (e == null) { return; }
 
+		if (this.IsSelected)
+        {
+            GetComponent<SpriteRenderer>().color = Color.green;
+            GetComponent<SpriteRenderer>().sortingOrder = 4;
+            return;
+        }
+		
 		if (e.IsOwned) {
 			GetComponent<SpriteRenderer> ().color = GameManager.ConnectedPlayersByName [e.Owner].GetComponent<GamePlayer> ().GetPlayerColor ();
-			return;
+            GetComponent<SpriteRenderer>().sortingOrder = 2;
+            return;
 		}
 
 		if (e.isHarbour == true) {
 			GetComponent<SpriteRenderer> ().color = Color.yellow;
+			GetComponent<SpriteRenderer>().sortingOrder = 3;
 			return;
 		}
 
-		if (this.IsSelected) {
-			GetComponent<SpriteRenderer> ().color = Color.green;
-			return;
-		} else {
-			GetComponent<SpriteRenderer> ().color = new Color(0, 0, 0, 55);
-			return;
-		}
+		GetComponent<SpriteRenderer>().sortingOrder = 1;
+		GetComponent<SpriteRenderer> ().color = new Color(0.1F, 0.1F, 0.1F, 1F);
+		return;
+	
 
 	}
 }
