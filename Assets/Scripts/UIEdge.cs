@@ -123,7 +123,7 @@ public class UIEdge : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		GetComponent<SpriteRenderer>().sortingLayerName = "edge";
-		GetComponent<SpriteRenderer>().color = new Color(0.1F, 0.1F, 0.1F, 1F);
+		GetComponent<SpriteRenderer>().color = new Color((20F / 255), (20F / 255), (20F / 255), 1F);
 	}
 	
 	// Update is called once per frame
@@ -155,7 +155,7 @@ public class UIEdge : MonoBehaviour {
 		}
 
 		GetComponent<SpriteRenderer>().sortingOrder = 1;
-		GetComponent<SpriteRenderer> ().color = new Color(0.1F, 0.1F, 0.1F, 1F);
+		GetComponent<SpriteRenderer> ().color = new Color((20F/255),(20F / 255), (20F / 255), 1F);
 		return;
 	
 
