@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatusButtonScript : MonoBehaviour {
+/*  Unit button 2 is used for:
+ *      hiring knights on empty intersections
+ *      activating knights
+ *      adding city walls 
+ */
+
+public class UnitButton2 : MonoBehaviour {
 
     string localPlayerName;
 
@@ -22,7 +28,7 @@ public class StatusButtonScript : MonoBehaviour {
         else if (intersection.unit.GetType() == typeof(Knight))
             selectedUIIntersection.ActivateKnight();
         else if (intersection.unit.GetType() == typeof(Village))
-            selectedUIIntersection.BuiltCityWall();
+            selectedUIIntersection.BuildCityWall();
 
     }
 

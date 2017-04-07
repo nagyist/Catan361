@@ -1680,7 +1680,9 @@ public class HexGrid : MonoBehaviour {
 		// Every new line is offset in y direction by 3/4 of the outer circle diameter, or hexagon height
 		yoffset = 0.85f;
 		float y = initPos.y - gridPos.y * hexHeight * yoffset;
-		return new Vector3(x, y, 0);
+        x *= 1.1F;
+        y *= 1.05F;
+        return new Vector3(x, y, 0);
 	}
 
 	public void buildHarbours () {

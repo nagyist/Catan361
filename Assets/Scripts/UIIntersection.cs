@@ -34,57 +34,134 @@ public class UIIntersection : MonoBehaviour
         GetComponent<SpriteRenderer>().color = Color.blue;
     }
 
-    
-
-    void OnMouseExit()
+    public bool isEmpty()
     {
-        GameManager.GUI.GetTooltip("IntersectionTooltip").GetComponent<UIWindow>().Hide();
-
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        if (intersection.unit == null)
+            return true;
+        else
+            return false;
     }
 
-    public void ActivateKnight()
+    public bool CanBuild()
+    {
+        // check if the grid hasn't been created yet
+        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Please wait until the grid is created."));
+            return false;
+        }
+        // check for local player's turn
+        else if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("It is not your turn"));
+            return false;
+        }
+        else
+            return true;
+    }
+    public bool IsLocalPlayerMainPhase()
+    {
+
+        // check if the grid hasn't been created yet
+        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Please wait until the grid is created."));
+            return false;
+        }
+        // check if we're still in the setup phase
+        else if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Still in setup phase."));
+            return false;
+        }
+        // check for local player's turn
+        else if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("It is not your turn"));
+            return false;
+        }
+        else
+            return true;
+    }
+
+    public bool OwnsKnight()
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-        // check if the grid hasn't been created yet
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
-        {
-            Debug.Log("Grid not created");
-            return;
-        }
-        // check if we're still in the setup phase
-        if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("Can't activate knight in setup phase."));
-            return;
-        }
-        // check for local player's turn
-        if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("It is not your turn"));
-            return;
-        }
         // check for empty intersection
         if (intersection.unit == null)
         {
-            Debug.Log("Intersection is empty");
             StartCoroutine(GameManager.GUI.ShowMessage("Intersection is empty"));
-            return;
+            return false;
         }
         // check for invalid owner
         if (intersection.Owner != localPlayerName)
         {
-            Debug.Log("Does not own the intersection.");
             StartCoroutine(GameManager.GUI.ShowMessage("You do not own the intersection"));
-            return;
+            return false;
         }
         // check for non-village unit
         if (intersection.unit.GetType() != typeof(Knight))
         {
-            Debug.Log("The intersection contains a village.");
-            StartCoroutine(GameManager.GUI.ShowMessage("This intersection contains a non-knight unit."));
+            StartCoroutine(GameManager.GUI.ShowMessage("This intersection does not contain the right unit."));
+            return false;
+        }
+        return true;
+    }
+
+    public bool OwnsVillage()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        string localPlayerName = localPlayer.myName;
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        // check for empty intersection
+        if (intersection.unit == null)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Intersection is empty"));
+            return false;
+        }
+        // check for invalid owner
+        if (intersection.Owner != localPlayerName)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("You do not own the intersection"));
+            return false;
+        }
+        // check for non-village unit
+        if (intersection.unit.GetType() != typeof(Village))
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("This intersection does not contain the right unit."));
+            return false;
+        }
+        return true;
+    }
+
+    void OnMouseExit()
+    {
+        GameManager.GUI.GetTooltip("IntersectionTooltip").GetComponent<UIWindow>().Hide();
+    }
+
+    public void ActivateKnight()
+    {
+
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!OwnsKnight())
+            return;
+
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        string localPlayerName = localPlayer.myName;
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        Knight knight = (Knight)intersection.unit;
+        if (knight.active)
+        {
+            Debug.Log("Knight was already active.");
+            StartCoroutine(GameManager.GUI.ShowMessage("Knight is already active"));
             return;
         }
 
@@ -95,30 +172,15 @@ public class UIIntersection : MonoBehaviour
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
             Debug.Log("Does not have enough resource to upgrade knight");
-            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
+            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resources."));
             return;
         }
-
-        Knight knight = (Knight)intersection.unit;
-
-        if (knight.active)
-        {
-            Debug.Log("Knight was already active.");
-            StartCoroutine(GameManager.GUI.ShowMessage("Knight is already active"));
-            return;
-        }
-
-        // consume resources
         localPlayer.CmdConsumeResources(requiredRes);
 
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdActivateKnight(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
-
+        knight.active = true;
         StartCoroutine(GameManager.GUI.ShowMessage("You have activated your knight."));
-        // reset the intersection selection
-        localPlayer.selectedUIIntersection = null;
-        IsSelected = false;
+        localPlayer.CmdActivateKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
 
         return;
     }
@@ -126,47 +188,28 @@ public class UIIntersection : MonoBehaviour
 
     public void UpgradeKnight()
     {
+
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!OwnsKnight())
+            return;
+
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        Knight knight = (Knight)intersection.unit;
 
-        // check if the grid hasn't been created yet
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
+        if (knight.hasBeenPromotedThisTurn)
         {
-            Debug.Log("Grid not created");
+            StartCoroutine(GameManager.GUI.ShowMessage("Knight has already been promoted this turn."));
             return;
         }
-        // check if we're still in the setup phase
-        if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
+        // check for max level 
+        else if (knight.level == 3)
         {
-            StartCoroutine(GameManager.GUI.ShowMessage("Can't upgrade knight in setup phase."));
-            return;
-        }
-        // check for local player's turn
-        if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("It is not your turn"));
-            return;
-        }
-        // check for empty intersection
-        if (intersection.unit == null)
-        {
-            Debug.Log("Intersection is empty");
-            StartCoroutine(GameManager.GUI.ShowMessage("Intersection is empty"));
-            return;
-        }
-        // check for invalid owner
-        if (intersection.Owner != localPlayerName)
-        {
-            Debug.Log("Does not own the intersection.");
-            StartCoroutine(GameManager.GUI.ShowMessage("You do not own the intersection"));
-            return;
-        }
-        // check for non-village unit
-        if (intersection.unit.GetType() != typeof(Knight))
-        {
-            Debug.Log("The intersection contains a village.");
-            StartCoroutine(GameManager.GUI.ShowMessage("This intersection contains a non-knight unit."));
+            Debug.Log("Knight already at max level.");
+            StartCoroutine(GameManager.GUI.ShowMessage("Knight is already at its maximum level."));
             return;
         }
 
@@ -182,105 +225,58 @@ public class UIIntersection : MonoBehaviour
             return;
         }
 
-        Knight knight = (Knight)intersection.unit;
-
-        if (knight.hasBeenPromotedThisTurn)
+        if (knight.level == 2)
         {
-            StartCoroutine(GameManager.GUI.ShowMessage("Knight has already been promoted this turn."));
-            return;
-        }
-
-        // check for max level 
-        if (knight.level == 3)
-        {
-            Debug.Log("Knight already at max level.");
-            StartCoroutine(GameManager.GUI.ShowMessage("Knight is already at its maximum level."));
-            return;
-        }
-        // if we have a strong knight 
-        else
-        {
-            if (knight.level == 2)
+            if (!localPlayer.hasFortress)
             {
-                if (!localPlayer.hasFortress)
-                {
-                    StartCoroutine(GameManager.GUI.ShowMessage("You do not own a fortress"));
-                    return;
-                }
-                if (localPlayer.numMightyKnights >= 2)
-                {
-                    Debug.Log("LocalPlayer already has maximum number of strong knights.");
-                    StartCoroutine(GameManager.GUI.ShowMessage("LocalPlayer already has maximum number of might knights."));
-                    return;
-                }
-                // update local player's number of knights
-                localPlayer.numStrongKnights--;
-                localPlayer.numMightyKnights++;
+                StartCoroutine(GameManager.GUI.ShowMessage("You do not own a fortress"));
+                return;
             }
-            else if (knight.level == 1)
+            if (localPlayer.numMightyKnights >= 2)
             {
-                // check for max number of strong knights
-                if (localPlayer.numStrongKnights >= 2)
-                {
-                    Debug.Log("LocalPlayer already has maximum number of strong knights.");
-                    StartCoroutine(GameManager.GUI.ShowMessage("LocalPlayer already has maximum number of strong knights."));
-                    return;
-                }
-                // update local player's number of knights
-                localPlayer.numBasicKnights--;
-                localPlayer.numStrongKnights++;
+                StartCoroutine(GameManager.GUI.ShowMessage("LocalPlayer already has maximum number of might knights."));
+                return;
             }
-
-            // consume resources
-            localPlayer.CmdConsumeResources(requiredRes);
-
-            GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeKnight(
-                SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-            );
-
-            StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
-            // reset the intersection selection
-            localPlayer.selectedUIIntersection = null;
-            IsSelected = false;
-
-            return;
+            // update local player's number of knights
+            localPlayer.numStrongKnights--;
+            localPlayer.numMightyKnights++;
         }
+        else if (knight.level == 1)
+        {
+            // check for max number of strong knights
+            if (localPlayer.numStrongKnights >= 2)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("LocalPlayer already has maximum number of strong knights."));
+                return;
+            }
+            // update local player's number of knights
+            localPlayer.numBasicKnights--;
+            localPlayer.numStrongKnights++;
+        }
+
+        localPlayer.CmdConsumeResources(requiredRes);
+        StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
+        localPlayer.CmdUpgradeKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        return;
+
     }
 
     public void HireKnight()
     {
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!isEmpty())
+            return;
+
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-        // check that the grid has been created
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
-        {
-            Debug.Log("Grid not created");
-            return;
-        }
-        // check for setup phase
-        if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("Can't place knight in setup phase."));
-            return;
-        }
-        // check for local player turn
-        if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
-        {
-            Debug.Log("Is not local player turn");
-            StartCoroutine(GameManager.GUI.ShowMessage("It is not your turn"));
-            return;
-        }
-        // check for non-empty intersection
-        if (intersection.unit != null)
-        {
-            Debug.Log("Intersection is not empty");
-            StartCoroutine(GameManager.GUI.ShowMessage("Intersection is not empty"));
-            return;
-        }
+
         // check for max number of basic knights 
-        if (localPlayer.numBasicKnights >= 2)
+        if (localPlayer.numBasicKnights >= 3)
         {
             StartCoroutine(GameManager.GUI.ShowMessage("You already have the maximum number of basic knights"));
             return;
@@ -288,12 +284,11 @@ public class UIIntersection : MonoBehaviour
         // check if local player has already placed knight 
         if (localPlayer.placedKnight)
         {
-            Debug.Log("You already placed a knight during your turn");
             StartCoroutine(GameManager.GUI.ShowMessage("You already placed a knight during your turn"));
             return;
         }
 
-        // consume resources
+        // check resources
         Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
             {StealableType.Resource_Ore, 1},
             {StealableType.Resource_Wool, 1},
@@ -307,236 +302,155 @@ public class UIIntersection : MonoBehaviour
         localPlayer.CmdConsumeResources(requiredRes);
 
 
-        // here we're supposed to call the cmd function
-        // not created yet
-        GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdHireKnight(
-            SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-        );
-
-
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a knight."));
-        // increment local player's number of basic knights
-        localPlayer.numBasicKnights++;
-        // local player has now placed knight
-        localPlayer.placedKnight = true;
-        // reset intersection selection
-        intersection.Owner = localPlayerName;
-        localPlayer.selectedUIIntersection = null;
-        IsSelected = false;
+        localPlayer.CmdHireKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
     }
 
-
-    public  void BuiltCityWall()
+    public void BuildCityWall()
     {
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!OwnsVillage())
+            return;
+
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        Village village = (Village)intersection.unit;
 
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
+        // check for max number of walls 
+        if (localPlayer.numCityWalls >= 3)
         {
-            Debug.Log("Grid not created");
+            StartCoroutine(GameManager.GUI.ShowMessage("You already have 3 city walls."));
             return;
         }
-        if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
+        else if (village.myKind == Village.VillageKind.Settlement)
         {
-            Debug.Log("Is not local player turn");
+            StartCoroutine(GameManager.GUI.ShowMessage("Settlements cannot have a city wall."));
+            return;
+        }
+        else if (village.cityWall)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("City already has a city wall."));
             return;
         }
 
-        // check to see if there's currently a unit on the intersection
-        if (intersection.unit != null)
+
+        // check resources
+        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+                {StealableType.Resource_Brick, 2},
+            };
+        if (!localPlayer.HasEnoughResources(requiredRes))
         {
-            if (intersection.Owner != localPlayerName)
-            {
-                Debug.Log("Does not own the intersection.");
-                return;
-            }
-            // check for non-village unit
-            else if (intersection.unit.GetType() != typeof(Village))
-            {
-                Debug.Log("The intersection contains a knight.");
-                return;
-            }
-            // check for max number of walls 
-            else if (localPlayer.numCityWalls >= 3)
-            {
-                StartCoroutine(GameManager.GUI.ShowMessage("You already have 3 city walls."));
-                return;
-            }
-            // if there is a village here
-            else
-            {
-                Village village = (Village)intersection.unit;
-
-                // if the player's village is a settlement
-                if (village.myKind == Village.VillageKind.Settlement)
-                {
-                    StartCoroutine(GameManager.GUI.ShowMessage("Settlements cannot have a city wall."));
-                    return;
-                }
-                else if (village.cityWall)
-                {
-                    StartCoroutine(GameManager.GUI.ShowMessage("City already has a city wall."));
-                    return;
-                }
-                else
-                {
-                    // upgrade the settlement to city
-                    Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                            {StealableType.Resource_Brick, 2},
-                        };
-
-                    if (!localPlayer.HasEnoughResources(requiredRes))
-                    {
-                        Debug.Log("Does not have enough resource to upgrade to city");
-                        return;
-                    }
-
-                    localPlayer.CmdConsumeResources(requiredRes);
-
-                    GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdBuildCityWall(
-                        SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-                    );
-
-                    StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));
-                    // local player has now placed city wall
-                    localPlayer.numCityWalls++;
-                    localPlayer.selectedUIIntersection = null;
-                    IsSelected = false;
-
-                    return;
-                }
-            }
-        }
-        else
-        {
-            Debug.Log("Intersection was empty");
+            Debug.Log("Does not have enough resource to upgrade to city");
             return;
         }
+        localPlayer.CmdConsumeResources(requiredRes);
+
+
+        StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));
+        localPlayer.CmdBuildCityWall(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        return;
     }
 
     public void CreateSettlement()
     {
+
+        if (!CanBuild())
+            return;
+
+        if (!isEmpty())
+            return;
+
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        bool setup = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
+        int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
-        if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
+        if (setup && localPlayer.placedSettlement)
         {
-            Debug.Log("Grid not created");
+            StartCoroutine(GameManager.GUI.ShowMessage("You have already placed a settlment."));
             return;
         }
 
-        if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsLocalPlayerTurn())
+        // only consume resources if not in setup phase
+        if (!setup)
         {
-            Debug.Log("Is not local player turn");
-            return;
-        }
-
-        if (GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase() && localPlayer.placedSettlement)
-        {
-            Debug.Log("You already placed a settlement during your turn");
-            return;
-        }
-
-        // check to see if there's currently a unit on the intersection
-        if (intersection.unit != null)
-        {
-            if (intersection.Owner != localPlayerName)
-            {
-                Debug.Log("Does not own the intersection.");
-                return;
-            }
-
-            // check for non-village unit
-            if (intersection.unit.GetType() != typeof(Village))
-            {
-                Debug.Log("The intersection contains a knight.");
-                return;
-            }
-            // if there is a village here
-            else
-            {
-                Village village = (Village)intersection.unit;
-
-                // if the player's village is a settlement
-                if (village.myKind == Village.VillageKind.Settlement)
-                {
-                    // check for setup phase
-                    if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
-                    {
-                        // upgrade the settlement to city
-                        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                            {StealableType.Resource_Ore, 3},
-                            {StealableType.Resource_Grain, 2}
-                        };
-
-                        if (!localPlayer.HasEnoughResources(requiredRes))
-                        {
-                            Debug.Log("Does not have enough resource to upgrade to city");
-                            return;
-                        }
-
-                        localPlayer.CmdConsumeResources(requiredRes);
-                    }
-
-
-                    GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdUpgradeSettlement(
-                        SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-                    );
-
-                    StartCoroutine(GameManager.GUI.ShowMessage("You have placed a settlement."));
-                    // local player has now placed settlement
-                    localPlayer.placedSettlement = true;
-                    localPlayer.selectedUIIntersection = null;
-                    intersection.Owner = localPlayerName;
-                    IsSelected = false;
-
-                    return;
-                }
-            }
-
-        }
-        // if the intersection was empty 
-        else
-        {
-            // only consume resources if not in setup phase
-            if (!GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase())
-            {
-                Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+            Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
                         {StealableType.Resource_Brick, 1},
                         {StealableType.Resource_Lumber, 1},
                         {StealableType.Resource_Wool, 1},
                         {StealableType.Resource_Grain, 1}
                     };
 
-                if (!localPlayer.HasEnoughResources(requiredRes))
-                {
-                    Debug.Log("Not enough resources");
-                    return;
-                }
-
-                localPlayer.CmdConsumeResources(requiredRes);
+            if (!localPlayer.HasEnoughResources(requiredRes))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Not enough resources."));
+                return;
             }
+            localPlayer.CmdConsumeResources(requiredRes);
+        }
 
-            localPlayer.placedSettlement = true;
+        if (roundCount == 1)
+            StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city."));
+        else
+            StartCoroutine(GameManager.GUI.ShowMessage("You have placed a settlement."));
 
-            Debug.Log("Created the settlement");
-            GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdBuildSettlement(
-                SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 })
-            );
+        // update the intersection
+        localPlayer.CmdBuildSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
-            // local player has now placed settlement
-            localPlayer.placedSettlement = true;
-            localPlayer.selectedUIIntersection = null;
-            IsSelected = false;
+        return;
+    }
 
+    public void UpgradeSettlement()
+    {
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!OwnsVillage())
+            return;
+
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        bool setup = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
+        int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
+
+
+        Village village = (Village)intersection.unit;
+        if (village.myKind != Village.VillageKind.Settlement)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Only settlements can be upgraded to a city."));
             return;
         }
 
+        // check for setup phase
+        if (!setup)
+        {
+            // upgrade the settlement to city
+            Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+                                        {StealableType.Resource_Ore, 3},
+                                        {StealableType.Resource_Grain, 2}
+                                    };
+
+            if (!localPlayer.HasEnoughResources(requiredRes))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("You do not have enough resources."));
+                return;
+            }
+
+            localPlayer.CmdConsumeResources(requiredRes);
+        }
+
+        StartCoroutine(GameManager.GUI.ShowMessage("You have upgraded your settlement."));
+        localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        return;
     }
+
 
     // Use this for initialization
     void Start()
@@ -556,7 +470,6 @@ public class UIIntersection : MonoBehaviour
             // show yellow if selected
             if (IsSelected)
             {
-                intersectionIcon.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("ore_f_b_03");
                 intersectionIcon.GetComponent<SpriteRenderer>().color = Color.yellow;
                 return;
             }
