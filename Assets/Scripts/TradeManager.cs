@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TradeManager : Singleton<TradeManager> {
-	public Trade InitiateTrade(string fromPlayerName, string toPlayerName) {
+	public void SendTradeRequest(string fromPlayerName, string toPlayerName) {
 		GamePlayer player1 = GameManager.ConnectedPlayersByName [fromPlayerName].GetComponent<GamePlayer> ();
 		GamePlayer player2 = GameManager.ConnectedPlayersByName [toPlayerName].GetComponent<GamePlayer> ();
 
@@ -11,9 +11,7 @@ public class TradeManager : Singleton<TradeManager> {
 		newTrade.Player1 = player1.myName;
 		newTrade.Player2 = player2.myName;
 
-		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (SerializationUtils.ObjectToByteArray(newTrade));
-
-		return newTrade;
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdSendTradeRequest (SerializationUtils.ObjectToByteArray (newTrade));
 	}
 
 	// Use this for initialization

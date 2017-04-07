@@ -7,7 +7,7 @@ using UnityEngine.UI;
 // this class is used to control the text displayed in the left pnale showing all the players' resources
 public class PlayerResourcePanel : MonoBehaviour {
 
-	public int PlayerIndex = 0;
+	public string PlayerName;
 
 	private Dictionary<StealableType, GameObject> resourcesGameObjs = new Dictionary<StealableType, GameObject>();
 
@@ -35,7 +35,7 @@ public class PlayerResourcePanel : MonoBehaviour {
 	}
 
 	private GamePlayer getPlayer() {
-		return GameManager.ConnectedPlayers [PlayerIndex].GetComponent<GamePlayer>();
+		return GameManager.ConnectedPlayersByName[PlayerName].GetComponent<GamePlayer>();
 	}
 
 	// Update is called once per frame

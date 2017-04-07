@@ -4,29 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class TradeButton : MonoBehaviour {
-
-	private int PlayerIndex = 0;
-
+	
 	// Use this for initialization
 	void Start () {
-		this.PlayerIndex = transform.GetComponentInParent<PlayerResourcePanel> ().PlayerIndex;
-		if (GameManager.ConnectedPlayers.IndexOf (GameManager.LocalPlayer) == this.PlayerIndex) {
-			GetComponent<Button> ().enabled = false;
-		}
+		
 	}
 
-	private GamePlayer getPlayer() {
-		return GameManager.ConnectedPlayers [this.PlayerIndex].GetComponent<GamePlayer> ();
+	public string getPlayerName() {
+		return transform.GetComponentInParent<PlayerResourcePanel> ().PlayerName;	
 	}
 
-	void ClickRequestTrade() {
-		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		TradeManager.Instance.InitiateTrade (localPlayer.myName, getPlayer ().myName);
+	public void ClickSendTradeRequest() {
+		TradeManager.Instance.SendTradeRequest (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName, getPlayerName());
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+		if (GameManager.LocalPlayer.GetComponent<GamePlayer>().myName == getPlayerName()) {
+			GetComponent<Button> ().enabled = false;
+		}
 	}
 }
  
