@@ -1690,6 +1690,7 @@ public class HexGrid : MonoBehaviour {
 		harbours = new Dictionary<GameObject, StealableType> ();
 		harbourCollection = new Dictionary<string, GameObject>();
 
+		//TODO: attach harbour menu popups to harbours
 
 		//harbour 1
 		//retrieve top left tile
