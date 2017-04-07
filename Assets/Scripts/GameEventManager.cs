@@ -42,4 +42,5 @@ public class GameEventManager : Singleton<GameEventManager> {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdHandleMoveRobberPirateEntity (EventMoveRobberPirateEntityType, SerializationUtils.ObjectToByteArray(hex.HexGridCubePosition));
 		IsEventMoveRobberPirateEntitySet = false;
 	}
+
 }

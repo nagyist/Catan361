@@ -58,6 +58,8 @@ public class GUIInterface : MonoBehaviour {
 
 	public void ShowTradeRequest(Trade currentTrade) {
 		GameObject tradeRequestObj = guiCanvas.transform.FindChild ("TradeRequestPopup").gameObject;
+		tradeRequestObj.GetComponent<TradeRequestPopup> ().tradeObj = currentTrade;
+		tradeRequestObj.GetComponent<TradeRequestPopup> ().active = true;
 		tradeRequestObj.GetComponent<UIWindow> ().Show ();
 	}
 
