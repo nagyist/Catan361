@@ -14,15 +14,17 @@ public class TradeRequestPopup : MonoBehaviour {
 
 	public void ClickAcceptTradeRequest() {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAnswerTradeRequest (SerializationUtils.ObjectToByteArray (tradeObj), true);
+		GetComponent<UIWindow> ().Hide ();
 	}
 
 	public void ClickDeclineTradeRequest() {
-		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAnswerTradeRequest (SerializationUtils.ObjectToByteArray (tradeObj), true);
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAnswerTradeRequest (SerializationUtils.ObjectToByteArray (tradeObj), false);
+		GetComponent<UIWindow> ().Hide ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (active == false) {
+		if (!GetComponent<UIWindow> ().IsVisible) {
 			return;
 		}
 
