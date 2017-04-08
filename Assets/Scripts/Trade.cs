@@ -23,11 +23,11 @@ public class Trade {
 	}
 
 	public int GetPlayer2OfferingFor(StealableType type) {
-		if (!Player1Offer.ContainsKey (type)) {
+		if (!Player2Offer.ContainsKey (type)) {
 			return 0;
 		}
 
-		return Player1Offer [type];
+		return Player2Offer [type];
 	}
 
 	// Use this for initialization

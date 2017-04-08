@@ -8,12 +8,12 @@ public class Player2PlayerTrade : MonoBehaviour {
 
 	public Trade currentTrade;
 	private static Dictionary<string, StealableType> transformNameToStealableType = new Dictionary<string, StealableType> {
-		["Wool"] = StealableType.Resource_Wool,
-		["Lumber"] = StealableType.Resource_Lumber,
-		["Ore"] = StealableType.Resource_Ore,
-		["Brick"] = StealableType.Resource_Brick,
-		["Grain"] = StealableType.Resource_Grain,
-		["Fish"] = StealableType.Resource_Fish
+		{"Wool", StealableType.Resource_Wool},
+		{"Lumber", StealableType.Resource_Lumber},
+		{"Ore", StealableType.Resource_Ore},
+		{"Brick", StealableType.Resource_Brick},
+		{"Grain", StealableType.Resource_Grain},
+		{"Fish", StealableType.Resource_Fish}
 	};
 
 
@@ -40,7 +40,7 @@ public class Player2PlayerTrade : MonoBehaviour {
 
 		ResourceCollection.PlayerResourcesCollection playerRes = GameManager.Instance.GetCurrentGameState ().CurrentResources.GetPlayerResources (getLocalPlayer ().myName);
 		if (!playerRes.ContainsKey (editQtyType) || playerRes[editQtyType] < qtyVal) {
-			StartCoroutine(GameManager.GUI.ShowMessage ("You don't have enough " + transform + " to trade that amount."));
+			StartCoroutine(GameManager.GUI.ShowMessage ("You don't have enough " + transform.name + " to trade that amount."));
 			field.text = "0";
 			return;
 		}
@@ -80,7 +80,8 @@ public class Player2PlayerTrade : MonoBehaviour {
 				currentOffering = currentTrade.GetPlayer2OfferingFor (type);
 			}
 
-			f.text = "" + currentOffering;
+			f.textComponent.text = "" + currentOffering;
+			Debug.Log (f.name + " = " + currentOffering);
 		}
 	}
 }
