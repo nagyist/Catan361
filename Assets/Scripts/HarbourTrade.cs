@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class HarbourTrade : MonoBehaviour {
 
-	public Harbour harbour;
-	public Button confirmButton;
+	public int exchangeRate{ get; set; }
+	public StealableType returnedResource { get; set; }
+	public int returnedAmount { get; set; }
+
+	//public Button confirmButton;
 	private string resourceSelected;
 
 		public void accepted()
@@ -41,13 +44,16 @@ public class HarbourTrade : MonoBehaviour {
 
 			Debug.Log("Player selected: " + resourceSelected);
 
-			GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+			resourceRedistribution (resourceSelected);
+
+			//GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer>();
 			//player.playerResources[selected]++;
 		}
 
 	public void resourceRedistribution (string resourceOffered)
 	{
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		//Harbour harbourScript = harbour.GetComponent<Harbour> ();
 
 		Dictionary <string, StealableType> resourceDict = new Dictionary <string, StealableType> ();
 		resourceDict.Add ("Brick", StealableType.Resource_Brick);
@@ -58,35 +64,19 @@ public class HarbourTrade : MonoBehaviour {
 
 		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
 
-		if (resourceDict.ContainsKey(resourceOffered)) 
+		if (resourceDict.ContainsKey(resourceOffered) && playerResources[resourceDict[resourceOffered]] >= exchangeRate) 
 		{
-			int newRes = playerResources [resourceDict[resourceOffered]] - 2;
+			int newRes = playerResources [resourceDict[resourceOffered]] - exchangeRate;
 			player.CmdUpdateResource (resourceDict [resourceOffered], newRes);
 			//player.playerResources [resourceDict[resourceOffered]] = newRes;
 		}
 
-		if (playerResources.ContainsKey (harbour.returnedResource))
+		if (playerResources.ContainsKey (returnedResource))
 		{
-			player.CmdUpdateResource (harbour.returnedResource, playerResources[harbour.returnedResource] + 1);
+			player.CmdUpdateResource (returnedResource, playerResources[returnedResource] + 1);
 			//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
 		}
 
-
-	}
-
-	void TaskOnClick(){
-		Debug.Log ("You have clicked the button!");
-		resourceRedistribution (resourceSelected);
-	}
-
-	// Use this for initialization
-	void Start () {
-		Button btn = confirmButton.GetComponent<Button>();
-		btn.onClick.AddListener (TaskOnClick);
-	}
-
-	// Update is called once per frame
-	void Update () {
 
 	}
 

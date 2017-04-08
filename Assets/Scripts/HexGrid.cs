@@ -1708,7 +1708,7 @@ public class HexGrid : MonoBehaviour {
 		//vec3 of mainland gameobject
 		Vec3 harbour1CubePos2 = offsetOddRToCubeCoordinate (new Vector2(4,2));
 
-		//retrive the edge that the harbour occupies (don't know if this is necessary yet)
+		//retrieve the edge that the harbour occupies (don't know if this is necessary yet)
 		Edge harbour1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour1CubePos1, harbour1CubePos2);
 		harbour1.isHarbour = true;
 
@@ -1718,7 +1718,7 @@ public class HexGrid : MonoBehaviour {
 		//add exchangeable resource to harbour 
 		harbours.Add (firstHarbour, StealableType.Resource_Brick);
 
-		//instantiate harbour
+		//instantiate harbour and trade menu
 		GameObject newHarbour1 = (GameObject) Instantiate (Harbour);
 		newHarbour1.transform.parent = this.transform;
 		newHarbour1.transform.position = firstHarbour.transform.position;
@@ -1733,6 +1733,7 @@ public class HexGrid : MonoBehaviour {
 		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
 		harbour1Text.text = harbourScript1.exchangeRate + ":" + harbourScript1.returnedAmount + " Brick";
 		harbourCollection.Add("1", newHarbour1);
+
 
 
 		//harbour 2
