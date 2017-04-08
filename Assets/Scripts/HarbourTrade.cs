@@ -77,7 +77,7 @@ public class HarbourTrade : MonoBehaviour {
 			//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
 		}
 
-
+		GameManager.GUI.HideHarbourTradePopup ();
 	}
 
 }

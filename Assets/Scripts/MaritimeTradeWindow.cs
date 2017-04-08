@@ -62,6 +62,7 @@ public class MaritimeTradeWindow : MonoBehaviour {
 				//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
 			}
 
+
 			if (playerResources.ContainsKey (StealableType.Resource_Grain) && int.Parse (grainNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Grain] - int.Parse (grainNumLost)) >= 0) {
 				player.CmdUpdateResource (StealableType.Resource_Grain, playerResources [StealableType.Resource_Grain] - int.Parse (grainNumLost));
 				newRes += int.Parse (grainNumLost) / 4;

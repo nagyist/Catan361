@@ -10,7 +10,8 @@ public class MoveRobberPirate : MonoBehaviour {
 		
 	}
 
-	public void ClickAcceptMove() {
+	public void ClickAcceptMove() 
+	{
 		// TODO : how to block the program flow an await for an answer
 		ToggleGroup toggles = gameObject.GetComponentInChildren<ToggleGroup>();
 		IEnumerator<Toggle> togglesEnum = toggles.ActiveToggles().GetEnumerator();
@@ -27,6 +28,8 @@ public class MoveRobberPirate : MonoBehaviour {
 
 		GameEventManager.Instance.HandleMoveRobberPirateDecision (entityType);
 		GetComponent<UIWindow> ().Hide ();
+
+		GameManager.GUI.HideMoveRobberPiratePopup ();
 	}
 	
 	// Update is called once per frame

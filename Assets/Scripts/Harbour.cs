@@ -28,6 +28,11 @@ public class Harbour : MonoBehaviour {
 
 		GameObject tradeWindow = GameManager.GUI.guiCanvas.transform.FindChild ("HarbourTradeMenu").gameObject;
 
+		if(tradeWindow.activeSelf == false)
+		{
+			tradeWindow.SetActive(true);
+		}
+
 		HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
 		tradeWindowScript.exchangeRate = exchangeRate;
 		tradeWindowScript.returnedResource = returnedResource;

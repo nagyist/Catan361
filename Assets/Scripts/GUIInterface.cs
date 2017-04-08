@@ -73,6 +73,13 @@ public class GUIInterface : MonoBehaviour {
 
 		return popup;
 	}
+
+	public GameObject HideMoveRobberPiratePopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("RobberPirateWindow").gameObject;
+		popup.GetComponent<UIWindow> ().Hide();
+
+		return popup;
+	}
 		
 	public GameObject ShowPlayer2PlayerTradeWindow(Trade currentTrade) {
 		GameObject tradeWindow = guiCanvas.transform.FindChild ("Player2PlayerTrade").gameObject;
@@ -85,6 +92,13 @@ public class GUIInterface : MonoBehaviour {
 	public GameObject ShowHarbourTradePopup() {
 		GameObject popup = guiCanvas.transform.FindChild ("HarbourTradeMenu").gameObject;
 		popup.GetComponent<UIWindow> ().Show();
+
+		return popup;
+	}
+
+	public GameObject HideHarbourTradePopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("HarbourTradeMenu").gameObject;
+		popup.GetComponent<UIWindow> ().Hide();
 
 		return popup;
 	}
