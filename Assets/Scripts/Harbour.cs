@@ -8,8 +8,8 @@ public class Harbour : MonoBehaviour {
 	public StealableType returnedResource;
 	public int returnedAmount;
 	public Edge harbourEdge;
-	public GameObject HarbourTradeMenu;
-	public GameObject guiCanvas;
+	//public GameObject HarbourTradeMenu;
+	//public GameObject guiCanvas;
 
 	void OnMouseEnter(){
 		GetComponentInChildren<SpriteRenderer>().color = new Color32 (0, 255, 0, 255);
@@ -26,7 +26,7 @@ public class Harbour : MonoBehaviour {
 
 		GameManager.GUI.ShowHarbourTradePopup ();
 
-		GameObject tradeWindow = guiCanvas.transform.FindChild ("HarbourTradeMenu").gameObject;
+		GameObject tradeWindow = GameManager.GUI.guiCanvas.transform.FindChild ("HarbourTradeMenu").gameObject;
 
 		HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
 		tradeWindowScript.exchangeRate = exchangeRate;
