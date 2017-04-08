@@ -51,47 +51,51 @@ public class MaritimeTradeWindow : MonoBehaviour {
 
 		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
 
-		if (resourceDict.ContainsKey(resourceRequested) && (int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost) + int.Parse(fishNumLost)) % 4 == 0) 
+		if (resourceDict.ContainsKey (resourceRequested)) // && (int.Parse (brickNumLost) + int.Parse (grainNumLost) + int.Parse (oreNumLost) + int.Parse (woolNumLost) + int.Parse (lumberNumLost) + int.Parse (fishNumLost)) % 4 == 0) 
 		{
-			int newRes = playerResources [resourceDict[resourceRequested]] + ((int.Parse(brickNumLost)+ int.Parse(grainNumLost) + int.Parse(oreNumLost) + int.Parse(woolNumLost) + int.Parse(lumberNumLost) + int.Parse(fishNumLost))/4);
-			player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
-			//player.playerResources [resourceDict[resourceRequested]] = newRes;
-		}
+			int newRes = playerResources [resourceDict [resourceRequested]]; //+ ((int.Parse (brickNumLost) + int.Parse (grainNumLost) + int.Parse (oreNumLost) + int.Parse (woolNumLost) + int.Parse (lumberNumLost) + int.Parse (fishNumLost)) / 4);
 
-		if (playerResources.ContainsKey (StealableType.Resource_Brick) && int.Parse(brickNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource (StealableType.Resource_Brick, playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost));
-			//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
-		}
+			if (playerResources.ContainsKey (StealableType.Resource_Brick) && int.Parse (brickNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Brick] - int.Parse (brickNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Brick, playerResources [StealableType.Resource_Brick] - int.Parse (brickNumLost));
+				newRes += int.Parse (brickNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
+			}
 
-		if (playerResources.ContainsKey (StealableType.Resource_Grain) && int.Parse(grainNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource(StealableType.Resource_Grain, playerResources[StealableType.Resource_Grain] - int.Parse(grainNumLost));
-			//player.playerResources[StealableType.Resource_Grain] =  player.playerResources[StealableType.Resource_Grain] - int.Parse(grainNumLost);
-		}
+			if (playerResources.ContainsKey (StealableType.Resource_Grain) && int.Parse (grainNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Grain] - int.Parse (grainNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Grain, playerResources [StealableType.Resource_Grain] - int.Parse (grainNumLost));
+				newRes += int.Parse (grainNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Grain] =  player.playerResources[StealableType.Resource_Grain] - int.Parse(grainNumLost);
+			}
 
-		if (playerResources.ContainsKey (StealableType.Resource_Ore) && int.Parse(oreNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource (StealableType.Resource_Ore, playerResources [StealableType.Resource_Ore] - int.Parse (oreNumLost));
-			//player.playerResources[StealableType.Resource_Ore] =  player.playerResources[StealableType.Resource_Ore] - int.Parse(oreNumLost);
-		}
+			if (playerResources.ContainsKey (StealableType.Resource_Ore) && int.Parse (oreNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Ore] - int.Parse (oreNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Ore, playerResources [StealableType.Resource_Ore] - int.Parse (oreNumLost));
+				newRes += int.Parse (oreNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Ore] =  player.playerResources[StealableType.Resource_Ore] - int.Parse(oreNumLost);
+			}
 
-		if (playerResources.ContainsKey (StealableType.Resource_Wool) && int.Parse(woolNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource (StealableType.Resource_Wool, playerResources [StealableType.Resource_Wool] - int.Parse (woolNumLost));
-			//player.playerResources[StealableType.Resource_Wool] =  player.playerResources[StealableType.Resource_Wool] - int.Parse(woolNumLost);
-		}
+			if (playerResources.ContainsKey (StealableType.Resource_Wool) && int.Parse (woolNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Wool] - int.Parse (woolNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Wool, playerResources [StealableType.Resource_Wool] - int.Parse (woolNumLost));
+				newRes += int.Parse (woolNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Wool] =  player.playerResources[StealableType.Resource_Wool] - int.Parse(woolNumLost);
+			}
 
-		if (playerResources.ContainsKey (StealableType.Resource_Lumber) && int.Parse(lumberNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource (StealableType.Resource_Lumber, playerResources[StealableType.Resource_Lumber] - int.Parse(lumberNumLost));
-			//player.playerResources[StealableType.Resource_Lumber] =  player.playerResources[StealableType.Resource_Lumber] - int.Parse(lumberNumLost);
-		}
+			if (playerResources.ContainsKey (StealableType.Resource_Lumber) && int.Parse (lumberNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Lumber] - int.Parse (lumberNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Lumber, playerResources [StealableType.Resource_Lumber] - int.Parse (lumberNumLost));
+				newRes += int.Parse (lumberNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Lumber] =  player.playerResources[StealableType.Resource_Lumber] - int.Parse(lumberNumLost);
+			}
 
-		if (playerResources.ContainsKey (StealableType.Resource_Fish) && int.Parse(fishNumLost) % 4 == 0)
-		{
-			player.CmdUpdateResource (StealableType.Resource_Fish, playerResources [StealableType.Resource_Fish] - int.Parse (fishNumLost));
-			//player.playerResources[StealableType.Resource_Fish] =  player.playerResources[StealableType.Resource_Fish] - int.Parse(fishNumLost);
+			if (playerResources.ContainsKey (StealableType.Resource_Fish) && int.Parse (fishNumLost) % 4 == 0 && (playerResources [StealableType.Resource_Fish] - int.Parse (fishNumLost)) >= 0) {
+				player.CmdUpdateResource (StealableType.Resource_Fish, playerResources [StealableType.Resource_Fish] - int.Parse (fishNumLost));
+				newRes += int.Parse (fishNumLost) / 4;
+				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
+				//player.playerResources[StealableType.Resource_Fish] =  player.playerResources[StealableType.Resource_Fish] - int.Parse(fishNumLost);
+			}
 		}
 	}
 

@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using System;
 
 public class Player2PlayerTrade : MonoBehaviour {
-
+	
 	public Trade currentTrade;
+
 	private static Dictionary<string, StealableType> transformNameToStealableType = new Dictionary<string, StealableType> {
 		{"Wool", StealableType.Resource_Wool},
 		{"Lumber", StealableType.Resource_Lumber},
@@ -84,4 +85,5 @@ public class Player2PlayerTrade : MonoBehaviour {
 			Debug.Log (f.name + " = " + currentOffering);
 		}
 	}
+
 }
