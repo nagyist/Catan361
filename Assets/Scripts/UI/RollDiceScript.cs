@@ -5,6 +5,19 @@ using UnityEngine.UI;
 
 public class RollDiceScript : MonoBehaviour {
 
+	public enum EventDiceOutcome {
+		Barbarian, City_Gates
+	}
+
+	private static Dictionary<int, EventDiceOutcome> eventDiceOutcomeDistr = new Dictionary<int, EventDiceOutcome> {
+		{1, EventDiceOutcome.Barbarian},
+		{2, EventDiceOutcome.Barbarian},
+		{3, EventDiceOutcome.Barbarian},
+		{4, EventDiceOutcome.City_Gates},
+		{5, EventDiceOutcome.City_Gates},
+		{6, EventDiceOutcome.City_Gates}
+	};
+
 	// Use this for initialization
 	void Start () {
 		
@@ -16,6 +29,7 @@ public class RollDiceScript : MonoBehaviour {
 		}
 
 		GameManager.Instance.RollDice (UnityEngine.Random.Range(1, 13));
+		GameManager.Instance.RollEventDice (eventDiceOutcomeDistr[UnityEngine.Random.Range (1, 7)]);
 	}
 	
 	// Update is called once per frame

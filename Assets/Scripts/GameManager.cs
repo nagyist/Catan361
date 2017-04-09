@@ -95,6 +95,17 @@ public class GameManager : Singleton<GameManager> {
 		return true;
 	}
 
+	public void RollEventDice(RollDiceScript.EventDiceOutcome outcome) {
+		if (outcome == RollDiceScript.EventDiceOutcome.Barbarian) {
+			GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter--;
+			if (GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianInvasionTriggered ()) {
+				// post invasion
+			}
+
+			LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent ();
+		}
+	}
+
     // this function is used update player resources accordingly
     public bool RollDice(int roll) {
 		// returns false if game isn't ready

@@ -17,6 +17,10 @@ public class GameStatusScript : MonoBehaviour {
 			GameObject turnNum = transform.FindChild("TurnInfo").FindChild("NumTurn").gameObject;
 			turnNum.GetComponentInChildren<Text> ().text = "" + GameManager.Instance.GetCurrentGameState ().CurrentTurn.RoundCount;
 
+			// update barbarian counter
+			GameObject barbarianNum = transform.FindChild("TurnInfo").FindChild("BarbarianCounter").gameObject;
+			barbarianNum.GetComponentInChildren<Text> ().text = "" + GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter;
+
 			// update current turn status
 			GameObject turnStatusGameObj = transform.FindChild("TurnInfo").FindChild("TxtTurnType").gameObject;
 			string turnStatus = "";
