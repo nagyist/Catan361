@@ -8,8 +8,14 @@ public class Cheats : NetworkBehaviour {
 
     GameObject goldPopup;
 
-	// Use this for initialization
-	void Start () {
+    FileBrowser fb = new FileBrowser();
+    public GUISkin[] skins;
+    public Texture2D file, folder, back, drive;
+    bool drawBrowser = false;
+    string fileName;
+
+    // Use this for initialization
+    void Start () {
         GameObject UICanvas = GameObject.Find("Canvas");
         for (int i = 0; i < UICanvas.transform.childCount; i++)
         {
@@ -18,7 +24,19 @@ public class Cheats : NetworkBehaviour {
                 goldPopup = UICanvas.transform.GetChild(i).gameObject;
             }
         }
-	}
+
+        //setup file browser style
+        fb.guiSkin = skins[0]; //set the starting skin
+        //set the various textures
+        fb.fileTexture = file;
+        fb.directoryTexture = folder;
+        fb.backTexture = back;
+        fb.driveTexture = drive;
+        //show the search bar
+        fb.showSearch = false;
+        //search recursively (setting recursive search may cause a long delay)
+        fb.searchRecursively = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -34,7 +52,25 @@ public class Cheats : NetworkBehaviour {
         }
         if (Input.GetKey(KeyCode.L) && isServer)
         {
-            SaveAndLoad.load();
+            drawBrowser = true;
         }
 	}
+
+    private void OnGUI()
+    {
+        if (drawBrowser)
+        {
+            fb.setDirectory(Application.persistentDataPath);
+            fb.setLayout(1);
+            if (fb.draw())
+            {
+                fileName = (fb.outputFile == null) ? "cancel hit" : fb.outputFile.ToString();
+                if (!fileName.Equals("cancel hit"))
+                {
+                    SaveAndLoad.load(fileName);
+                }
+                drawBrowser = false;
+            }
+        }
+    }
 }
