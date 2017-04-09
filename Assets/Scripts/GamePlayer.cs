@@ -343,14 +343,14 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public void AddVictoryPoint(int amount) {
+	public void CmdAddVictoryPoint(int amount) {
 		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.AddVictoryPointsForPlayer (myName, amount);
 		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
 	}
 
 	[Command]
-	public void RemoveVictoryPoint(int amount) {
+	public void CmdRemoveVictoryPoint(int amount) {
 		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.RemoveVictoryPointsForPlayer (myName, amount);
 		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
