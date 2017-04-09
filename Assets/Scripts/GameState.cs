@@ -221,9 +221,20 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void RpcClientTriggerBarbarianInvasion() {
-		BarbarianInvasion newInvasion = new BarbarianInvasion ();
-		GameEventManager.Instance.TriggerBarbarianInvasion ();
+	public void RpcClientTriggerBarbarianInvasion(byte[] barbarianInvasionSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage ("BARBARIANS INVADED CATAN !");
+
+	}
+
+	[ClientRpc]
+	public void RpcClientUpdateIntersection(string intersectionKey, byte[] newIntersectionSerialized) {
+		Intersection newIntersection = (Intersection)SerializationUtils.ByteArrayToObject (newIntersectionSerialized);
+		CurrentIntersections.Intersections [intersectionKey] = newIntersection;
+	}
+
+	[ClientRpc]
+	public void RpcClientPublishBarbarianInvasion(byte[] barbarianInvasionSerialized) {
+		BarbarianInvasion invasion = (BarbarianInvasion)SerializationUtils.ByteArrayToObject (barbarianInvasionSerialized);
 	}
 
     // this function si used to sync the gameboard

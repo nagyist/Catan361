@@ -46,8 +46,9 @@ public class GameEventManager : Singleton<GameEventManager> {
 		IsEventMoveRobberPirateEntitySet = false;
 	}
 
-	public void TriggerBarbarianInvasion(BarbarianInvasion invasion) {
-		CurrentBarbarianInvasion = invasion;
+	public void TriggerNewBarbarianInvasion() {
+		CurrentBarbarianInvasion = new BarbarianInvasion();
+		CurrentBarbarianInvasion.ExecutePrimaryOutcome ();
 	}
 
 }

@@ -362,6 +362,16 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostBarbarianUpdate (SerializationUtils.ObjectToByteArray (evt));
 	}
 
+	[Command]
+	public void CmdTriggerBarbarianInvasion() {
+		GameEventManager.Instance.TriggerNewBarbarianInvasion ();
+	}
+
+	[Command]
+	public void CmdUpdateIntersection(string key, byte[] newIntersectionSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateIntersection (key, newIntersectionSerialized);
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
