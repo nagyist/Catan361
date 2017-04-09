@@ -8,8 +8,6 @@ public class Harbour : MonoBehaviour {
 	public StealableType returnedResource;
 	public int returnedAmount;
 	public Edge harbourEdge;
-	//public GameObject HarbourTradeMenu;
-	//public GameObject guiCanvas;
 
 	void OnMouseEnter(){
 		GetComponentInChildren<SpriteRenderer>().color = new Color32 (0, 255, 0, 255);
@@ -21,7 +19,10 @@ public class Harbour : MonoBehaviour {
 
 	void OnMouseDown() 
 	{
-		
+		//TODO: 
+		// if localplayer does not have settlement on intersections adj to edge:
+		//StartCoroutine (GameManager.GUI.ShowMessage("You cannot access this harbour until you have a settlement or city adjacent to it."));
+		//else
 		StartCoroutine (GameManager.GUI.ShowMessage("Harbour trade, resource returned: " + returnedResource));
 
 		GameManager.GUI.ShowHarbourTradePopup ();
@@ -33,10 +34,18 @@ public class Harbour : MonoBehaviour {
 			tradeWindow.SetActive(true);
 		}
 
+		// if returnedResource != null then
 		HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
 		tradeWindowScript.exchangeRate = exchangeRate;
 		tradeWindowScript.returnedResource = returnedResource;
 		tradeWindowScript.returnedAmount = returnedAmount;
+
+		/* else
+		HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
+		tradeWindowScript.exchangeRate = exchangeRate;
+		tradeWindowScript.returnedResource = returnedResource;
+		tradeWindowScript.returnedAmount = returnedAmount;
+		*/
 	}
 
 	// Update is called once per frame
