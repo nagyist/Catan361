@@ -24,19 +24,6 @@ public class MaritimeTradeWindow : MonoBehaviour {
 
 	public Dictionary <string, StealableType> resourceDict;
 
-	/*
-	public GameObject findHarbour(string harbourNumber)
-	{
-		HexGrid hexGrid = GameObject.FindGameObjectWithTag ("GameState").GetComponent<HexGrid> ();
-		return hexGrid.harbourCollection [harbourNumber];
-	}
-
-	public StealableType findHarbourResource (GameObject harbourSelected)
-	{
-		return harbourSelected.GetComponent<Harbour>().returnedResource;
-	}
-	*/
-
 	public void resourceRedistribution (string resourceRequested, string brickNumLost, string grainNumLost, string oreNumLost, string woolNumLost, string lumberNumLost, string fishNumLost)
 	{
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
