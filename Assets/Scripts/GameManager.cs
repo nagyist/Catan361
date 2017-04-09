@@ -100,7 +100,11 @@ public class GameManager : Singleton<GameManager> {
 			GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter--;
 
 			if (GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianInvasionTriggered ()) {
+				GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage ("BARBARIANS INVADED CATAN !");
 				// post invasion
+				// count city on map
+				// count active knights (each knight type has a number)
+
 			} else {
 				GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage ("Barbarians are getting closer ...", 1.75f);
 			}
@@ -162,10 +166,13 @@ public class GameManager : Singleton<GameManager> {
 						if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
 
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
+
 						if (playerResources.ContainsKey (tile.Resource)) {
 							newAmount = playerResources [tile.Resource] + amountToAdd;
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
 							newAmount = playerResources [tile.Resource] + tile.FishingReturnNum;
+						} else if (tile.Resource == StealableType.Resource_Gold) {
+							GameManager.GUI.ShowGoldPopup ();
 						}
 
 						intersectionOwner.CmdUpdateResource (tile.Resource, newAmount);

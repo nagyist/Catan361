@@ -220,6 +220,12 @@ public class GameState : NetworkBehaviour {
 		CurrentBarbarianEvent = newEvent;
 	}
 
+	[ClientRpc]
+	public void RpcClientTriggerBarbarianInvasion() {
+		BarbarianInvasion newInvasion = new BarbarianInvasion ();
+		GameEventManager.Instance.TriggerBarbarianInvasion ();
+	}
+
     // this function si used to sync the gameboard
 	public void SyncGameBoard() {
 
