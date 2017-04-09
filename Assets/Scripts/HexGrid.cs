@@ -1690,8 +1690,6 @@ public class HexGrid : MonoBehaviour {
 		harbours = new Dictionary<GameObject, StealableType> ();
 		harbourCollection = new Dictionary<string, GameObject>();
 
-		//TODO: attach harbour menu popups to harbours
-
 		//harbour 1
 		//retrieve top left tile
 		Vector2 harbour1Vec2 = new Vector2(3, 1);
@@ -1712,6 +1710,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour1CubePos1, harbour1CubePos2);
 		harbour1.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH1_1 = UIHex.getIntersectionsAdjacentPos(harbour1CubePos1);
+		List<List<Vec3>> adjIntersectionsH1_2 = UIHex.getIntersectionsAdjacentPos(harbour1CubePos2);
+		List<Intersection> adjIntersectionsH_1 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_1 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH1_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_1.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH1_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_1.Contains(i))
+			{
+				intersectionsIntersectionH_1.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject firstHarbour = currentHexGameObjForHarbour1.transform.FindChild ("RBEdge").gameObject;
 
@@ -1728,6 +1747,10 @@ public class HexGrid : MonoBehaviour {
 		harbourScript1.exchangeRate = 2;
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_1) {
+			harbourScript1.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour1Text = newHarbour1.GetComponentInChildren<TextMesh>();
@@ -1760,6 +1783,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour2 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour2CubePos2, harbour2CubePos1);
 		harbour2.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH2_1 = UIHex.getIntersectionsAdjacentPos(harbour2CubePos2);
+		List<List<Vec3>> adjIntersectionsH2_2 = UIHex.getIntersectionsAdjacentPos(harbour2CubePos1);
+		List<Intersection> adjIntersectionsH_2 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_2 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH2_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_2.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH2_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_2.Contains(i))
+			{
+				intersectionsIntersectionH_2.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject secondHarbour = currentHexGameObjForHarbour2.transform.FindChild ("LBEdge").gameObject;
 
@@ -1776,6 +1820,10 @@ public class HexGrid : MonoBehaviour {
 		harbourScript2.exchangeRate = 3;
 		harbourScript2.returnedResource = StealableType.Resource_Grain;
 		harbourScript2.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_2) {
+			harbourScript2.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
@@ -1808,6 +1856,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour3CubePos1, harbour3CubePos2);
 		harbour3.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH3_1 = UIHex.getIntersectionsAdjacentPos(harbour3CubePos1);
+		List<List<Vec3>> adjIntersectionsH3_2 = UIHex.getIntersectionsAdjacentPos(harbour3CubePos2);
+		List<Intersection> adjIntersectionsH_3 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_3 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH3_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_3.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH3_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_3.Contains(i))
+			{
+				intersectionsIntersectionH_3.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject thirdHarbour = currentHexGameObjForHarbour3.transform.FindChild ("LBEdge").gameObject;
 
@@ -1825,10 +1894,15 @@ public class HexGrid : MonoBehaviour {
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
 		harbourScript3.returnedAmount = 1;
 
+		foreach (Intersection i in intersectionsIntersectionH_3) {
+			harbourScript3.intersectionsCanAccessHarbour.Add (i);
+		}
+
 		//change harbour text
 		TextMesh harbour3Text = newHarbour3.GetComponentInChildren<TextMesh>();
 		harbour3Text.text = harbourScript3.exchangeRate + ":" + harbourScript3.returnedAmount + " Lumber";
 		harbourCollection.Add("3", newHarbour3);
+
 
 
 		//harbour 4
@@ -1855,6 +1929,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour4 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour4CubePos1, harbour4CubePos2);
 		harbour4.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH4_1 = UIHex.getIntersectionsAdjacentPos(harbour4CubePos1);
+		List<List<Vec3>> adjIntersectionsH4_2 = UIHex.getIntersectionsAdjacentPos(harbour4CubePos2);
+		List<Intersection> adjIntersectionsH_4 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_4 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH4_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_4.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH4_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_4.Contains(i))
+			{
+				intersectionsIntersectionH_4.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject fourthHarbour = currentHexGameObjForHarbour4.transform.FindChild ("REdge").gameObject;
 
@@ -1872,10 +1967,15 @@ public class HexGrid : MonoBehaviour {
 		harbourScript4.returnedResource = StealableType.Resource_Ore;
 		harbourScript4.returnedAmount = 1;
 
+		foreach (Intersection i in intersectionsIntersectionH_4) {
+			harbourScript4.intersectionsCanAccessHarbour.Add (i);
+		}
+
 		//change harbour text
 		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
 		harbour4Text.text = harbourScript4.exchangeRate + ":" + harbourScript4.returnedAmount + " Any";
 		harbourCollection.Add("4", newHarbour4);
+
 
 
 		//harbour 5
@@ -1898,6 +1998,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour5 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour5CubePos1, harbour5CubePos2);
 		harbour5.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH5_1 = UIHex.getIntersectionsAdjacentPos(harbour5CubePos1);
+		List<List<Vec3>> adjIntersectionsH5_2 = UIHex.getIntersectionsAdjacentPos(harbour5CubePos2);
+		List<Intersection> adjIntersectionsH_5 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_5 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH5_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_5.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH5_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_5.Contains(i))
+			{
+				intersectionsIntersectionH_5.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject fifthHarbour = currentHexGameObjForHarbour5.transform.FindChild ("RBEdge").gameObject;
 
@@ -1914,6 +2035,10 @@ public class HexGrid : MonoBehaviour {
 		harbourScript5.exchangeRate = 2;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_5) {
+			harbourScript5.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour5Text = newHarbour5.GetComponentInChildren<TextMesh>();
@@ -1942,6 +2067,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour6 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour6CubePos1, harbour6CubePos2);
 		harbour6.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH6_1 = UIHex.getIntersectionsAdjacentPos(harbour6CubePos1);
+		List<List<Vec3>> adjIntersectionsH6_2 = UIHex.getIntersectionsAdjacentPos(harbour6CubePos2);
+		List<Intersection> adjIntersectionsH_6 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_6 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH6_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_6.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH6_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_6.Contains(i))
+			{
+				intersectionsIntersectionH_6.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject sixthHarbour = currentHexGameObjForHarbour6.transform.FindChild ("RBEdge").gameObject;
 
@@ -1956,8 +2102,12 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 3;
-		//harbourScript6.returnedResource = StealableType.Resource_Brick;
+		harbourScript6.returnedResource = StealableType.Resource_Brick;
 		harbourScript6.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_6) {
+			harbourScript6.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
@@ -1990,6 +2140,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour7 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour7CubePos1, harbour7CubePos2);
 		harbour7.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH7_1 = UIHex.getIntersectionsAdjacentPos(harbour7CubePos1);
+		List<List<Vec3>> adjIntersectionsH7_2 = UIHex.getIntersectionsAdjacentPos(harbour7CubePos2);
+		List<Intersection> adjIntersectionsH_7 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_7 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH7_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_7.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH7_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_7.Contains(i))
+			{
+				intersectionsIntersectionH_7.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject seventhHarbour = currentHexGameObjForHarbour7.transform.FindChild ("LBEdge").gameObject;
 
@@ -2006,6 +2177,10 @@ public class HexGrid : MonoBehaviour {
 		harbourScript7.exchangeRate = 2;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
 		harbourScript7.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_7) {
+			harbourScript7.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour7Text = newHarbour7.GetComponentInChildren<TextMesh>();
@@ -2037,6 +2212,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour8 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour8CubePos1, harbour8CubePos2);
 		harbour8.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH8_1 = UIHex.getIntersectionsAdjacentPos(harbour8CubePos1);
+		List<List<Vec3>> adjIntersectionsH8_2 = UIHex.getIntersectionsAdjacentPos(harbour8CubePos2);
+		List<Intersection> adjIntersectionsH_8 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_8 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH8_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_8.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH8_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_8.Contains(i))
+			{
+				intersectionsIntersectionH_8.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject eigthHarbour = currentHexGameObjForHarbour8.transform.FindChild ("REdge").gameObject;
 
@@ -2051,8 +2247,12 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 3;
-		//harbourScript8.returnedResource = StealableType.Resource_Lumber;
+		harbourScript8.returnedResource = StealableType.Resource_Lumber;
 		harbourScript8.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_8) {
+			harbourScript8.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
@@ -2085,6 +2285,27 @@ public class HexGrid : MonoBehaviour {
 		Edge harbour9 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(harbour9CubePos1, harbour9CubePos2);
 		harbour9.isHarbour = true;
 
+		//get intersections
+		List<List<Vec3>> adjIntersectionsH9_1 = UIHex.getIntersectionsAdjacentPos(harbour9CubePos1);
+		List<List<Vec3>> adjIntersectionsH9_2 = UIHex.getIntersectionsAdjacentPos(harbour9CubePos2);
+		List<Intersection> adjIntersectionsH_9 = new List<Intersection>();
+		List<Intersection> intersectionsIntersectionH_9 = new List<Intersection>();
+
+		foreach (List<Vec3> intersection1 in adjIntersectionsH9_1)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection1);
+			adjIntersectionsH_9.Add(i);
+		}
+
+		foreach (List<Vec3> intersection2 in adjIntersectionsH9_2)
+		{
+			Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(intersection2);
+			if (adjIntersectionsH_9.Contains(i))
+			{
+				intersectionsIntersectionH_9.Add(i);
+			}
+		}
+
 		//retrieve the correct edge gameobject (will use for location of harbour sprite)
 		GameObject ninthHarbour = currentHexGameObjForHarbour9.transform.FindChild ("REdge").gameObject;
 
@@ -2101,6 +2322,10 @@ public class HexGrid : MonoBehaviour {
 		harbourScript9.exchangeRate = 2;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
+
+		foreach (Intersection i in intersectionsIntersectionH_9) {
+			harbourScript9.intersectionsCanAccessHarbour.Add (i);
+		}
 
 		//change harbour text
 		TextMesh harbour9Text = newHarbour9.GetComponentInChildren<TextMesh>();
