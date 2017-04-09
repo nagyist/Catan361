@@ -6,6 +6,9 @@ public class GameEventManager : Singleton<GameEventManager> {
 	public bool IsEventMoveRobberPirateEntitySet = false;
 	public string EventMoveRobberPirateEntityType = "";
 
+	public bool IsEventBarbarianSet = false;
+	public BarbarianInvasion CurrentBarbarianInvasion = null;
+
 	public void HandleMoveRobberPirateDecision(string type) {
 		if (IsEventMoveRobberPirateEntitySet) {
 			return;
@@ -41,6 +44,10 @@ public class GameEventManager : Singleton<GameEventManager> {
 
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdHandleMoveRobberPirateEntity (EventMoveRobberPirateEntityType, SerializationUtils.ObjectToByteArray(hex.HexGridCubePosition));
 		IsEventMoveRobberPirateEntitySet = false;
+	}
+
+	public void TriggerBarbarianInvasion(BarbarianInvasion invasion) {
+		CurrentBarbarianInvasion = invasion;
 	}
 
 }

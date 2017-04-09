@@ -100,7 +100,11 @@ public class GameManager : Singleton<GameManager> {
 			GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter--;
 
 			if (GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianInvasionTriggered ()) {
+				GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage ("BARBARIANS INVADED CATAN !");
 				// post invasion
+				// count city on map
+				// count active knights (each knight type has a number)
+
 			} else {
 				GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage ("Barbarians are getting closer ...", 1.75f);
 			}
