@@ -5,11 +5,18 @@ using System;
 
 [Serializable]
 public class Trade {
+	public enum TradePlayerOfferStatus
+	{
+		PlayerAccepted,
+		PlayerRejected,
+		Undecided
+	}
+
 	public string Player1;
 	public string Player2;
 
-	public bool Player1Accepted = false;
-	public bool Player2Accepted = false;
+	public TradePlayerOfferStatus Player1Accepted = TradePlayerOfferStatus.Undecided;
+	public TradePlayerOfferStatus Player2Accepted = TradePlayerOfferStatus.Undecided;
 
 	public Dictionary<StealableType, int> Player1Offer = new Dictionary<StealableType, int>();
 	public Dictionary<StealableType, int> Player2Offer = new Dictionary<StealableType, int>();

@@ -55,6 +55,22 @@ public class Player2PlayerTrade : MonoBehaviour {
 		getLocalPlayer ().CmdUpdateTradeOffer (SerializationUtils.ObjectToByteArray (currentTrade));
 	}
 
+	public void AcceptOffer() {
+		if (getLocalPlayerIdInTrade () == "Player1") {
+			currentTrade.Player1Accepted = Trade.TradePlayerOfferStatus.PlayerAccepted;
+		} else if (getLocalPlayerIdInTrade () == "Player2") {
+			currentTrade.Player2Accepted = Trade.TradePlayerOfferStatus.PlayerAccepted;
+		}
+	}
+
+	public void DeclineOffer() {
+		if (getLocalPlayerIdInTrade () == "Player1") {
+			currentTrade.Player1Accepted = Trade.TradePlayerOfferStatus.PlayerRejected;
+		} else if (getLocalPlayerIdInTrade () == "Player2") {
+			currentTrade.Player2Accepted = Trade.TradePlayerOfferStatus.PlayerRejected;
+		}
+	}
+
 	void Update () {
 		if (!GetComponent<UIWindow> ().IsVisible) {
 			return;
@@ -65,6 +81,30 @@ public class Player2PlayerTrade : MonoBehaviour {
 		foreach (InputField f in otherPlayerOffer.GetComponentsInChildren<InputField>()) {
 			f.DeactivateInputField ();
 			f.enabled = false;
+		}
+
+		Button otherAcceptBtn = otherPlayerOffer.transform.FindChild ("AcceptBtn").gameObject.GetComponent<Button>();
+		Button otherDeclineBtn = otherPlayerOffer.transform.FindChild ("DeclineBtn").gameObject.GetComponent<Button> ();
+
+		otherAcceptBtn.enabled = false;
+		otherDeclineBtn.enabled = false;
+
+		Trade.TradePlayerOfferStatus otherPlayerStatus = Trade.TradePlayerOfferStatus.Undecided;
+		if (getOtherPlayerIdInTrade () == "Player1") {
+			otherPlayerStatus = currentTrade.Player1Accepted;
+		} else if (getOtherPlayerIdInTrade () == "Player2") {
+			otherPlayerStatus = currentTrade.Player2Accepted;
+		}
+
+		if (otherPlayerStatus == Trade.TradePlayerOfferStatus.PlayerAccepted) {
+			otherAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 255, 0, 255);
+			otherDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+		} else if (otherPlayerStatus == Trade.TradePlayerOfferStatus.PlayerRejected) {
+			otherAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+			otherDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (255, 0, 0, 255);
+		} else {
+			otherAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+			otherDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
 		}
 
 		foreach (Button b in otherPlayerOffer.GetComponentsInChildren<Button>()) {
@@ -84,6 +124,7 @@ public class Player2PlayerTrade : MonoBehaviour {
 			f.textComponent.text = "" + currentOffering;
 			Debug.Log (f.name + " = " + currentOffering);
 		}
+
 	}
 
 }
