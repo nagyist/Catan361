@@ -96,7 +96,7 @@ public class Player2PlayerTrade : MonoBehaviour {
 
 		if (currentTrade.Player1Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted &&
 		    currentTrade.Player2Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted) {
-			GetComponent<UIWindow> ().Hide ();
+			GetComponent<UIWindow> ().Hide ();	
 			return;
 		}
 

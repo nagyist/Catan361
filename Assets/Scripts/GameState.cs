@@ -49,6 +49,7 @@ public class GameState : NetworkBehaviour {
     public GameStatus CurrentStatus { get; private set; }
 	public RobberPiratePlacement CurrentRobberPosition;
 	public RobberPiratePlacement CurrentPiratePosition;
+	public VictoryPointsCollection CurrentVictoryPoints = new VictoryPointsCollection();
 
     // called once for initialization
     void Start() {
@@ -204,6 +205,12 @@ public class GameState : NetworkBehaviour {
 		}
 
 		TradeManager.Instance.ReceivedTradeUpdate (currentTrade);
+	}
+
+	[ClientRpc]
+	public void RpcClientPostVictoryPointUpdate(byte[] victoryPointSerialized) {
+		VictoryPointsCollection newVictoryPoints = (VictoryPointsCollection)SerializationUtils.ByteArrayToObject (victoryPointSerialized);
+		CurrentVictoryPoints = newVictoryPoints;
 	}
 
     // this function si used to sync the gameboard

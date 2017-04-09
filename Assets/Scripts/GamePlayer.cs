@@ -342,6 +342,20 @@ public class GamePlayer : NetworkBehaviour {
 		TradeManager.Instance.ProceedToTrade (currentTrade);
 	}
 
+	[Command]
+	public void AddVictoryPoint(int amount) {
+		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.AddVictoryPointsForPlayer (myName, amount);
+		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
+	}
+
+	[Command]
+	public void RemoveVictoryPoint(int amount) {
+		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.RemoveVictoryPointsForPlayer (myName, amount);
+		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));

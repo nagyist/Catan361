@@ -34,6 +34,11 @@ public class PlayerResourcePanel : MonoBehaviour {
 		resourcesGameObjs [type].GetComponentInChildren<Text> ().text = "" + resValue;
 	}
 
+	private void updateVictoryPoints() {
+		int curAmount = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.GetVictoryPointsForPlayer (getPlayer ().myName);
+		transform.FindChild ("VictoryPoints").GetComponent<UIProgressBar> ().fillAmount = curAmount;
+	}
+
 	private GamePlayer getPlayer() {
 		return GameManager.ConnectedPlayersByName[PlayerName].GetComponent<GamePlayer>();
 	}
@@ -54,6 +59,6 @@ public class PlayerResourcePanel : MonoBehaviour {
 				displayPlayerResource (type);
 			}
 		}
-
+		updateVictoryPoints ();
 	}
 }
