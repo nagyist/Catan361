@@ -15,12 +15,12 @@ public class SerializableGameState {
 
     public float timestamp = 0;
 
-    Dictionary<Vec3, HexTile> CurrentBoard;
-    EdgeCollection CurrentEdges;
-    IntersectionCollection CurrentIntersections;
-    ResourceCollection CurrentResources = new ResourceCollection();
-    GameTurn CurrentTurn = new GameTurn();
-    GameStatus CurrentStatus { get; set; }
+    public Dictionary<Vec3, HexTile> CurrentBoard;
+    public EdgeCollection CurrentEdges;
+    public IntersectionCollection CurrentIntersections;
+    public ResourceCollection CurrentResources;
+    public GameTurn CurrentTurn;
+    public GameStatus CurrentStatus;
 
     public SerializableGameState(GameState curr)
     {

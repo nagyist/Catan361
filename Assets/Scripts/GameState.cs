@@ -46,7 +46,7 @@ public class GameState : NetworkBehaviour {
 	public IntersectionCollection CurrentIntersections;
 	public ResourceCollection CurrentResources = new ResourceCollection();
     public GameTurn CurrentTurn = new GameTurn();
-    public GameStatus CurrentStatus { get; private set; }
+    public GameStatus CurrentStatus { get; set; }
 	public RobberPiratePlacement CurrentRobberPosition;
 	public RobberPiratePlacement CurrentPiratePosition;
 	public VictoryPointsCollection CurrentVictoryPoints = new VictoryPointsCollection();
