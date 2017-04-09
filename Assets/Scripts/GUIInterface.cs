@@ -103,6 +103,22 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowGoldPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("GoldPopup").gameObject;
+		popup.GetComponent<UIWindow> ().Show();
+
+		return popup;
+	}
+
+	public GameObject HideGoldPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("GoldPopup").gameObject;
+		popup.GetComponent<UIWindow> ().Hide();
+
+		return popup;
+	}
+
+
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();

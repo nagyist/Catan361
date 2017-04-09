@@ -38,7 +38,10 @@ public class GoldPopup : MonoBehaviour {
         Debug.Log("Player selected: " + resourceSelected);
 
         GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        //player.playerResources[selected]++;
+		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
+		player.CmdUpdateResource (selected, playerResources [selected] + 1);
+
+		GameManager.GUI.HideGoldPopup ();
     }
 
 }

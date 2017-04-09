@@ -27,7 +27,7 @@ public class MoveRobberPirate : MonoBehaviour {
 		}
 
 		GameEventManager.Instance.HandleMoveRobberPirateDecision (entityType);
-		GetComponent<UIWindow> ().Hide ();
+		//GetComponent<UIWindow> ().Hide ();
 
 		GameManager.GUI.HideMoveRobberPiratePopup ();
 	}
