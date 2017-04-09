@@ -356,6 +356,12 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
 	}
 
+	[Command]
+	public void CmdUpdateBarbarianEvent() {
+		BarbarianEvent evt = GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent;
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostBarbarianUpdate (SerializationUtils.ObjectToByteArray (evt));
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));

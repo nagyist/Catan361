@@ -50,6 +50,7 @@ public class GameState : NetworkBehaviour {
 	public RobberPiratePlacement CurrentRobberPosition;
 	public RobberPiratePlacement CurrentPiratePosition;
 	public VictoryPointsCollection CurrentVictoryPoints = new VictoryPointsCollection();
+	public BarbarianEvent CurrentBarbarianEvent = new BarbarianEvent();
 
     // called once for initialization
     void Start() {
@@ -211,6 +212,12 @@ public class GameState : NetworkBehaviour {
 	public void RpcClientPostVictoryPointUpdate(byte[] victoryPointSerialized) {
 		VictoryPointsCollection newVictoryPoints = (VictoryPointsCollection)SerializationUtils.ByteArrayToObject (victoryPointSerialized);
 		CurrentVictoryPoints = newVictoryPoints;
+	}
+
+	[ClientRpc]
+	public void RpcClientPostBarbarianUpdate(byte[] barbarianEventSerialized) {
+		BarbarianEvent newEvent = (BarbarianEvent)SerializationUtils.ByteArrayToObject (barbarianEventSerialized);
+		CurrentBarbarianEvent = newEvent;
 	}
 
     // this function si used to sync the gameboard
