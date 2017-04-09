@@ -31,6 +31,7 @@ public class ResourceCollection
 		resCollection.Add (StealableType.Resource_Lumber, 100);
 		resCollection.Add (StealableType.Resource_Ore, 100);
 		resCollection.Add (StealableType.Resource_Wool, 100);
+		resCollection.Add (StealableType.Resource_Fish, 100);
 
 		PlayerResources.Add (playerName, resCollection);
 	}
