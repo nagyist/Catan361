@@ -46,7 +46,7 @@ public class GameState : NetworkBehaviour {
 	public IntersectionCollection CurrentIntersections;
 	public ResourceCollection CurrentResources = new ResourceCollection();
     public GameTurn CurrentTurn = new GameTurn();
-    public GameStatus CurrentStatus { get; private set; }
+    public GameStatus CurrentStatus { get; set; }
 	public RobberPiratePlacement CurrentRobberPosition;
 	public RobberPiratePlacement CurrentPiratePosition;
 	public VictoryPointsCollection CurrentVictoryPoints = new VictoryPointsCollection();
@@ -218,6 +218,23 @@ public class GameState : NetworkBehaviour {
 	public void RpcClientPostBarbarianUpdate(byte[] barbarianEventSerialized) {
 		BarbarianEvent newEvent = (BarbarianEvent)SerializationUtils.ByteArrayToObject (barbarianEventSerialized);
 		CurrentBarbarianEvent = newEvent;
+	}
+
+	[ClientRpc]
+	public void RpcClientTriggerBarbarianInvasion(byte[] barbarianInvasionSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage ("BARBARIANS INVADED CATAN !");
+
+	}
+
+	[ClientRpc]
+	public void RpcClientUpdateIntersection(string intersectionKey, byte[] newIntersectionSerialized) {
+		Intersection newIntersection = (Intersection)SerializationUtils.ByteArrayToObject (newIntersectionSerialized);
+		CurrentIntersections.Intersections [intersectionKey] = newIntersection;
+	}
+
+	[ClientRpc]
+	public void RpcClientPublishBarbarianInvasion(byte[] barbarianInvasionSerialized) {
+		BarbarianInvasion invasion = (BarbarianInvasion)SerializationUtils.ByteArrayToObject (barbarianInvasionSerialized);
 	}
 
     // this function si used to sync the gameboard

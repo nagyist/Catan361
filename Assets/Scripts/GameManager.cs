@@ -98,14 +98,15 @@ public class GameManager : Singleton<GameManager> {
 	public void RollEventDice(RollDiceScript.EventDiceOutcome outcome) {
 		if (outcome == RollDiceScript.EventDiceOutcome.Barbarian) {
 			GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter--;
+			LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent ();
 
 			if (GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianInvasionTriggered ()) {
-				// post invasion
+				GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdTriggerBarbarianInvasion ();
 			} else {
 				GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage ("Barbarians are getting closer ...", 1.75f);
 			}
 
-			LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent ();
+
 		}
 	}
 

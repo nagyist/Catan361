@@ -9,5 +9,9 @@ public class BarbarianEvent
 	public bool BarbarianInvasionTriggered() {
 		return BarbarianCounter == 0;
 	}
+
+	public void Reset() {
+		BarbarianCounter = 7;
+	}
 }
 
