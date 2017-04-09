@@ -21,6 +21,10 @@ public class TradeButton : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (GameManager.LocalPlayer == null) {
+			return;
+		}
+
 		if (GameManager.LocalPlayer.GetComponent<GamePlayer>().myName == getPlayerName()) {
 			GetComponent<Button> ().enabled = false;
 		}

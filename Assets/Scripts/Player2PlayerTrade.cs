@@ -41,7 +41,7 @@ public class Player2PlayerTrade : MonoBehaviour {
 
 		ResourceCollection.PlayerResourcesCollection playerRes = GameManager.Instance.GetCurrentGameState ().CurrentResources.GetPlayerResources (getLocalPlayer ().myName);
 		if (!playerRes.ContainsKey (editQtyType) || playerRes[editQtyType] < qtyVal) {
-			StartCoroutine(GameManager.GUI.ShowMessage ("You don't have enough " + transform.name + " to trade that amount."));
+			StartCoroutine(GameManager.GUI.ShowMessage ("You don't have enough " + transformName + " to trade that amount."));
 			field.text = "0";
 			return;
 		}
@@ -61,6 +61,8 @@ public class Player2PlayerTrade : MonoBehaviour {
 		} else if (getLocalPlayerIdInTrade () == "Player2") {
 			currentTrade.Player2Accepted = Trade.TradePlayerOfferStatus.PlayerAccepted;
 		}
+
+		getLocalPlayer ().CmdUpdateTradeOffer (SerializationUtils.ObjectToByteArray (currentTrade));
 	}
 
 	public void DeclineOffer() {
@@ -69,6 +71,8 @@ public class Player2PlayerTrade : MonoBehaviour {
 		} else if (getLocalPlayerIdInTrade () == "Player2") {
 			currentTrade.Player2Accepted = Trade.TradePlayerOfferStatus.PlayerRejected;
 		}
+
+		getLocalPlayer ().CmdUpdateTradeOffer (SerializationUtils.ObjectToByteArray (currentTrade));
 	}
 
 	void Update () {
@@ -77,11 +81,15 @@ public class Player2PlayerTrade : MonoBehaviour {
 		}
 
 		// deactivate other player's offer GUI elements
+		GameObject localPlayerOffer = transform.FindChild ("Content").FindChild ("Pages").FindChild ("Page").FindChild (getLocalPlayerIdInTrade()).gameObject;
 		GameObject otherPlayerOffer = transform.FindChild ("Content").FindChild ("Pages").FindChild ("Page").FindChild (getOtherPlayerIdInTrade()).gameObject;
 		foreach (InputField f in otherPlayerOffer.GetComponentsInChildren<InputField>()) {
 			f.DeactivateInputField ();
 			f.enabled = false;
 		}
+
+		Button localAcceptBtn = localPlayerOffer.transform.FindChild ("AcceptBtn").gameObject.GetComponent<Button> ();
+		Button localDeclineBtn = localPlayerOffer.transform.FindChild ("DeclineBtn").gameObject.GetComponent<Button> ();
 
 		Button otherAcceptBtn = otherPlayerOffer.transform.FindChild ("AcceptBtn").gameObject.GetComponent<Button>();
 		Button otherDeclineBtn = otherPlayerOffer.transform.FindChild ("DeclineBtn").gameObject.GetComponent<Button> ();
@@ -89,11 +97,26 @@ public class Player2PlayerTrade : MonoBehaviour {
 		otherAcceptBtn.enabled = false;
 		otherDeclineBtn.enabled = false;
 
+		// update trade button
+		Trade.TradePlayerOfferStatus localPlayerStatus = Trade.TradePlayerOfferStatus.Undecided;
 		Trade.TradePlayerOfferStatus otherPlayerStatus = Trade.TradePlayerOfferStatus.Undecided;
 		if (getOtherPlayerIdInTrade () == "Player1") {
 			otherPlayerStatus = currentTrade.Player1Accepted;
+			localPlayerStatus = currentTrade.Player2Accepted;
 		} else if (getOtherPlayerIdInTrade () == "Player2") {
 			otherPlayerStatus = currentTrade.Player2Accepted;
+			localPlayerStatus = currentTrade.Player1Accepted;
+		}
+
+		if (localPlayerStatus == Trade.TradePlayerOfferStatus.PlayerAccepted) {
+			localAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 255, 0, 255);
+			localDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+		} else if (localPlayerStatus == Trade.TradePlayerOfferStatus.PlayerRejected) {
+			localAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+			localDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (255, 0, 0, 255);
+		} else {
+			localAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
+			localDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
 		}
 
 		if (otherPlayerStatus == Trade.TradePlayerOfferStatus.PlayerAccepted) {
@@ -106,6 +129,10 @@ public class Player2PlayerTrade : MonoBehaviour {
 			otherAcceptBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
 			otherDeclineBtn.GetComponentInChildren<Image>().color = new Color32 (0, 0, 0, 255);
 		}
+
+		// update label
+		localPlayerOffer.transform.FindChild("Offer").FindChild("OfferTxt").gameObject.GetComponent<Text>().text = "My Offer";
+		otherPlayerOffer.transform.FindChild ("Offer").FindChild ("OfferTxt").gameObject.GetComponent<Text> ().text = "Other player offer";
 
 		foreach (Button b in otherPlayerOffer.GetComponentsInChildren<Button>()) {
 			b.enabled = false;
