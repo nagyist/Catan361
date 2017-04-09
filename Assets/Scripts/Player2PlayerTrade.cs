@@ -63,6 +63,7 @@ public class Player2PlayerTrade : MonoBehaviour {
 		}
 
 		getLocalPlayer ().CmdUpdateTradeOffer (SerializationUtils.ObjectToByteArray (currentTrade));
+		tryProceedToTrade ();
 	}
 
 	public void DeclineOffer() {
@@ -73,10 +74,29 @@ public class Player2PlayerTrade : MonoBehaviour {
 		}
 
 		getLocalPlayer ().CmdUpdateTradeOffer (SerializationUtils.ObjectToByteArray (currentTrade));
+		tryProceedToTrade ();
+	}
+
+	public void tryProceedToTrade() {
+		if (currentTrade.Player1Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted &&
+			currentTrade.Player2Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted) {
+
+			getLocalPlayer ().CmdProceedToTrade (SerializationUtils.ObjectToByteArray (currentTrade));
+
+			GetComponent<UIWindow> ().Hide ();
+
+			return;
+		}
 	}
 
 	void Update () {
 		if (!GetComponent<UIWindow> ().IsVisible) {
+			return;
+		}
+
+		if (currentTrade.Player1Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted &&
+		    currentTrade.Player2Accepted == Trade.TradePlayerOfferStatus.PlayerAccepted) {
+			GetComponent<UIWindow> ().Hide ();
 			return;
 		}
 

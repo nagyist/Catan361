@@ -85,4 +85,15 @@ public class ResourceCollection
 
 		return true;
 	}
+
+	public bool PlayerAddResources(string playerName, Dictionary<StealableType, int> addingAmounts) {
+		PlayerResourcesCollection playerResources = GetPlayerResources (playerName);
+		foreach(StealableType key in addingAmounts.Keys) {
+			int playerAmount = playerResources [key];
+			int newAmount = playerAmount + addingAmounts [key];
+			UpdateResource (playerName, key, newAmount);
+		}
+
+		return true;
+	}
 }

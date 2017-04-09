@@ -303,6 +303,20 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
+	public void CmdAddResourcesResources(byte[] requiredResSerialized) {
+		Dictionary<StealableType, int> requiredRes = (Dictionary<StealableType, int>) SerializationUtils.ByteArrayToObject (requiredResSerialized);
+		// update server game state
+		bool result = GameManager.Instance.GetCurrentGameState ().CurrentResources.PlayerAddResources (myName, requiredRes);
+		if (result) {
+			foreach (StealableType key in requiredRes.Keys) {
+				int newAmount = GetPlayerResources () [key];
+				// push update to clients
+				GameManager.Instance.GetCurrentGameState ().RpcClientPostResourceUpdate (myName, key, newAmount);
+			}
+		} 
+	}
+
+	[Command]
 	public void CmdHandleMoveRobberPirateEntity(string entityType, byte[] moveToPosSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientMoveRobberPirateEntity (entityType, moveToPosSerialized);
 	}
@@ -320,6 +334,12 @@ public class GamePlayer : NetworkBehaviour {
 	[Command]
 	public void CmdUpdateTradeOffer(byte[] tradeSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateTradeOffer (tradeSerialized);
+	}
+
+	[Command]
+	public void CmdProceedToTrade(byte[] tradeSerialized) {
+		Trade currentTrade = (Trade)SerializationUtils.ByteArrayToObject (tradeSerialized);
+		TradeManager.Instance.ProceedToTrade (currentTrade);
 	}
 
 	// NOT A COMMAND per say

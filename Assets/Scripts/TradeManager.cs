@@ -39,6 +39,21 @@ public class TradeManager : Singleton<TradeManager> {
 		currentTrade.GetComponent<Player2PlayerTrade> ().currentTrade = updatedTrade;
 	}
 
+	public void ProceedToTrade(Trade trade) {
+		GamePlayer player1 = GameManager.ConnectedPlayersByName [trade.Player1].GetComponent<GamePlayer> ();
+		GamePlayer player2 = GameManager.ConnectedPlayersByName [trade.Player2].GetComponent<GamePlayer> ();
+		Dictionary<StealableType, int> consumeFromPlayer1 = trade.Player1Offer;
+		Dictionary<StealableType, int> consumeFromPlayer2 = trade.Player2Offer;
+
+		player1.CmdAddResourcesResources (SerializationUtils.ObjectToByteArray(consumeFromPlayer2));
+		player2.CmdAddResourcesResources (SerializationUtils.ObjectToByteArray(consumeFromPlayer1));
+
+		player1.CmdConsumeResources (SerializationUtils.ObjectToByteArray (consumeFromPlayer1));
+		player2.CmdConsumeResources (SerializationUtils.ObjectToByteArray (consumeFromPlayer2));
+
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (trade.Player1 + " and " + trade.Player2 + " proceeded to a trade.");
+	}
+
 	// Use this for initialization
 	void Start () {
 		

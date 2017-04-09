@@ -15,9 +15,6 @@ public class TradeItemQty : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.FindChild ("Button").gameObject.GetComponentInChildren<Text> ().text = "" + TradingQty;
-		if (Input.GetKeyUp (KeyCode.Return)) {
-			GetComponent<InputField> ().DeactivateInputField();
-		}
+		
 	}
 }
