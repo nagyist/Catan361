@@ -16,13 +16,16 @@ public class UnitMoveButton : MonoBehaviour {
         {
             localPlayer.SetMoveSelection();
             StartCoroutine(GameManager.GUI.ShowMessage("Successfully set the unit to move."));
+            inUse = true;
         }
         else
         {
-            if (localPlayer.CmdMoveUnit())
-                StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved unit."));
-            else
-                StartCoroutine(GameManager.GUI.ShowMessage("Could not move unit."));
+    
+            localPlayer.CmdMoveUnit();
+            StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
+            localPlayer.ResetMoveSelection();
+            localPlayer.resetBuildSelection();
+            inUse = false;
         }
     }
 

@@ -297,12 +297,12 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public bool CmdMoveUnit()
+	public void CmdMoveUnit()
 	{
 		if (this.uiIntersectionToMove == null)
-			return false;
+			return;
 		else if (this.selectedUIIntersection == null)
-			return false;
+			return;
 		
 		Vec3[] oldPos = new Vec3[] { uiIntersectionToMove.HexPos1, uiIntersectionToMove.HexPos2, uiIntersectionToMove.HexPos3 };
 		Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
@@ -311,7 +311,7 @@ public class GamePlayer : NetworkBehaviour {
 		
 		// knight displacement still not implemented 
 		if (newIntersection.unit != null)
-			return false;
+			return;
 
 		if (oldIntersection.unit.GetType() == typeof(Knight))
 		{
@@ -342,7 +342,7 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState().RpcPublishIntersection
 			(SerializationUtils.ObjectToByteArray(newPos), SerializationUtils.ObjectToByteArray(newIntersection));
 
-		return true;
+		return;
 	}
 
 	[Command]
