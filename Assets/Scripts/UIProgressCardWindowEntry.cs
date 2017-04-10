@@ -9,12 +9,19 @@ public class UIProgressCardWindowEntry : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		CurrentCard = null;
+		
 	}
 
 	public void SetCard(AbstractProgressCard card) {
 		CurrentCard = card;
 		transform.FindChild ("CardTitle").GetComponent<Text> ().text = card.GetTitle ();
+		if (card.CardType == AbstractProgressCard.ProgressCardType.Science) {
+			transform.FindChild ("CardTypeScience").gameObject.SetActive (true);
+		} else if (card.CardType == AbstractProgressCard.ProgressCardType.Politic) {
+			transform.FindChild ("CardTypePolitics").gameObject.SetActive (true);
+		} else if (card.CardType == AbstractProgressCard.ProgressCardType.Trade) {
+			transform.FindChild ("CardTypeTrade").gameObject.SetActive (true);
+		}
 	}
 	
 	// Update is called once per frame

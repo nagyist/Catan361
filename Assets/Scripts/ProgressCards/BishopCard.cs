@@ -18,6 +18,6 @@ public class BishopCard : AbstractProgressCard
 
 	public override string GetDescription ()
 	{
-		return "Move the robber, following the normal rules. Draw 1 random resource/commodity card from each player who has a settlement or city next to the robber’s new hex.";
+		return "Move the robber. You may draw 1 random card (resource or commodity) from the hand of each player who has a settlement or city adjacent to the robber’s new hex.";
 	}
 }

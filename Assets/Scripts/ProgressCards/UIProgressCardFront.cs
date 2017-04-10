@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class UIProgressCardFront : MonoBehaviour {
 
 	public bool Turned = false;
+	public bool CardSelected = false;
 	public AbstractProgressCard CurrentCard;
 
 	// Use this for initialization
 	void Start () {
 		CurrentCard = new BishopCard();
+		CardSelected = false;
 	}
 
 	public void ClickOnCard() {
@@ -20,6 +22,16 @@ public class UIProgressCardFront : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (CurrentCard == null) {
+			return;
+		}
+
+		if (!CardSelected) {
+			transform.FindChild ("Front").gameObject.SetActive (false);
+			transform.FindChild ("Back").gameObject.SetActive (true);
+
+			transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (true);
+			transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
+			transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (false);
 			return;
 		}
 

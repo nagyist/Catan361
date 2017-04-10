@@ -18,7 +18,7 @@ public class EngineerCard : AbstractProgressCard
 
 	public override string GetDescription ()
 	{
-		return "You may build one city wall for free.";
+		return "You may build 1 city wall for free.";
 	}
 }
 

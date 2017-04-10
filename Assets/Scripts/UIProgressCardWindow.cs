@@ -8,6 +8,7 @@ public class UIProgressCardWindow : MonoBehaviour {
 
 	private Dictionary<AbstractProgressCard, GameObject> displayedHand;
 	private GameObject ProgressCardEntry;
+	private AbstractProgressCard SelectedCard;
 	private int i = 0;
 
 	// Use this for initialization
@@ -20,8 +21,24 @@ public class UIProgressCardWindow : MonoBehaviour {
 		return GameManager.LocalPlayer.GetComponent<GamePlayer>();
 	}
 
+	GameObject getCardPreview() {
+		return transform.FindChild ("Content").FindChild ("CardPreview").FindChild("ProgressCardFront").gameObject;
+	}
+
 	public void CloseWindow() {
 		GetComponent<UIWindow> ().Hide ();
+	}
+
+	public void ClickSelectedCard() {
+		ToggleGroup toggles = gameObject.GetComponentInChildren<ToggleGroup>();
+		IEnumerator<Toggle> togglesEnum = toggles.ActiveToggles().GetEnumerator();
+		togglesEnum.MoveNext();
+		Toggle toggle = togglesEnum.Current;
+		SelectedCard = toggle.gameObject.GetComponent<UIProgressCardWindowEntry>().CurrentCard;
+		Debug.Log (SelectedCard);
+		getCardPreview ().GetComponent<UIProgressCardFront> ().CurrentCard = SelectedCard;
+		getCardPreview ().GetComponent<UIProgressCardFront> ().Turned = false;
+		getCardPreview ().GetComponent<UIProgressCardFront> ().CardSelected = true;
 	}
 	
 	// Update is called once per frame
