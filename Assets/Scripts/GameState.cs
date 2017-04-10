@@ -252,6 +252,7 @@ public class GameState : NetworkBehaviour {
 	public void RpcClientPublishGateEvent(byte[] gateEventSerialized) {
 		GateEvent currentGateEvent = (GateEvent)SerializationUtils.ByteArrayToObject (gateEventSerialized);
 
+		GameManager.GUI.ShowGateEvent (currentGateEvent);
 	}
 
     // this function si used to sync the gameboard

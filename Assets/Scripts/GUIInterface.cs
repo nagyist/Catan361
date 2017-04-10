@@ -139,6 +139,14 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowGateEvent(GateEvent currEvent) {
+		GameObject popup = guiCanvas.transform.FindChild("GateEventDiceWindow").gameObject;
+		popup.GetComponent<GateEventWindow>().CurrentEvent = currEvent;
+		popup.GetComponent<UIWindow> ().Show ();
+
+		return popup;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();

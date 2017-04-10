@@ -29,6 +29,9 @@ public class GateEventWindow : MonoBehaviour {
 			transform.FindChild ("Content").FindChild ("Grid").FindChild ("Txt1").GetComponent<Text> ().text = "The event dice landed on a green gate.";
 		}
 
-
+		GameObject playerCardPreview = transform.FindChild ("Content").FindChild ("ProgressCardPreview").FindChild ("ProgressCardFront").gameObject;
+		playerCardPreview.GetComponent<UIProgressCardFront> ().CurrentCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
+		playerCardPreview.GetComponent<UIProgressCardFront> ().Turned = false;
+		playerCardPreview.GetComponent<UIProgressCardFront> ().CardSelected = true;
 	}
 }

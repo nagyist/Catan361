@@ -56,7 +56,7 @@ public class GameEventManager : Singleton<GameEventManager> {
 
 	public void TriggerNewGateEvent(RollDiceScript.EventDiceOutcome outcome) {
 		GateEvent newGateEvent = new GateEvent (outcome);
-
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishGateEvent (SerializationUtils.ObjectToByteArray (newGateEvent));
 	}
 
 }
