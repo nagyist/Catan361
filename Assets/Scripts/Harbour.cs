@@ -23,8 +23,6 @@ public class Harbour : MonoBehaviour {
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 
 		if (CanOpen (player)) {
-		
-			StartCoroutine (GameManager.GUI.ShowMessage ("Harbour trade, resource returned: " + returnedResource));
 
 			GameManager.GUI.ShowHarbourTradePopup ();
 
@@ -34,18 +32,10 @@ public class Harbour : MonoBehaviour {
 				tradeWindow.SetActive (true);
 			}
 
-			// if returnedResource != null then
 			HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
 			tradeWindowScript.exchangeRate = exchangeRate;
 			tradeWindowScript.returnedResource = returnedResource;
 			tradeWindowScript.returnedAmount = returnedAmount;
-
-			/* else
-			HarbourTrade tradeWindowScript = tradeWindow.GetComponent<HarbourTrade> ();
-			tradeWindowScript.exchangeRate = exchangeRate;
-			tradeWindowScript.returnedResource = returnedResource;
-			tradeWindowScript.returnedAmount = returnedAmount;
-			*/
 
 		} 
 		else 
@@ -65,5 +55,37 @@ public class Harbour : MonoBehaviour {
 		return false;
 		
 	}
+		
+	public void SetSprites () 
+	{
+		GameObject harbour = this.gameObject;
+		/*
+		if (returnedResource == StealableType.Resource_Brick)
+		{
+			Sprite brickSprite = harbour.GetComponent<SpriteRenderer> ().sprite; 
+			brickSprite = FindObjectOfType <Sprite> ("ore_f_b_02");	
+		}
+		else if (returnedResource == StealableType.Resource_Grain)
+		{
+			Sprite grainSprite = harbour.GetComponent<SpriteRenderer> ().sprite;
+			grainSprite = (Sprite) FindObjectOfType ("hb_b_15");	
+		}	
 
+		else if (returnedResource == StealableType.Resource_Lumber)
+		{
+			Sprite lumberSprite = harbour.GetComponent<SpriteRenderer> ().sprite; 
+			lumberSprite = (Sprite) FindObjectOfType ("wd_b_06");	
+		}
+		else if (returnedResource == StealableType.Resource_Ore)
+		{
+			Sprite oreSprite = harbour.GetComponent<SpriteRenderer> ().sprite;
+			oreSprite = (Sprite) FindObjectOfType ("ore_n_01_b");	
+		}
+		else if (returnedResource == StealableType.Resource_Wool)
+		{
+			Sprite woolSprite = harbour.GetComponent<SpriteRenderer> ().sprite; 
+			woolSprite = (Sprite) FindObjectOfType ("lz_b_07");	
+		}
+		*/
+	}
 }
