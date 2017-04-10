@@ -467,6 +467,11 @@ public class GamePlayer : NetworkBehaviour {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}
 
+	public void CmdAddProgressCard(AbstractProgressCard pCard) {
+		StartCoroutine(GameManager.GUI.ShowNewProgressCardNotification (pCard));
+		CmdAddProgressCard (myName, SerializationUtils.ObjectToByteArray (pCard));
+	}
+
 	void Start () {
 		
 	}

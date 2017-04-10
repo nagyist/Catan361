@@ -147,6 +147,14 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public IEnumerator ShowNewProgressCardNotification(AbstractProgressCard newCard) {
+		GameObject notif = guiCanvas.transform.FindChild ("ProgressCardNotification").gameObject;
+		notif.GetComponent<UIProgressCardNotification> ().CurrentCard = newCard;
+		notif.GetComponent<UIWindow> ().Show ();
+		yield return new WaitForSeconds (2.5f);
+		notif.GetComponent<UIWindow>().Hide();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();

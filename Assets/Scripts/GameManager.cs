@@ -116,6 +116,7 @@ public class GameManager : Singleton<GameManager> {
 			}
 
 			GameManager.Instance.GetCurrentGameState().RpcClientPostStatusMessage("Event dice landed on " + gateColor + " gates");
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdTriggerGateEvent (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName, SerializationUtils.ObjectToByteArray (outcome));
 		}
 	}
 

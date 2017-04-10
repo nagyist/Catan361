@@ -10,7 +10,20 @@ public class GateEventWindow : MonoBehaviour {
 	void Start () {
 		CurrentEvent = null;
 	}
-	
+
+	public void ClickRollDice() {
+		int rollNum = UnityEngine.Random.Range (1, 4);
+		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
+		if (rollNum == 1) {
+			// get the progress card
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAddProgressCard (drawnProgressCard);
+		} else {
+			GameManager.GUI.ShowMessage ("Unfortunately you did not get any progress card.");
+		}
+
+		GetComponent<UIWindow> ().Hide ();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (!GetComponent<UIWindow> ().IsOpen) {
