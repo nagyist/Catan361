@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
+[Serializable]
 public class BarbarianInvasion
 {
 	public enum OutcomeType
@@ -33,7 +35,7 @@ public class BarbarianInvasion
 		IntersectionCollection intersections = GameManager.Instance.GetCurrentGameState().CurrentIntersections;
 		foreach (Intersection currentIntersection in intersections.Intersections.Values) {
 			IntersectionUnit intersectionUnit = currentIntersection.unit;
-			if (intersectionUnit.GetType () == typeof(Village)) {
+			if (intersectionUnit != null && intersectionUnit.GetType () == typeof(Village)) {
 				Village villageUnit = (Village)intersectionUnit;
 				if (villageUnit.myKind == Village.VillageKind.City ||
 				   villageUnit.myKind == Village.VillageKind.PoliticsMetropole ||
@@ -52,7 +54,7 @@ public class BarbarianInvasion
 		IntersectionCollection intersections = GameManager.Instance.GetCurrentGameState().CurrentIntersections;
 		foreach (Intersection currentIntersection in intersections.Intersections.Values) {
 			IntersectionUnit intersectionUnit = currentIntersection.unit;
-			if (intersectionUnit.GetType () == typeof(Knight)) {
+			if (intersectionUnit != null && intersectionUnit.GetType () == typeof(Knight)) {
 				Knight knightUnit = (Knight)intersectionUnit;
 				if (!knightUnit.active) {
 					continue;
@@ -68,6 +70,13 @@ public class BarbarianInvasion
 
 				// update total
 				totalActiveKnight += knightUnit.level;
+			}
+		}
+
+		foreach(GameObject gameObj in GameManager.ConnectedPlayers) {
+			GamePlayer player = gameObj.GetComponent<GamePlayer> ();
+			if (!KnightStrengthByPlayer.ContainsKey (player.myName)) {
+				KnightStrengthByPlayer.Add (player.myName, 0);
 			}
 		}
 
@@ -91,7 +100,7 @@ public class BarbarianInvasion
 			}
 
 			IntersectionUnit intersectionUnit = currentIntersection.unit;
-			if (intersectionUnit.GetType () == typeof(Village)) {
+			if (intersectionUnit != null && intersectionUnit.GetType () == typeof(Village)) {
 				Village villageUnit = (Village)intersectionUnit;
 				if (villageUnit.myKind == Village.VillageKind.City) {
 					PillagedCitiesKey.Add (currentIntersectionKey);
@@ -123,15 +132,18 @@ public class BarbarianInvasion
 	}
 
 	public void ExecutePrimaryOutcome() {
-		if (BarbarianStrength > KnightStrength) {
+		BarbarianStrength = computeBarbarianStrength ();
+		KnightStrength = computeKnightStrength ();
+
+		if (KnightStrength > BarbarianStrength) {
+			CurrentOutcome = OutcomeType.KnightDefended;
+
+			defendCatan ();
+		} else {
 			CurrentOutcome = OutcomeType.BarbarianAttacked;
 			List<string> ordredPlayerKnightStr = getOrderedPlayerNamesByKnightStrength ();
 			PillagedPlayer = ordredPlayerKnightStr [0];
 			pillagePlayer ();
-		} else {
-			CurrentOutcome = OutcomeType.KnightDefended;
-
-			defendCatan ();
 		}
 
 		GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.Reset ();
@@ -141,7 +153,7 @@ public class BarbarianInvasion
 		IntersectionCollection intersections = GameManager.Instance.GetCurrentGameState().CurrentIntersections;
 		foreach (string intersectionKey in intersections.Intersections.Keys) {
 			IntersectionUnit intersectionUnit = intersections.Intersections [intersectionKey].unit;
-			if (intersectionUnit.GetType () == typeof(Knight)) {
+			if (intersectionUnit != null && intersectionUnit.GetType () == typeof(Knight)) {
 				Knight intersectionKnight = (Knight)intersectionUnit;
 				if (intersectionKnight.active) {
 					intersectionKnight.active = false;

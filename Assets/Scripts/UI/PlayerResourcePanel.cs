@@ -45,6 +45,10 @@ public class PlayerResourcePanel : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		if (!GetComponent<UIWindow> ().IsVisible) {
+			return;
+		}
+
 		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			return;
 		}

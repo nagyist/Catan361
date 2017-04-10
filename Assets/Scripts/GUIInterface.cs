@@ -131,7 +131,13 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowBarbarianInvasionSummary(BarbarianInvasion invasion) {
+		GameObject popup = guiCanvas.transform.FindChild ("BarbarianInvasionSummary").gameObject;
+		popup.GetComponent<BarbarianInvasionSummary> ().CurrentInvasion = invasion;
+		popup.GetComponent<UIWindow> ().Show ();
 
+		return popup;
+	}
 
 	// Update is called once per frame
 	void Update () {

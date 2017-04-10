@@ -47,8 +47,11 @@ public class GameEventManager : Singleton<GameEventManager> {
 	}
 
 	public void TriggerNewBarbarianInvasion() {
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage ("BARBARIANS INVADED CATAN !");
 		CurrentBarbarianInvasion = new BarbarianInvasion();
 		CurrentBarbarianInvasion.ExecutePrimaryOutcome ();
+
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishBarbarianInvasion (SerializationUtils.ObjectToByteArray (CurrentBarbarianInvasion));
 	}
 
 }

@@ -235,6 +235,8 @@ public class GameState : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcClientPublishBarbarianInvasion(byte[] barbarianInvasionSerialized) {
 		BarbarianInvasion invasion = (BarbarianInvasion)SerializationUtils.ByteArrayToObject (barbarianInvasionSerialized);
+
+		GameManager.GUI.ShowBarbarianInvasionSummary (invasion);
 	}
 
     // this function si used to sync the gameboard
