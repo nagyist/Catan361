@@ -11,7 +11,11 @@ public class BarbarianInvasionSummary : MonoBehaviour {
 	void Start () {
 		
 	}
-	
+
+	public void ClickAcceptButton() {
+		GetComponent<UIWindow> ().Hide (); 
+	}
+
 	// Update is called once per frame
 	void Update () {
 		if (!GetComponent<UIWindow> ().IsOpen) {
