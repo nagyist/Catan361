@@ -6,16 +6,16 @@ using UnityEngine.UI;
 public class RollDiceScript : MonoBehaviour {
 
 	public enum EventDiceOutcome {
-		Barbarian, City_Gates
+		Barbarian, City_Gates_Red, City_Gates_Green, City_Gates_Blue
 	}
 
 	private static Dictionary<int, EventDiceOutcome> eventDiceOutcomeDistr = new Dictionary<int, EventDiceOutcome> {
 		{1, EventDiceOutcome.Barbarian},
 		{2, EventDiceOutcome.Barbarian},
 		{3, EventDiceOutcome.Barbarian},
-		{4, EventDiceOutcome.City_Gates},
-		{5, EventDiceOutcome.City_Gates},
-		{6, EventDiceOutcome.City_Gates}
+		{4, EventDiceOutcome.City_Gates_Red},
+		{5, EventDiceOutcome.City_Gates_Green},
+		{6, EventDiceOutcome.City_Gates_Blue}
 	};
 
 	// Use this for initialization

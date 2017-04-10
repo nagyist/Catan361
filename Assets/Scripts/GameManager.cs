@@ -105,8 +105,17 @@ public class GameManager : Singleton<GameManager> {
 			} else {
 				GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage ("Barbarians are getting closer ...", 1.75f);
 			}
+		} else { // gates
+			string gateColor = "";
+			if (outcome == RollDiceScript.EventDiceOutcome.City_Gates_Blue) {
+				gateColor = "blue";
+			} else if (outcome == RollDiceScript.EventDiceOutcome.City_Gates_Green) {
+				gateColor = "green";
+			} else if (outcome == RollDiceScript.EventDiceOutcome.City_Gates_Red) {
+				gateColor = "red";
+			}
 
-
+			GameManager.Instance.GetCurrentGameState().RpcClientPostStatusMessage("Event dice landed on " + gateColor + " gates");
 		}
 	}
 

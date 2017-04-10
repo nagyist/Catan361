@@ -372,6 +372,26 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateIntersection (key, newIntersectionSerialized);
 	}
 
+	[Command]
+	public void CmdAddProgressCard(string name, byte[] progressCardSerialized) {
+		AbstractProgressCard card = (AbstractProgressCard)SerializationUtils.ByteArrayToObject (progressCardSerialized);
+		GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.AddCardToPlayerHand (name, card);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishProgressCardHandUpdate (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands));
+	}
+
+	[Command]
+	public void CmdRemoveProgressCard(string name, byte[] progressCardSerialized) {
+		AbstractProgressCard card = (AbstractProgressCard)SerializationUtils.ByteArrayToObject (progressCardSerialized);
+		GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.RemoveCardFromPlayerHand (name, card);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishProgressCardHandUpdate (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands));
+	}
+
+	[Command]
+	public void CmdTriggerGateEvent(string name, byte[] gateEventOutcomeSerialized) {
+		RollDiceScript.EventDiceOutcome gateEventOutcome = (RollDiceScript.EventDiceOutcome)SerializationUtils.ByteArrayToObject (gateEventOutcomeSerialized);
+		GameEventManager.Instance.TriggerNewGateEvent (gateEventOutcome);
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));

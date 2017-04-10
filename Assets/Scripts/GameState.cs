@@ -242,6 +242,18 @@ public class GameState : NetworkBehaviour {
 		GameManager.GUI.ShowBarbarianInvasionSummary (invasion);
 	}
 
+	[ClientRpc]
+	public void RpcClientPublishProgressCardHandUpdate(byte[] pcardsHandSerialized) {
+		ProgressCardCollection newCollection = (ProgressCardCollection)SerializationUtils.ByteArrayToObject (pcardsHandSerialized);
+		GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands = newCollection;
+	}
+
+	[ClientRpc]
+	public void RpcClientPublishGateEvent(byte[] gateEventSerialized) {
+		GateEvent currentGateEvent = (GateEvent)SerializationUtils.ByteArrayToObject (gateEventSerialized);
+
+	}
+
     // this function si used to sync the gameboard
 	public void SyncGameBoard() {
 

@@ -43,7 +43,12 @@ public class ProgressCardDeck
 		return newDeck;
 	}
 
-	public ProgressCardDeck ()
-	{
+	public AbstractProgressCard DrawCardOfType(AbstractProgressCard.ProgressCardType type) {
+		List<AbstractProgressCard> cardsOfType = CurrentDeck.Where (x => x.CardType == type).ToList ();
+		if (cardsOfType.Count == 0) {
+			return null;
+		}
+
+		return cardsOfType[0];
 	}
 }

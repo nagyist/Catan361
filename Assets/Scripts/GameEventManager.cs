@@ -54,4 +54,9 @@ public class GameEventManager : Singleton<GameEventManager> {
 		GameManager.Instance.GetCurrentGameState ().RpcClientPublishBarbarianInvasion (SerializationUtils.ObjectToByteArray (CurrentBarbarianInvasion));
 	}
 
+	public void TriggerNewGateEvent(RollDiceScript.EventDiceOutcome outcome) {
+		GateEvent newGateEvent = new GateEvent (outcome);
+
+	}
+
 }
