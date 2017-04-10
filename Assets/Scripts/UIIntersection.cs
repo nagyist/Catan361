@@ -273,7 +273,15 @@ public class UIIntersection : MonoBehaviour
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
+
+        if (roundCount >= 1 )
+            if (!isConnectedToOwnedUnit())
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Invalid location."));
+                return;
+            }
 
         // check for max number of basic knights 
         if (localPlayer.numBasicKnights >= 3)
@@ -371,6 +379,13 @@ public class UIIntersection : MonoBehaviour
         bool setup = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
+        if (roundCount >= 1)
+            if (!isConnectedToOwnedUnit())
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Invalid location."));
+                return;
+            }
+        
         if (setup && localPlayer.placedSettlement)
         {
             StartCoroutine(GameManager.GUI.ShowMessage("You have already placed a settlment."));
@@ -528,5 +543,22 @@ public class UIIntersection : MonoBehaviour
             selectionInfo.SetActive(true);
 
         }
+    }
+
+    private bool isConnectedToOwnedUnit()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        Edge roadTest1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile1, i.adjTile2);
+        Edge roadTest2 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile1, i.adjTile3);
+        Edge roadTest3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile2, i.adjTile3);
+
+        // successfully getting the owner of the intersections 
+        // StartCoroutine(GameManager.GUI.ShowMessage("Owner 1: " + roadTest1.Owner+ " Owner 2: " + roadTest2.Owner+  " Owner 3: " + roadTest3.Owner));
+        if (roadTest1.Owner == localPlayer.myName || roadTest2.Owner == localPlayer.myName || roadTest3.Owner == localPlayer.myName)
+            return true;
+        else
+            return false;
     }
 }
