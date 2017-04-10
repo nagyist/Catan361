@@ -15,4 +15,12 @@ public abstract class AbstractProgressCard
 	}
 
 	public abstract void ExecuteCardEffect();
+
+	public virtual string GetTitle() {
+		return "No Title";
+	}
+
+	public virtual string GetDescription() {
+		return "No Description";
+	}
 }

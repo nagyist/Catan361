@@ -51,6 +51,9 @@ public class GameState : NetworkBehaviour {
 	public RobberPiratePlacement CurrentPiratePosition;
 	public VictoryPointsCollection CurrentVictoryPoints = new VictoryPointsCollection();
 	public BarbarianEvent CurrentBarbarianEvent = new BarbarianEvent();
+	public ProgressCardDeck CurrentProgressCardDeck = ProgressCardDeck.InitialDeck();
+	public ProgressCardCollection CurrentProgressCardHands = new ProgressCardCollection();
+
 
     // called once for initialization
     void Start() {
