@@ -208,7 +208,6 @@ public class UIIntersection : MonoBehaviour
         // check for max level 
         else if (knight.level == 3)
         {
-            Debug.Log("Knight already at max level.");
             StartCoroutine(GameManager.GUI.ShowMessage("Knight is already at its maximum level."));
             return;
         }
@@ -274,6 +273,12 @@ public class UIIntersection : MonoBehaviour
         string localPlayerName = localPlayer.myName;
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
+        // check for connection 
+        if (!isConnectedToOwnedUnit())
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
+            return;
+        }
 
         // check for max number of basic knights 
         if (localPlayer.numBasicKnights >= 3)
@@ -371,6 +376,20 @@ public class UIIntersection : MonoBehaviour
         bool setup = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
         int roundCount = GameManager.Instance.GetCurrentGameState().CurrentTurn.RoundCount;
 
+        if (!setup)
+        {
+            if (!isConnectedToOwnedUnit())
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
+                return;
+            }
+            if (!distanceRuleCheck())
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot own a settlement or city."));
+                return;
+            }
+        }
+
         if (setup && localPlayer.placedSettlement)
         {
             StartCoroutine(GameManager.GUI.ShowMessage("You have already placed a settlment."));
@@ -426,24 +445,20 @@ public class UIIntersection : MonoBehaviour
             StartCoroutine(GameManager.GUI.ShowMessage("Only settlements can be upgraded to a city."));
             return;
         }
+       
+        // cosume resources
+        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
+                                    {StealableType.Resource_Ore, 3},
+                                    {StealableType.Resource_Grain, 2}
+                                };
 
-        // check for setup phase
-        if (!setup)
+        if (!localPlayer.HasEnoughResources(requiredRes))
         {
-            // upgrade the settlement to city
-            Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                                        {StealableType.Resource_Ore, 3},
-                                        {StealableType.Resource_Grain, 2}
-                                    };
-
-            if (!localPlayer.HasEnoughResources(requiredRes))
-            {
-                StartCoroutine(GameManager.GUI.ShowMessage("You do not have enough resources."));
-                return;
-            }
-
-            localPlayer.CmdConsumeResources(requiredRes);
+            StartCoroutine(GameManager.GUI.ShowMessage("You do not have enough resources."));
+            return;
         }
+        localPlayer.CmdConsumeResources(requiredRes);
+    
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgraded your settlement."));
         localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
@@ -528,5 +543,71 @@ public class UIIntersection : MonoBehaviour
             selectionInfo.SetActive(true);
 
         }
+    }
+
+    // checks if the intersection has an road owned by the local player connected to it
+    private bool isConnectedToOwnedUnit()
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+        Edge roadTest1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile1, i.adjTile2);
+        Edge roadTest2 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile1, i.adjTile3);
+        Edge roadTest3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile2, i.adjTile3);
+
+        if (roadTest1.Owner == localPlayer.myName || roadTest2.Owner == localPlayer.myName || roadTest3.Owner == localPlayer.myName)
+            return true;
+        else
+            return false;
+    }
+
+    private bool distanceRuleCheck()
+    {
+        // get the local player and the current intersection
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        Intersection currentIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        // add all the connected edges to a list
+        List<Edge> connectedEdges = new List<Edge>();
+        connectedEdges.Add(GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(currentIntersection.adjTile1, currentIntersection.adjTile2));
+        connectedEdges.Add(GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(currentIntersection.adjTile1, currentIntersection.adjTile3));
+        connectedEdges.Add(GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(currentIntersection.adjTile2, currentIntersection.adjTile3));
+
+        // loop through edges
+        foreach (Edge e in connectedEdges)
+        {
+            List<List<Vec3>> adjHexIntersectionPos1 = UIHex.getIntersectionsAdjacentPos(this.HexPos1);
+            List<List<Vec3>> adjHexIntersectionsPos2 = UIHex.getIntersectionsAdjacentPos(this.HexPos2);
+            List<Intersection> intersectionBuffer = new List<Intersection>();
+            List<Intersection> adjIntersections = new List<Intersection>();
+
+            // add the intersections of the first adjacent hex to a buffer list
+            // this excludes the current intersection
+            foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionPos1)
+            {
+                Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
+
+                if(!hexIntersection.Equals(currentIntersection))
+                    intersectionBuffer.Add(hexIntersection);
+            }
+
+            // add the intersections of the second adjacent hex to the final list if the buffer contains them
+            // this excludes the current intersection
+            foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionsPos2)
+            {
+                Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
+
+                if (!hexIntersection.Equals(currentIntersection))
+                    if (intersectionBuffer.Contains(hexIntersection))
+                        adjIntersections.Add(hexIntersection);
+            }
+
+            // check for a settlement in the adjacent intersections 
+            foreach (Intersection testIntersection in adjIntersections)
+                    if (testIntersection.unit.GetType() == typeof(Village))
+                        return false;
+            
+        }
+
+        return true;
     }
 }
