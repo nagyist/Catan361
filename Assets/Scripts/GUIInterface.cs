@@ -117,6 +117,20 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowFishPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("FishActionMenu").gameObject;
+		popup.GetComponent<UIWindow> ().Show();
+
+		return popup;
+	}
+
+	public GameObject HideFishPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("FishActionMenu").gameObject;
+		popup.GetComponent<UIWindow> ().Hide();
+
+		return popup;
+	}
+
 
 
 	// Update is called once per frame
