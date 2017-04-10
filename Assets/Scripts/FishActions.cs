@@ -51,6 +51,7 @@ public class FishActions : MonoBehaviour {
 			StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
 			Edge currentEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(HexPos1, HexPos2);
 			bool setupPhase = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
+
 			player.placedRoad = false;
 			GameManager.GUI.HideFishPopup ();
 
