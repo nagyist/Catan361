@@ -112,7 +112,7 @@ public class UIHex : MonoBehaviour {
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
 		int newIndex = 0;
-		if (refTile.IsWater) {
+		if (refTile.IsWater && !refTile.IsFishingGround) {
 			GetComponent<SpriteRenderer>().sprite = loadedSprites[5];
 			newIndex = 5 + Random.Range(0, 3);
 		} else {

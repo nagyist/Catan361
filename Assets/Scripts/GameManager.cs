@@ -164,7 +164,7 @@ public class GameManager : Singleton<GameManager> {
 
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
 
-						if (playerResources.ContainsKey (tile.Resource)) {
+						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
 							newAmount = playerResources [tile.Resource] + amountToAdd;
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
 							newAmount = playerResources [tile.Resource] + tile.FishingReturnNum;

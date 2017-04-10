@@ -39,6 +39,8 @@ public class GoldPopup : MonoBehaviour {
 
         GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer>();
 		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
+
+		//TODO: need to return the equivalent amount to the # of settlements / cities
 		player.CmdUpdateResource (selected, playerResources [selected] + 1);
 
 		GameManager.GUI.HideGoldPopup ();
