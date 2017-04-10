@@ -546,7 +546,7 @@ public class UIIntersection : MonoBehaviour
     }
 
     // checks if the intersection has an road owned by the local player connected to it
-    private bool isConnectedToOwnedUnit()
+    public bool isConnectedToOwnedUnit()
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
@@ -560,7 +560,7 @@ public class UIIntersection : MonoBehaviour
             return false;
     }
 
-    private bool distanceRuleCheck()
+    public bool distanceRuleCheck()
     {
         // get the local player and the current intersection
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();

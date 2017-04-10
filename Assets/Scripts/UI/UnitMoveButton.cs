@@ -11,16 +11,53 @@ public class UnitMoveButton : MonoBehaviour {
     public void ClickBuild()
     {
         GamePlayer localPlayer = getLocalPlayer();
+        UIIntersection selection = localPlayer.selectedUIIntersection;
+        Intersection target = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { selection.HexPos1, selection.HexPos2, selection.HexPos3 }));
 
         if (!inUse)
         {
+            if (target.unit == null)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
+                return;
+            }
+            else if (target.unit.GetType() != typeof(Knight))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
+                return;
+            }
             localPlayer.SetMoveSelection();
-            StartCoroutine(GameManager.GUI.ShowMessage("Successfully set the unit to move."));
+            StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
             inUse = true;
         }
         else
         {
-    
+            if (!selection.isConnectedToOwnedUnit())
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
+                localPlayer.ResetMoveSelection();
+                localPlayer.resetBuildSelection();
+                inUse = false;
+                return;
+            }
+            if (target.unit != null)
+            {
+                if (target.unit.GetType() == typeof(Village))
+                {
+                    StartCoroutine(GameManager.GUI.ShowMessage("Invalid location: selected intersection contains a village."));
+                    localPlayer.ResetMoveSelection();
+                    localPlayer.resetBuildSelection();
+                    inUse = false;
+                    return;
+                }
+
+                // exits because knight displacement has not been implemented yet
+                StartCoroutine(GameManager.GUI.ShowMessage("Unit displacement is not implemented yet."));
+                localPlayer.ResetMoveSelection();
+                localPlayer.resetBuildSelection();
+                inUse = false;
+                return;
+            }
             localPlayer.CmdMoveUnit();
             StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
             localPlayer.ResetMoveSelection();
@@ -39,7 +76,7 @@ public class UnitMoveButton : MonoBehaviour {
     {
         if (inUse)
         {
-            GetComponent<Button>().enabled = false;
+            GetComponent<Button>().enabled = true;
             GetComponentInChildren<Text>().text = "CHOOSE DESTINATION";
             return;
         }
