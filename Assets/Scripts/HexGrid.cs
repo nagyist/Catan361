@@ -1747,6 +1747,7 @@ public class HexGrid : MonoBehaviour {
 		harbourScript1.exchangeRate = 2;
 		harbourScript1.returnedResource = StealableType.Resource_Brick;
 		harbourScript1.returnedAmount = 1;
+		harbourScript1.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_1) {
 			harbourScript1.intersectionsCanAccessHarbour.Add (i);
@@ -1818,8 +1819,9 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript2 = newHarbour2.GetComponent<Harbour> ();
 		harbourScript2.exchangeRate = 3;
-		harbourScript2.returnedResource = StealableType.Resource_Grain;
+		harbourScript2.returnedResource = StealableType.None;
 		harbourScript2.returnedAmount = 1;
+		harbourScript2.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_2) {
 			harbourScript2.intersectionsCanAccessHarbour.Add (i);
@@ -1893,6 +1895,7 @@ public class HexGrid : MonoBehaviour {
 		harbourScript3.exchangeRate = 2;
 		harbourScript3.returnedResource = StealableType.Resource_Lumber;
 		harbourScript3.returnedAmount = 1;
+		harbourScript3.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_3) {
 			harbourScript3.intersectionsCanAccessHarbour.Add (i);
@@ -1964,8 +1967,9 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript4 = newHarbour4.GetComponent<Harbour> ();
 		harbourScript4.exchangeRate = 3;
-		harbourScript4.returnedResource = StealableType.Resource_Ore;
+		harbourScript4.returnedResource = StealableType.None;
 		harbourScript4.returnedAmount = 1;
+		harbourScript4.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_4) {
 			harbourScript4.intersectionsCanAccessHarbour.Add (i);
@@ -2035,6 +2039,7 @@ public class HexGrid : MonoBehaviour {
 		harbourScript5.exchangeRate = 2;
 		harbourScript5.returnedResource = StealableType.Resource_Wool;
 		harbourScript5.returnedAmount = 1;
+		harbourScript5.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_5) {
 			harbourScript5.intersectionsCanAccessHarbour.Add (i);
@@ -2102,8 +2107,9 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript6 = newHarbour6.GetComponent<Harbour> ();
 		harbourScript6.exchangeRate = 3;
-		harbourScript6.returnedResource = StealableType.Resource_Brick;
+		harbourScript6.returnedResource = StealableType.None;
 		harbourScript6.returnedAmount = 1;
+		harbourScript6.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_6) {
 			harbourScript6.intersectionsCanAccessHarbour.Add (i);
@@ -2177,6 +2183,7 @@ public class HexGrid : MonoBehaviour {
 		harbourScript7.exchangeRate = 2;
 		harbourScript7.returnedResource = StealableType.Resource_Grain;
 		harbourScript7.returnedAmount = 1;
+		harbourScript7.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_7) {
 			harbourScript7.intersectionsCanAccessHarbour.Add (i);
@@ -2247,8 +2254,9 @@ public class HexGrid : MonoBehaviour {
 		//set values in harbour
 		Harbour harbourScript8 = newHarbour8.GetComponent<Harbour> ();
 		harbourScript8.exchangeRate = 3;
-		harbourScript8.returnedResource = StealableType.Resource_Lumber;
+		harbourScript8.returnedResource = StealableType.None;
 		harbourScript8.returnedAmount = 1;
+		harbourScript8.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_8) {
 			harbourScript8.intersectionsCanAccessHarbour.Add (i);
@@ -2322,6 +2330,7 @@ public class HexGrid : MonoBehaviour {
 		harbourScript9.exchangeRate = 2;
 		harbourScript9.returnedResource = StealableType.Resource_Ore;
 		harbourScript9.returnedAmount = 1;
+		harbourScript9.SetSprites ();
 
 		foreach (Intersection i in intersectionsIntersectionH_9) {
 			harbourScript9.intersectionsCanAccessHarbour.Add (i);

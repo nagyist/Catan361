@@ -52,6 +52,7 @@ public class FishActions : MonoBehaviour {
 			Edge currentEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(HexPos1, HexPos2);
 			bool setupPhase = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
 			player.placedRoad = false;
+			GameManager.GUI.HideFishPopup ();
 
 			if (player.placedRoad)
 			{
@@ -104,12 +105,14 @@ public class FishActions : MonoBehaviour {
 			// player.placedRoad = true;
 			player.CmdBuildRoad(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2 }));
 		}
+
 		/*
 		else if (actionSelected.Equals("OldBoot")
 		{
 				
 		}
 		*/
+
 		Debug.Log("Player selected: " + actionSelected);
 
 	}

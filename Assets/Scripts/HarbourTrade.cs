@@ -8,7 +8,7 @@ public class HarbourTrade : MonoBehaviour {
 	public int exchangeRate{ get; set; }
 	public StealableType returnedResource { get; set; }
 	public int returnedAmount { get; set; }
-
+	public int count = 1;
 	//public Button confirmButton;
 	private string resourceSelected;
 
@@ -46,14 +46,11 @@ public class HarbourTrade : MonoBehaviour {
 
 			resourceRedistribution (resourceSelected);
 
-			//GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-			//player.playerResources[selected]++;
 		}
 
 	public void resourceRedistribution (string resourceOffered)
 	{
 		GamePlayer player = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-		//Harbour harbourScript = harbour.GetComponent<Harbour> ();
 
 		Dictionary <string, StealableType> resourceDict = new Dictionary <string, StealableType> ();
 		resourceDict.Add ("Brick", StealableType.Resource_Brick);
@@ -64,20 +61,31 @@ public class HarbourTrade : MonoBehaviour {
 
 		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
 
-		if (resourceDict.ContainsKey(resourceOffered) && playerResources[resourceDict[resourceOffered]] >= exchangeRate) 
+		if (resourceDict.ContainsKey(resourceOffered) && playerResources[resourceDict[resourceOffered]] >= exchangeRate && count > 0) 
 		{
 			int newRes = playerResources [resourceDict[resourceOffered]] - exchangeRate;
 			player.CmdUpdateResource (resourceDict [resourceOffered], newRes);
-			//player.playerResources [resourceDict[resourceOffered]] = newRes;
 		}
 
-		if (playerResources.ContainsKey (returnedResource))
+		if (playerResources.ContainsKey (returnedResource) && returnedResource != StealableType.None) 
 		{
-			player.CmdUpdateResource (returnedResource, playerResources[returnedResource] + 1);
-			//player.playerResources[StealableType.Resource_Brick] =  player.playerResources[StealableType.Resource_Brick] - int.Parse(brickNumLost);
+			player.CmdUpdateResource (returnedResource, playerResources [returnedResource] + 1);
+			GameManager.GUI.HideHarbourTradePopup ();
+		} 
+		else if (returnedResource == StealableType.None && count > 0) 
+		{
+			count--;
+			GameManager.GUI.HideHarbourTradePopup ();
+			StartCoroutine(GameManager.GUI.ShowMessage ("Please select the desired return resource."));
+			GameManager.GUI.ShowHarbourTradePopup ();
+		} 
+		else 
+		{
+			player.CmdUpdateResource (resourceDict[resourceOffered], playerResources [resourceDict[resourceOffered]] + 1);
+			GameManager.GUI.HideHarbourTradePopup ();
+			count++;
 		}
-
-		GameManager.GUI.HideHarbourTradePopup ();
+			
 	}
 
 }
