@@ -235,7 +235,7 @@ public class UIEdge : MonoBehaviour
 
         if (e.isHarbour == true)
         {
-            GetComponent<SpriteRenderer>().color = Color.yellow;
+            //GetComponent<SpriteRenderer>().color = Color.yellow;
             GetComponent<SpriteRenderer>().sortingOrder = 3;
             return;
         }
