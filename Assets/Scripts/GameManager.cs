@@ -168,7 +168,8 @@ public class GameManager : Singleton<GameManager> {
 						HexTile tile = GameManager.Instance.GetCurrentGameState().CurrentBoard[hex];
 						RobberPiratePlacement robberPlacement = GameManager.Instance.GetCurrentGameState ().CurrentRobberPosition;
 
-						int newAmount = amountToAdd;
+						int newAmountResource = amountToAdd;
+						int newAmountCommodity = 1;
 
 						// continue if the tile number's don't match the rolled number
 						if (tile.IsWater) { continue; }
@@ -181,28 +182,28 @@ public class GameManager : Singleton<GameManager> {
 						}
 
 						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
-							newAmount = playerResources [tile.Resource] + amountToAdd;
+							newAmountResource = playerResources [tile.Resource] + amountToAdd;
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
-							newAmount = playerResources [tile.Resource] + tile.FishingReturnNum;
+							newAmountResource = playerResources [tile.Resource] + tile.FishingReturnNum;
 						} else if (tile.Resource == StealableType.Resource_Gold) {
 							GameManager.GUI.ShowGoldPopup ();
 						} 
 
-						intersectionOwner.CmdUpdateResource (tile.Resource, newAmount);
-
-
-						if (tile.Commodity != StealableType.None && currentVillage.myKind == Village.VillageKind.City) 
+						if (tile.Commodity == StealableType.None) 
 						{
-							newAmount = playerResources [tile.Commodity] + 1;
+							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
 						}
 
-						intersectionOwner.CmdUpdateResource (tile.Commodity, newAmount);
-
+						else if (playerResources.ContainsKey (tile.Commodity) && tile.Commodity != StealableType.None && currentVillage.myKind == Village.VillageKind.City) 
+						{
+							newAmountResource = playerResources [tile.Resource] + 1;
+							newAmountCommodity = playerResources [tile.Commodity] + 1;
+							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
+							intersectionOwner.CmdUpdateResource (tile.Commodity, newAmountCommodity);
+						}
 					}
                 }
             }
-            
-            
 		}
 
 		return true;
