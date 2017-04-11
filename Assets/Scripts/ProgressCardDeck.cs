@@ -48,7 +48,16 @@ public class ProgressCardDeck
 		if (cardsOfType.Count == 0) {
 			return null;
 		}
+		AbstractProgressCard card = cardsOfType [0];
+		CurrentDeck.Remove (card);
 
-		return cardsOfType[0];
+		return card;
+	}
+
+	public AbstractProgressCard DrawRandomCard() {
+		AbstractProgressCard card = CurrentDeck[UnityEngine.Random.Range (0, CurrentDeck.Count)];
+		CurrentDeck.Remove (card);
+
+		return card;
 	}
 }

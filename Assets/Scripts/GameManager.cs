@@ -130,7 +130,7 @@ public class GameManager : Singleton<GameManager> {
 		StartCoroutine (GameManager.GUI.ShowMessage("You rolled " + roll));
 		GetCurrentGameState ().RpcClientPostStatusMessage (LocalPlayer.GetComponent<GamePlayer>().myName + " rolled " + roll);
 
-		if (roll == 7) {
+		if (roll == 7 && GameManager.Instance.GetCurrentGameState().CurrentBarbarianEvent.BarbarianInvasionCounter > 0) {
 			GameManager.GUI.ShowMoveRobberPiratePopup ();
 			return true;
 		}

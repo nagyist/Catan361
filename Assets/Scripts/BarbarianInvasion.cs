@@ -127,7 +127,10 @@ public class BarbarianInvasion
 		if (DefendersOfCatan.Count == 1) {
 			// give victory point
 		} else {
-			// distribute progress cards
+			foreach (string defender in DefendersOfCatan) {
+				AbstractProgressCard rndCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawRandomCard ();
+				GameManager.ConnectedPlayersByName [defender].GetComponent<GamePlayer> ().AddProgressCard (rndCard);
+			}
 		}
 	}
 
