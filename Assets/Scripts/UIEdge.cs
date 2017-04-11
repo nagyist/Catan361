@@ -181,14 +181,14 @@ public class UIEdge : MonoBehaviour
     void updateGUI()
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        GameObject selectionInfo = GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject;
+        //GameObject selectionInfo = GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject;
         GameObject unitBtn1 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton1").gameObject;
         GameObject unitBtn2 = GameManager.GUI.guiCanvas.transform.FindChild("UnitButton2").gameObject;
         if (localPlayer.selectedUIEdge == null)
         {
             unitBtn1.SetActive(false);
             unitBtn2.SetActive(false);
-            selectionInfo.SetActive(false);
+            //selectionInfo.SetActive(false);
         }
 
         else
@@ -196,7 +196,7 @@ public class UIEdge : MonoBehaviour
             Edge currentEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(HexPos1, HexPos2);
 
             unitBtn2.SetActive(false);
-            selectionInfo.SetActive(true);
+            //selectionInfo.SetActive(true);
 
             if (currentEdge.Owner == "")
                 unitBtn1.SetActive(true);

@@ -1,5 +1,6 @@
 ﻿using System;
 
+[Serializable]
 public class InventorCard : AbstractProgressCard
 {
 	public InventorCard ()

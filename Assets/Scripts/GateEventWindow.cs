@@ -16,9 +16,9 @@ public class GateEventWindow : MonoBehaviour {
 		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
 		if (rollNum == 1) {
 			// get the progress card
-			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAddProgressCard (drawnProgressCard);
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().AddProgressCard (drawnProgressCard);
 		} else {
-			GameManager.GUI.ShowMessage ("Unfortunately you did not get any progress card.");
+			StartCoroutine(GameManager.GUI.ShowMessage ("Unfortunately you did not get any progress card."));
 		}
 
 		GetComponent<UIWindow> ().Hide ();

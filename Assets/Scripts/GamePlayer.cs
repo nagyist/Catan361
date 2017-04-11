@@ -445,8 +445,12 @@ public class GamePlayer : NetworkBehaviour {
 	[Command]
 	public void CmdAddProgressCard(string name, byte[] progressCardSerialized) {
 		AbstractProgressCard card = (AbstractProgressCard)SerializationUtils.ByteArrayToObject (progressCardSerialized);
-		GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.AddCardToPlayerHand (name, card);
-		GameManager.Instance.GetCurrentGameState ().RpcClientPublishProgressCardHandUpdate (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands));
+
+		ProgressCardCollection cardCollection = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands;
+		cardCollection.AddCardToPlayerHand (name, card);
+
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishProgressCardHandUpdate (SerializationUtils.ObjectToByteArray (cardCollection));
+		Debug.Log (name + " = " + GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.GetCardsForPlayer(name).Count);
 	}
 
 	[Command]
@@ -467,7 +471,7 @@ public class GamePlayer : NetworkBehaviour {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
 	}
 
-	public void CmdAddProgressCard(AbstractProgressCard pCard) {
+	public void AddProgressCard(AbstractProgressCard pCard) {
 		StartCoroutine(GameManager.GUI.ShowNewProgressCardNotification (pCard));
 		CmdAddProgressCard (myName, SerializationUtils.ObjectToByteArray (pCard));
 	}
