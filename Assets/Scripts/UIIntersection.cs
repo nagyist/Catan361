@@ -629,11 +629,12 @@ public class UIIntersection : MonoBehaviour
 
             // check for a settlement in the adjacent intersections 
             foreach (Intersection testIntersection in adjIntersections)
+            {
+                if (testIntersection.unit != null)
                     if (testIntersection.unit.GetType() == typeof(Village))
-                        return false;
-            
+                            return false;
+            }
         }
-
         return true;
     }
 }
