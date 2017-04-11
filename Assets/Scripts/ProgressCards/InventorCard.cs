@@ -3,13 +3,16 @@
 [Serializable]
 public class InventorCard : AbstractProgressCard
 {
-	public InventorCard ()
+	public InventorCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Science;
 	}
 
 	public override void ExecuteCardEffect() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().inventorProgressCardInUse = true;
+		UIInventorProgressCard ui = GameManager.LocalPlayer.AddComponent<UIInventorProgressCard> ();
 
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

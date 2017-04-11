@@ -169,6 +169,13 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
+	public void RpcClientPostHexTileUpdate(byte[] vec3PosSerialized, byte[] newHexTileSerialized) {
+		Vec3 hexPos = (Vec3)SerializationUtils.ByteArrayToObject (vec3PosSerialized);
+		HexTile newTile = (HexTile)SerializationUtils.ByteArrayToObject (newHexTileSerialized);
+		GameManager.Instance.GetCurrentGameState ().CurrentBoard [hexPos] = newTile;
+	}
+
+	[ClientRpc]
 	public void RpcClientMoveRobberPirateEntity(string entityType, byte[] posSerialized) {
 		Vec3 moveToPos = (Vec3)SerializationUtils.ByteArrayToObject (posSerialized);
 

@@ -13,8 +13,8 @@ public class ProgressCardDeck
 		newDeck.CurrentDeck = new List<AbstractProgressCard>() {
 			//new AlchemistCard(), new AlchemistCard(),
 			//new CraneCard(++CC), new CraneCard(++CC),
-			new EngineerCard(++CC),
-			//new InventorCard(), new InventorCard(),
+			//new EngineerCard(++CC),
+			new InventorCard(++CC), new InventorCard(++CC),
 			//new IrrigationCard(), new IrrigationCard(),
 			//new MedicineCard(), new MedicineCard(),
 			//new MiningCard(), new MiningCard(),
@@ -45,14 +45,15 @@ public class ProgressCardDeck
 	}
 
 	public AbstractProgressCard DrawCardOfType(AbstractProgressCard.ProgressCardType type) {
-		List<AbstractProgressCard> cardsOfType = CurrentDeck.Where (x => x.CardType == type).ToList ();
+		/*List<AbstractProgressCard> cardsOfType = CurrentDeck.Where (x => x.CardType == type).ToList ();
 		if (cardsOfType.Count == 0) {
 			return null;
 		}
-		AbstractProgressCard card = cardsOfType [0];
-		//CurrentDeck.Remove (card);
 
-		return card;
+		AbstractProgressCard card = cardsOfType [0];
+		//CurrentDeck.Remove (card);*/
+
+		return CurrentDeck[0]; // TODO : fix
 	}
 
 	public AbstractProgressCard DrawRandomCard() {
