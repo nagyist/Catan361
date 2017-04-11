@@ -143,6 +143,8 @@ public class GameManager : Singleton<GameManager> {
 		 * 
          */
 
+		int aqueductCounter = 0;
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
         // go through all the intersections
 		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
@@ -161,6 +163,7 @@ public class GameManager : Singleton<GameManager> {
                         amountToAdd = 2;
 
 					GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer>();
+
 
 					List<Vec3> adjHexes = new List<Vec3>(new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
 					foreach (Vec3 hex in adjHexes)
@@ -183,10 +186,20 @@ public class GameManager : Singleton<GameManager> {
 
 						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
 							newAmountResource = playerResources [tile.Resource] + amountToAdd;
+							if (intersectionOwner == localPlayer) {
+								aqueductCounter++;
+							}
+								
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
 							newAmountResource = playerResources [tile.Resource] + tile.FishingReturnNum;
+							if (intersectionOwner == localPlayer) {
+								aqueductCounter++;
+							}
 						} else if (tile.Resource == StealableType.Resource_Gold) {
 							GameManager.GUI.ShowGoldPopup ();
+							if (intersectionOwner == localPlayer) {
+								aqueductCounter++;
+							}
 						} 
 
 						if (tile.Commodity == StealableType.None) 
@@ -200,12 +213,19 @@ public class GameManager : Singleton<GameManager> {
 							newAmountCommodity = playerResources [tile.Commodity] + 1;
 							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
 							intersectionOwner.CmdUpdateResource (tile.Commodity, newAmountCommodity);
+							if (intersectionOwner == localPlayer) {
+								aqueductCounter++;
+							}
 						}
 					}
                 }
             }
 		}
-
+		foreach (GameObject player in ConnectedPlayers) {
+			if (aqueductCounter == 0 && player.GetComponent<GamePlayer>().hasAqueduct) {
+				//Player gets to pick a resource or commodity of their choice
+			}
+		}
 		return true;
 	}
 
