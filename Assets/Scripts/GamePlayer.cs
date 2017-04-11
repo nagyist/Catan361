@@ -28,6 +28,7 @@ public class GamePlayer : NetworkBehaviour {
 	public int roadBuildingProgressCardUsed = 0;
 	public bool smithProgressCardDiscount = false;
 	public int smithProgressCardUsed = 0;
+	public bool deserterProgressCardUsed = false;
 
 	//can promote strong knights to mighty knights
 	public bool hasFortress = false;
@@ -248,17 +249,18 @@ public class GamePlayer : NetworkBehaviour {
 
 	// command for hiring a knight
     [Command]
-    public void CmdHireKnight(byte[] vec3sSerialized)
+	public void CmdHireKnight(byte[] vec3sSerialized, string ownerName)
     {
         Vec3[] vec3Pos = SerializationUtils.ByteArrayToObject(vec3sSerialized) as Vec3[];
         Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(vec3Pos));
 
         // hire a knight
         Knight knight = new Knight();
+		knight.Owner = ownerName;
         numBasicKnights++;
         this.placedKnight = true;
         intersection.unit = knight;
-        intersection.Owner = myName;
+		intersection.Owner = ownerName;
 
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);

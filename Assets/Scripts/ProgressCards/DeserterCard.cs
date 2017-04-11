@@ -3,13 +3,15 @@
 [Serializable]
 public class DeserterCard : AbstractProgressCard
 {
-	public DeserterCard ()
+	public DeserterCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
 
 	public override void ExecuteCardEffect() {
-
+		GameManager.LocalPlayer.AddComponent<UIDeserterProgressCard> ();
+		GameManager.LocalPlayer.GetComponent<UIDeserterProgressCard> ().CurrentCard = this;
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().deserterProgressCardUsed = true;
 	}
 
 	public override string GetTitle ()

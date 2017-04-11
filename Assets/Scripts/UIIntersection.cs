@@ -31,8 +31,13 @@ public class UIIntersection : MonoBehaviour
             }
         }
 
-        GetComponent<SpriteRenderer>().color = Color.blue;
+		GetComponent<SpriteRenderer>().color = Color.blue;
     }
+
+	void OnMouseExit()
+	{
+		GameManager.GUI.GetTooltip("IntersectionTooltip").GetComponent<UIWindow>().Hide();
+	}
 
     public bool isEmpty()
     {
@@ -139,10 +144,7 @@ public class UIIntersection : MonoBehaviour
         return true;
     }
 
-    void OnMouseExit()
-    {
-        GameManager.GUI.GetTooltip("IntersectionTooltip").GetComponent<UIWindow>().Hide();
-    }
+    
 
     public void ActivateKnight()
     {
@@ -316,7 +318,7 @@ public class UIIntersection : MonoBehaviour
 
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a knight."));
-        localPlayer.CmdHireKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+		localPlayer.CmdHireKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }), localPlayer.myName);
 
         return;
     }
@@ -538,10 +540,18 @@ public class UIIntersection : MonoBehaviour
     {
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
 
+		if (GameManager.LocalPlayer.GetComponent<GamePlayer> ().deserterProgressCardUsed) {
+			Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+			GameManager.LocalPlayer.GetComponent<UIDeserterProgressCard> ().ClickChoseKnightIntersection (intersection);
+			return;
+		}
+
         if (localPlayer.selectedUIIntersection == this)
             localPlayer.ResetBuildSelection();
         else
             localPlayer.SetBuildSelection(this);
+
+
 
         updateGUI();
     }

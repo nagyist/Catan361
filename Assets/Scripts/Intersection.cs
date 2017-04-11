@@ -60,6 +60,10 @@ public class Intersection {
 		return firstHashVal + secondHashVal + thirdHashVal;
 	}
 
+	public string getKey() {
+		return computeKey (adjTile1, adjTile2, adjTile3);
+	}
+
 	private string computeKey(Vec3 hex1, Vec3 hex2, Vec3 hex3) {
 		// apply simple heuristic : "flatten" xyz coords of both coords and take the lowest one
 		byte[] hashFirst = PositionUtilities.PosToByte(hex1);
