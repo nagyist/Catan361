@@ -82,7 +82,6 @@ public class MaritimeTradeWindow : MonoBehaviour {
 				player.CmdUpdateResource (StealableType.Resource_Fish, playerResources [StealableType.Resource_Fish] - int.Parse (fishNumLost));
 				newRes += int.Parse (fishNumLost) / 4;
 				player.CmdUpdateResource (resourceDict [resourceRequested], newRes);
-				//player.playerResources[StealableType.Resource_Fish] =  player.playerResources[StealableType.Resource_Fish] - int.Parse(fishNumLost);
 			}
 		} else if (resourceDict.ContainsKey (resourceRequested) && player.hasTradingHouse) {
 				int newRes = playerResources [resourceDict [resourceRequested]];

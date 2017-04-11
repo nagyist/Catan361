@@ -40,12 +40,46 @@ public class FishActions : MonoBehaviour {
 			GameEventManager.Instance.HandleMoveRobberPirateDecision (entityType);
 			GameManager.GUI.HideFishPopup ();
 		}
-		/*
+
 		else if (actionSelected.Equals("StealResource"))
 		{
-			
+			//TODO: mimick the stealing of resources from robber - player to steal from is completely random
+			bool stolenRobber = false;
+			foreach (GameObject playerToSteal in GameManager.ConnectedPlayers) {
+				if (!stolenRobber) {
+					GamePlayer instancePlayerToSteal = playerToSteal.GetComponent<GamePlayer> ();
+					GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+					if (instancePlayerToSteal != localPlayer) {
+						ResourceCollection.PlayerResourcesCollection playerToStealResources = instancePlayerToSteal.GetPlayerResources ();
+						ResourceCollection.PlayerResourcesCollection localPlayerResources = localPlayer.GetPlayerResources ();
+						Dictionary <int, StealableType> resourceDictForRandomNum = new Dictionary <int, StealableType> () {
+							{ 1, StealableType.Resource_Brick },
+							{ 2, StealableType.Resource_Grain },
+							{ 3, StealableType.Resource_Lumber },
+							{ 4, StealableType.Resource_Ore },
+							{ 5, StealableType.Resource_Wool }
+						};
+
+						Dictionary <int, string> resourceReturnDict = new Dictionary <int, string> () {
+							{ 1, "Brick" },
+							{ 2, "Grain" },
+							{ 3, "Lumber" },
+							{ 4, "Ore" },
+							{ 5, "Wool" }
+						};
+
+						int randKey = Random.Range (1, 6);
+						StealableType keyToSteal = resourceDictForRandomNum [randKey];
+						playerToStealResources [keyToSteal]--;
+						localPlayerResources [keyToSteal]++;
+						stolenRobber = true;
+						GameManager.GUI.HideFishPopup ();
+						StartCoroutine (GameManager.GUI.ShowMessage ("You stole: " + resourceReturnDict [randKey] + " from " + instancePlayerToSteal.myName));
+					}
+				}
+			}
 		}
-		*/
+
 		else if (actionSelected.Equals("BuildRoadShip"))
 		{
 			StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
