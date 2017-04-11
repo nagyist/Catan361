@@ -12,7 +12,9 @@ public class Cheats : NetworkBehaviour {
     public GUISkin[] skins;
     public Texture2D file, folder, back, drive;
     bool drawBrowser = false;
-    string fileName;
+    bool drawTextbox = false;
+    string saveFile = "";
+    string loadFile;
 
     // Use this for initialization
     void Start () {
@@ -48,26 +50,39 @@ public class Cheats : NetworkBehaviour {
         // Press S for quicksave (only invokes if server) and L for quickload (also server-only)
         if (Input.GetKey(KeyCode.S) && isServer)
         {
-            SaveAndLoad.save();
+            drawTextbox = true;
         }
         if (Input.GetKey(KeyCode.L) && isServer)
         {
             drawBrowser = true;
         }
+        if (Input.GetKey(KeyCode.Return) && isServer)
+        {
+            if (!saveFile.Equals("") && drawTextbox)
+            {
+                Debug.Log("Got here");
+                SaveAndLoad.save(saveFile);
+                drawTextbox = false;
+            }
+        }
 	}
 
     private void OnGUI()
     {
+        if (drawTextbox)
+        {
+            saveFile = GUI.TextField(new Rect(250, 100, 200, 20), saveFile, 25);
+        }
         if (drawBrowser)
         {
             fb.setDirectory(Application.persistentDataPath);
             fb.setLayout(1);
             if (fb.draw())
             {
-                fileName = (fb.outputFile == null) ? "cancel hit" : fb.outputFile.ToString();
-                if (!fileName.Equals("cancel hit"))
+                loadFile = (fb.outputFile == null) ? "cancel hit" : fb.outputFile.ToString();
+                if (!loadFile.Equals("cancel hit"))
                 {
-                    SaveAndLoad.load(fileName);
+                    SaveAndLoad.load(loadFile);
                 }
                 drawBrowser = false;
             }
