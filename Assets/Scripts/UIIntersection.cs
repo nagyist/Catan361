@@ -219,7 +219,6 @@ public class UIIntersection : MonoBehaviour
         };
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
-            Debug.Log("Does not have enough resource to upgrade knight");
             StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
             return;
         }
@@ -343,17 +342,21 @@ public class UIIntersection : MonoBehaviour
             return;
         }
 
+		if (!localPlayer.engineerProgressCardDiscount) {
 
-        // check resources
-        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                {StealableType.Resource_Brick, 2},
-            };
-        if (!localPlayer.HasEnoughResources(requiredRes))
-        {
-            Debug.Log("Does not have enough resource to upgrade to city");
-            return;
-        }
-        localPlayer.CmdConsumeResources(requiredRes);
+			// check resources
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Brick, 2 },
+			};
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				Debug.Log ("Does not have enough resource to upgrade to city");
+				return;
+			}
+			localPlayer.CmdConsumeResources (requiredRes);
+		} else {
+			GameManager.GUI.PostStatusMessage ("Engineer progress card used. City wall improvement was free.");
+			localPlayer.engineerProgressCardDiscount = false;
+		}
 
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a city wall."));

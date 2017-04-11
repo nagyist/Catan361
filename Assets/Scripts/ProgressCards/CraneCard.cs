@@ -3,13 +3,17 @@
 [Serializable]
 public class CraneCard : AbstractProgressCard
 {
-	public CraneCard ()
-	{
+	public CraneCard (int id) : base(id)
+	{		
 		CardType = ProgressCardType.Science;
 	}
 
 	public override void ExecuteCardEffect() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().craneProgressCardDiscount = true;
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().StartCoroutine(GameManager.GUI.ShowMessage ("Crane Progress Card used. Next city improvement will be discounted."));
+		GameManager.GUI.PostStatusMessage ("Next city improvement will be discounted by 1 commodity.");
 
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

@@ -19,9 +19,18 @@ public class UIPlayerImprovements : MonoBehaviour {
 		return GetComponentInParent<PlayerResourcePanel> ().PlayerName;
 	}
 
+	GamePlayer getPlayer() {
+		return GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+	}
+
 	public void ClickImproveTrade() {
 		PlayerImprovement newImprov = getImprovement ();
 		int nextLevel = (int)newImprov.CurrentTradeImprovement + 1;
+		bool craneApplied = false;
+		if (getPlayer ().craneProgressCardDiscount) {
+			nextLevel--;
+			craneApplied = true;
+		}
 
 		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
 			{StealableType.Commodity_Cloth, nextLevel}
@@ -34,6 +43,11 @@ public class UIPlayerImprovements : MonoBehaviour {
 
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
 
+		if (craneApplied) {
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
+			getPlayer ().craneProgressCardDiscount = false;
+		}
+
 		newImprov.ImproveTrade ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (getPlayerName() + " improved his trade.");
@@ -42,6 +56,11 @@ public class UIPlayerImprovements : MonoBehaviour {
 	public void ClickImprovePolitics() {
 		PlayerImprovement newImprov = getImprovement ();
 		int nextLevel = (int)newImprov.CurrentPoliticsImprovement + 1;
+		bool craneApplied = false;
+		if (getPlayer ().craneProgressCardDiscount) {
+			nextLevel--;
+			craneApplied = true;
+		}
 
 		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
 			{StealableType.Commodity_Coin, nextLevel}
@@ -54,6 +73,11 @@ public class UIPlayerImprovements : MonoBehaviour {
 
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
 
+		if (craneApplied) {
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
+			getPlayer ().craneProgressCardDiscount = false;
+		}
+
 		newImprov.ImprovePolitics ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (getPlayerName() + " improved his politic.");
@@ -62,6 +86,11 @@ public class UIPlayerImprovements : MonoBehaviour {
 	public void ClickImproveScience() {
 		PlayerImprovement newImprov = getImprovement ();
 		int nextLevel = (int)newImprov.CurrentScienceImprovement + 1;
+		bool craneApplied = false;
+		if (getPlayer ().craneProgressCardDiscount) {
+			nextLevel--;
+			craneApplied = true;
+		}
 
 		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
 			{StealableType.Commodity_Paper, nextLevel}
@@ -73,6 +102,11 @@ public class UIPlayerImprovements : MonoBehaviour {
 		}
 
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
+
+		if (craneApplied) {
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
+			getPlayer ().craneProgressCardDiscount = false;
+		}
 
 		newImprov.ImproveScience ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);

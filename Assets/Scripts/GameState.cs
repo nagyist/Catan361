@@ -93,6 +93,8 @@ public class GameState : NetworkBehaviour {
     /* ClientRpc function calls are called by the server and run on clients
      * function names must have Rcp in their names
      * ClientRpc tag means funcions returns immediately if it is not a client
+	 *
+	 *
      * this function is used for game board synchronization
      */
     [ClientRpc]
@@ -113,6 +115,20 @@ public class GameState : NetworkBehaviour {
         // set the game status as grid created
 		CurrentStatus = GameStatus.GRID_CREATED;
 	}
+
+	[ClientRpc]
+	public void RpcUpdatePlayerKnights(byte[] name, byte[] knight)
+	{
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        String localPlayerName = localPlayer.myName;
+		String oldOwnerName = SerializationUtils.ByteArrayToObject(name) as String;
+
+		if (localPlayerName == oldOwnerName)
+		{
+            Knight newKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
+            localPlayer.knightsToMove.Enqueue(newKnight);
+        }
+    }
 
     // this rcp function is to publish edges to clients
     [ClientRpc]
