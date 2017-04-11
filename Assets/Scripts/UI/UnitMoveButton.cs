@@ -80,6 +80,13 @@ public class UnitMoveButton : MonoBehaviour {
             Vec3[] oldPos = new Vec3[] { oldUIIntersection.HexPos1, oldUIIntersection.HexPos2, oldUIIntersection.HexPos3 };
             Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
 
+            if (!Intersection.checkForPath(oldIntersection, newIntersection))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
+                inUse = false;
+                return;
+            }
+
             // test road connection
             if (!newUIIntersection.isConnectedToOwnedUnit())
             {

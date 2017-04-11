@@ -90,15 +90,16 @@ public class Intersection {
 		return key;
 	}
 
+	// function that checks for a path of owned edges between two intersections
 	public static bool checkForPath(Intersection start, Intersection end)
     {
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        String localPlayerName = localPlayer.myName;
         List<Intersection> visitedIntersections = new List<Intersection>();
         Queue<Intersection> intersectionQueue = new Queue<Intersection>();
         Intersection current = start;
         Intersection goal = end;
-        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
-        String localPlayerName = localPlayer.myName;
-
+        
         visitedIntersections.Add(current);
         intersectionQueue.Enqueue(current);
 

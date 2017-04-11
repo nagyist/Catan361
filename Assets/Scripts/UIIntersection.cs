@@ -397,7 +397,7 @@ public class UIIntersection : MonoBehaviour
             }
             if (!distanceRuleCheck())
             {
-                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot own a settlement or city."));
+                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot have a settlement or city."));
                 return;
             }
         }
