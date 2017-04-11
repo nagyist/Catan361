@@ -11,17 +11,45 @@ public class UnitMoveButton : MonoBehaviour {
     public void ClickBuild()
     {
         GamePlayer localPlayer = getLocalPlayer();
-        UIIntersection selection = localPlayer.selectedUIIntersection;
-        Intersection target = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { selection.HexPos1, selection.HexPos2, selection.HexPos3 }));
-
-        if (!inUse)
+        UIIntersection newUIIntersection = localPlayer.selectedUIIntersection;
+        Vec3[] newPos = new Vec3[] { newUIIntersection.HexPos1, newUIIntersection.HexPos2, newUIIntersection.HexPos3 };
+        Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
+        
+        if (localPlayer.knightsToMove.Count != 0)
         {
-            if (target.unit == null)
+            // player must move his knight first 
+            if (newUIIntersection == null)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Please select an intersection to move to."));
+                return;
+            }
+            else if (newIntersection.Owner != localPlayer.myName)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("You do not own that intersection."));
+                return;
+            }
+            else if (newIntersection.unit != null)
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("This intersection already contains a unit."));
+                return;
+            }
+            
+            // call command to replace knight and reset the button
+            localPlayer.CmdReplaceKnight();
+            StartCoroutine(GameManager.GUI.ShowMessage("You have repositioned your knight."));
+            inUse = false;
+            return;
+
+        }
+        // if the local player hasn't selected a unit to move
+        else if (!inUse)
+        {
+            if (newIntersection.unit == null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
             }
-            else if (target.unit.GetType() != typeof(Knight))
+            else if (newIntersection.unit.GetType() != typeof(Knight))
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
@@ -30,39 +58,66 @@ public class UnitMoveButton : MonoBehaviour {
             StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
             inUse = true;
         }
+        // if the local player has selected a unit 
         else
         {
-            if (!selection.isConnectedToOwnedUnit())
+            UIIntersection oldUIIntersection = localPlayer.uiIntersectionToMove;
+            Vec3[] oldPos = new Vec3[] { oldUIIntersection.HexPos1, oldUIIntersection.HexPos2, oldUIIntersection.HexPos3 };
+            Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
+
+            if (!newUIIntersection.isConnectedToOwnedUnit())
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
                 localPlayer.ResetMoveSelection();
-                localPlayer.resetBuildSelection();
+                localPlayer.ResetBuildSelection();
                 inUse = false;
                 return;
             }
-            if (target.unit != null)
+            if (newIntersection.Owner != "")
             {
-                if (target.unit.GetType() == typeof(Village))
+                if (newIntersection.Owner == localPlayer.myName)
                 {
-                    StartCoroutine(GameManager.GUI.ShowMessage("Invalid location: selected intersection contains a village."));
+                    StartCoroutine(GameManager.GUI.ShowMessage("You already own a unit at the selected location."));
                     localPlayer.ResetMoveSelection();
-                    localPlayer.resetBuildSelection();
+                    localPlayer.ResetBuildSelection();
                     inUse = false;
                     return;
                 }
+                else if (newIntersection.unit != null)
+                {
+                    if (newIntersection.unit.GetType() == typeof(Knight))
+                    {
+                        
+                        Knight replaced = (Knight)newIntersection.unit;
+                        GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName[newIntersection.Owner].GetComponent<GamePlayer>();
+                        intersectionOwner.knightsToMove.Enqueue(replaced);
 
-                // exits because knight displacement has not been implemented yet
-                StartCoroutine(GameManager.GUI.ShowMessage("Unit displacement is not implemented yet."));
+                        localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(newPos));
+                        StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
+                        localPlayer.ResetMoveSelection();
+                        localPlayer.ResetBuildSelection();
+                        inUse = false;
+                        return;
+                    }
+                    else
+                    {
+                        StartCoroutine(GameManager.GUI.ShowMessage("Intersection contains a non-knight unit."));
+                        localPlayer.ResetMoveSelection();
+                        localPlayer.ResetBuildSelection();
+                        inUse = false;
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(newPos));
+                StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
                 localPlayer.ResetMoveSelection();
-                localPlayer.resetBuildSelection();
+                localPlayer.ResetBuildSelection();
                 inUse = false;
                 return;
             }
-            localPlayer.CmdMoveUnit();
-            StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
-            localPlayer.ResetMoveSelection();
-            localPlayer.resetBuildSelection();
-            inUse = false;
         }
     }
 
@@ -74,16 +129,26 @@ public class UnitMoveButton : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (inUse)
+        GamePlayer localPlayer = getLocalPlayer();
+        if (localPlayer.knightsToMove.Count != 0)
+        {
+            GetComponent<Button>().enabled = true;
+            GetComponentInChildren<Text>().text = "REPOSITION KNIGHT";
+            return;
+            // player must move his knight first 
+        }
+        else if (inUse)
         {
             GetComponent<Button>().enabled = true;
             GetComponentInChildren<Text>().text = "CHOOSE DESTINATION";
             return;
         }
-        if (!inUse)
+        else
         {
             if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
             {
+                GetComponent<Button>().enabled = false;
+                GetComponentInChildren<Text>().text = "SETTING UP GAME";
                 return;
             }
 
@@ -93,9 +158,6 @@ public class UnitMoveButton : MonoBehaviour {
                 GetComponentInChildren<Text>().text = "NOT YOUR TURN";
                 return;
             }
-
-            GamePlayer localPlayer = getLocalPlayer();
-
             if (localPlayer.selectedUIIntersection != null)
             {
                 UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;

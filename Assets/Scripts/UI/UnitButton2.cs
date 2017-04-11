@@ -42,6 +42,8 @@ public class UnitButton2 : MonoBehaviour {
     {
         if (!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED))
         {
+            GetComponent<Button>().enabled = false;
+            GetComponentInChildren<Text>().text = "CREATING MAP";
             return;
         }
 

@@ -513,7 +513,7 @@ public class UIIntersection : MonoBehaviour
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
 
         if (localPlayer.selectedUIIntersection == this)
-            localPlayer.resetBuildSelection();
+            localPlayer.ResetBuildSelection();
         else
             localPlayer.SetBuildSelection(this);
 

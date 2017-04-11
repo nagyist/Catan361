@@ -171,7 +171,7 @@ public class UIEdge : MonoBehaviour
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
 
         if (localPlayer.selectedUIEdge == this)
-            localPlayer.resetBuildSelection();
+            localPlayer.ResetBuildSelection();
         else
             localPlayer.SetBuildSelection(this);
 

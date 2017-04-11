@@ -34,6 +34,9 @@ public class GamePlayer : NetworkBehaviour {
 	public UIIntersection uiIntersectionToMove = null;
 	public UIEdge uiEdgeToMove = null;
 
+	// queue to hold all knights the player must move 
+    public Queue<Knight> knightsToMove = new Queue<Knight>();
+
 
     // dictionary containing playe colors
     private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {
@@ -54,7 +57,7 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.SetLocalPlayer (gameObject);
 	}
 
-	public void resetBuildSelection() {
+	public void ResetBuildSelection() {
 		if (this.selectedUIIntersection != null) {
 			this.selectedUIIntersection.IsSelected = false;
 			this.selectedUIIntersection = null;
@@ -67,14 +70,14 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	public void SetBuildSelection(UIIntersection intersection) {
-		resetBuildSelection ();
+		ResetBuildSelection ();
 
 		this.selectedUIIntersection = intersection;
 		intersection.IsSelected = true;
 	}
 
 	public void SetBuildSelection(UIEdge edge) {
-		resetBuildSelection ();
+		ResetBuildSelection ();
 
 		this.selectedUIEdge = edge;
 		edge.IsSelected = true;
@@ -145,7 +148,7 @@ public class GamePlayer : NetworkBehaviour {
 		}
 
 		this.placedKnight = false;
-        resetBuildSelection();
+        ResetBuildSelection();
 		ResetMoveSelection();
 
         // go through all the intersections
@@ -306,52 +309,56 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdMoveUnit()
+	public void CmdReplaceKnight()
 	{
-		if (this.uiIntersectionToMove == null)
-			return;
-		else if (this.selectedUIIntersection == null)
-			return;
-		
-		Vec3[] oldPos = new Vec3[] { uiIntersectionToMove.HexPos1, uiIntersectionToMove.HexPos2, uiIntersectionToMove.HexPos3 };
-		Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
 		Vec3[] newPos = new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 };
+        Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
+
+        Knight newKnight = knightsToMove.Dequeue();
+        newIntersection.Owner = this.myName;
+        newIntersection.unit = newKnight;
+
+        // set and publish the new intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection
+            (SerializationUtils.ObjectToByteArray(newPos), SerializationUtils.ObjectToByteArray(newIntersection));
+
+        return;
+    }
+
+	[Command]
+	public void CmdMoveUnit(byte[] oldvec3, byte[] newvec3)
+	{
+		Vec3[] oldPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
+		Vec3[] newPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
+		Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
 		Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
-		
-		// knight displacement still not implemented 
-		if (newIntersection.unit != null)
-			return;
 
-		if (oldIntersection.unit.GetType() == typeof(Knight))
+		if (oldIntersection.unit != null)
 		{
-			// swap the knights 
-			Knight k = (Knight)oldIntersection.unit;
-			oldIntersection.Owner = "";
-			oldIntersection.unit = null;
-			newIntersection.Owner = this.myName;
-			newIntersection.unit = k;				
-		}
-		else if (oldIntersection.unit.GetType() == typeof(Village))
-		{
-			// swap the villages 
-			Village v = (Village)oldIntersection.unit;
-			oldIntersection.Owner = "";
-			oldIntersection.unit = null;
-			newIntersection.Owner = this.myName;
-			newIntersection.unit = v;
-		}
+			if (oldIntersection.unit.GetType() == typeof(Knight))
+            {
+                // store the knight 
+                Knight k = (Knight)oldIntersection.unit;
 
-		// set and publish the old intersection
-		GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(oldPos, oldIntersection);
-		GameManager.Instance.GetCurrentGameState().RpcPublishIntersection
-			(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(oldIntersection));
-		
-		// set and publish the new intersection
-		GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
-		GameManager.Instance.GetCurrentGameState().RpcPublishIntersection
-			(SerializationUtils.ObjectToByteArray(newPos), SerializationUtils.ObjectToByteArray(newIntersection));
+                // update the old intersection
+                oldIntersection.Owner = "";
+                oldIntersection.unit = null;
 
-		return;
+                // set and publish the old intersection
+                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(oldPos, oldIntersection);
+                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(oldvec3, SerializationUtils.ObjectToByteArray(oldIntersection));
+
+                // update the new intersection
+                newIntersection.Owner = this.myName;
+                newIntersection.unit = k;
+
+                // set and publish the new intersection
+                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
+                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
+            }
+		}
+        
 	}
 
 	[Command]

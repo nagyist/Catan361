@@ -35,6 +35,8 @@ public class RollDiceScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(!GameManager.Instance.GameStateReadyAtStage(GameState.GameStatus.GRID_CREATED)) {
+			GetComponent<Button>().enabled = false;
+            GetComponentInChildren<Text>().text = "CREATING MAP";
 			return;
 		}
 
