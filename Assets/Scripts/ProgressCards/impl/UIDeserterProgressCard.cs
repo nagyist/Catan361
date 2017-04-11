@@ -31,6 +31,7 @@ public class UIDeserterProgressCard : MonoBehaviour
 		}
 
 		string previousOwner = ChosenKnightIntersection.Owner;
+		ChosenKnightIntersection.Owner = GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName;
 		selectedKnight.Owner = GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName;
 
 		ChosenKnightIntersection.unit = selectedKnight;
