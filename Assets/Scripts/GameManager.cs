@@ -98,7 +98,7 @@ public class GameManager : Singleton<GameManager> {
 	public void RollEventDice(RollDiceScript.EventDiceOutcome outcome) {
 		if (outcome == RollDiceScript.EventDiceOutcome.Barbarian) {
 			GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianCounter--;
-			LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent ();
+			LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent (SerializationUtils.ObjectToByteArray(GameManager.Instance.GetCurrentGameState().CurrentBarbarianEvent));
 
 			if (GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.BarbarianInvasionTriggered ()) {
 				GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdTriggerBarbarianInvasion ();

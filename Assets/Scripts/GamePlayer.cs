@@ -427,8 +427,8 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
-	public void CmdUpdateBarbarianEvent() {
-		BarbarianEvent evt = GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent;
+	public void CmdUpdateBarbarianEvent(byte[] barbarianEventSerialized) {
+		BarbarianEvent evt = (BarbarianEvent)SerializationUtils.ByteArrayToObject (barbarianEventSerialized);
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostBarbarianUpdate (SerializationUtils.ObjectToByteArray (evt));
 	}
 

@@ -126,6 +126,7 @@ public class BarbarianInvasion
 		DefendersOfCatan = KnightStrengthByPlayer.ToList ().Where (x => x.Value == maxKnightStr).Select(x => x.Key).ToList ();
 		if (DefendersOfCatan.Count == 1) {
 			// give victory point
+			GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdAddVictoryPoint(1);
 		} else {
 			foreach (string defender in DefendersOfCatan) {
 				AbstractProgressCard rndCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawRandomCard ();
@@ -150,7 +151,7 @@ public class BarbarianInvasion
 		}
 
 		GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent.Reset ();
-		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent ();
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateBarbarianEvent (SerializationUtils.ObjectToByteArray(GameManager.Instance.GetCurrentGameState ().CurrentBarbarianEvent));
 
 		// desactivate all knights
 		IntersectionCollection intersections = GameManager.Instance.GetCurrentGameState().CurrentIntersections;
