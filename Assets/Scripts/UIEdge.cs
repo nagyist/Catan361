@@ -65,7 +65,7 @@ public class UIEdge : MonoBehaviour
 
         if (!isConnectedToOwnedUnit())
         {
-            StartCoroutine(GameManager.GUI.ShowMessage("You must place a road adjacent to any intersection!"));
+            StartCoroutine(GameManager.GUI.ShowMessage("Selected edge must be connected to owned intersection or road."));
             return;
         }
 

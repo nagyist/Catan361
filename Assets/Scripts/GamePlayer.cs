@@ -408,7 +408,6 @@ public class GamePlayer : NetworkBehaviour {
                 GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
             }
 		}
-        
 	}
 
 	[Command]
