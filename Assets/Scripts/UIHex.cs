@@ -106,13 +106,15 @@ public class UIHex : MonoBehaviour {
 		RobberPiratePlacement piratePlacement = GameManager.Instance.GetCurrentGameState ().CurrentPiratePosition;
 
 		if (robberPlacement.IsPlaced && robberPlacement.PlacementPos.Equals (this.HexGridCubePosition)) {
-			GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 0, 255);
+			GetComponent<SpriteRenderer> ().color = new Color32 (255, 0, 0, 255);
 		} else if (piratePlacement.IsPlaced && piratePlacement.PlacementPos.Equals (this.HexGridCubePosition)) {
 			GetComponent<SpriteRenderer> ().color = new Color32 (0, 0, 255, 255);
 		} else if (GameManager.LocalPlayer.GetComponent<GamePlayer> ().inventorProgressCardInUse && GameManager.LocalPlayer.GetComponent<UIInventorProgressCard> ().IsTileSelected (this.HexGridCubePosition)) {
 			GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 0, 255);
 		} else {
-			GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+			if (!GameEventManager.Instance.IsEventMoveRobberPirateEntitySet) {
+				GetComponent<SpriteRenderer> ().color = new Color32 (255, 255, 255, 255);
+			}
 		}
 
 		HexTile refTile = GameManager.Instance.GetCurrentGameState().CurrentBoard[HexGridCubePosition];
