@@ -174,9 +174,11 @@ public class GameManager : Singleton<GameManager> {
 						if (tile.IsWater) { continue; }
 						if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
 
-						if (robberPlacement.PlacementPos.Equals(hex)) { continue; }
-
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
+						if (robberPlacement.PlacementPos.Equals(hex)) 
+						{ 
+							continue; 
+						}
 
 						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
 							newAmount = playerResources [tile.Resource] + amountToAdd;
