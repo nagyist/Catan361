@@ -476,6 +476,7 @@ public class HexGrid : MonoBehaviour {
 				else if (x == 5 && y == 4) 
 				{
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsLakeTile = true;
 					refTile.SelectedNum2 = Random.Range (1, 4);
 					refTile.SelectedNum3 = Random.Range (4, 7);
@@ -1532,6 +1533,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
@@ -1540,6 +1542,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
@@ -1548,6 +1551,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
@@ -1556,6 +1560,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
@@ -1564,6 +1569,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (1, 7);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				} 
@@ -1572,6 +1578,7 @@ public class HexGrid : MonoBehaviour {
 					refTile.SelectedNum = Random.Range (8, 13);
 					refTile.IsFishingGround = true;
 					refTile.Resource = StealableType.Resource_Fish;
+					refTile.Commodity = StealableType.None;
 					refTile.IsWater = true;
 					refTile.FishingReturnNum = Random.Range (1, 4);
 				}
