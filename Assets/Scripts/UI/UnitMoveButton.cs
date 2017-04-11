@@ -56,11 +56,22 @@ public class UnitMoveButton : MonoBehaviour {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
             }
+            else
+            {
+                Knight k = (Knight)newIntersection.unit;
 
-            // set the local player's move selection and set the button to in use
-            localPlayer.SetMoveSelection();
-            StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
-            inUse = true;
+                if (!k.active)
+                {
+                    StartCoroutine(GameManager.GUI.ShowMessage("Only active knights may move."));
+                    return;
+                }
+                // set the local player's move selection and set the button to in use
+                localPlayer.SetMoveSelection();
+                StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
+                inUse = true;
+            }
+
+           
         }
         // if the local player has selected a unit 
         else
@@ -91,12 +102,20 @@ public class UnitMoveButton : MonoBehaviour {
                 {
                     if (newIntersection.unit.GetType() == typeof(Knight))
                     {
-                        // get the knight to be replaced, add it to the queue for that player
+                        // get the knights and the other owner's knight
+                        Knight localPlayerKnight = (Knight)oldIntersection.unit;
                         Knight replacedKnight = (Knight)newIntersection.unit;
-                        GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName[newIntersection.Owner].GetComponent<GamePlayer>();
-                        String oldOwnerName = intersectionOwner.myName;
+                        String oldOwnerName = GameManager.ConnectedPlayersByName[newIntersection.Owner].GetComponent<GamePlayer>().myName;
 
-                        // move the knight and reset button
+                        // compare the knight's levels 
+                        if (localPlayerKnight.level <= replacedKnight.level)
+                        {
+                            StartCoroutine(GameManager.GUI.ShowMessage("You may only displace a lower level knight."));
+                            inUse = false;
+                            return;
+                        }
+
+                        // moves knight and calls rpc function to add replaced knight to queue for the previous owner
                         localPlayer.CmdMoveUnitWithReplacement(
                             SerializationUtils.ObjectToByteArray(oldPos),
                             SerializationUtils.ObjectToByteArray(newPos),
