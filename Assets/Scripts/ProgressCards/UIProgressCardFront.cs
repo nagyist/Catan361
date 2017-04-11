@@ -43,8 +43,8 @@ public class UIProgressCardFront : MonoBehaviour {
 			transform.FindChild ("Back").gameObject.SetActive (false);
 
 			// TODO : image
-			//transform.FindChild ("Front").FindChild ("CardTitle").GetComponent<Text> ().text = CurrentCard.GetTitle ();
-			//transform.FindChild ("Front").FindChild ("CardDescription").GetComponent<Text> ().text = CurrentCard.GetDescription ();
+			transform.FindChild ("Front").FindChild ("CardTitle").GetComponent<Text> ().text = CurrentCard.GetTitle ();
+			transform.FindChild ("Front").FindChild ("CardDescription").GetComponent<Text> ().text = CurrentCard.GetDescription ();
 
 			if (currentType == AbstractProgressCard.ProgressCardType.Science) {
 				transform.FindChild ("Front").FindChild ("CrystalScience").gameObject.SetActive (true);
