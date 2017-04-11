@@ -145,6 +145,7 @@ public class GameManager : Singleton<GameManager> {
 
 
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+
         // go through all the intersections
 		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
@@ -188,7 +189,7 @@ public class GameManager : Singleton<GameManager> {
 
 							if (intersectionOwner == localPlayer) 
 							{
-								intersectionOwner.gotNoResources = false;
+								intersectionOwner.resourcesFromTurn = 1;
 							}
 								
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
@@ -196,14 +197,14 @@ public class GameManager : Singleton<GameManager> {
 
 							if (intersectionOwner == localPlayer) 
 							{
-								intersectionOwner.gotNoResources = false;
+								intersectionOwner.resourcesFromTurn = 1;
 							}
 						} else if (tile.Resource == StealableType.Resource_Gold) {
 							GameManager.GUI.ShowGoldPopup ();
 
 							if (intersectionOwner == localPlayer) 
 							{
-								intersectionOwner.gotNoResources = false;
+								intersectionOwner.resourcesFromTurn = 1;
 							}
 						} 
 
@@ -213,10 +214,11 @@ public class GameManager : Singleton<GameManager> {
 							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
 							intersectionOwner.CmdUpdateResource (tile.Commodity, newAmountCommodity);
 							if (intersectionOwner == localPlayer) {
-								intersectionOwner.gotNoResources = false;
+								intersectionOwner.resourcesFromTurn = 1;
 							}
 						} else {
 							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
+							intersectionOwner.resourcesFromTurn = 1;
 						}
 					}
                 }
@@ -224,16 +226,18 @@ public class GameManager : Singleton<GameManager> {
 		}
 
 		foreach (GameObject player in ConnectedPlayers) {
-			if (player.GetComponent<GamePlayer> ().gotNoResources && player.GetComponent<GamePlayer> ().hasAqueduct) 
-			{
-				//Player gets to pick a resource or commodity of their choice
-
-			} 
+			GamePlayer instancePlayer = player.GetComponent<GamePlayer> ();
+			if (instancePlayer.resourcesFromTurn == 0) {
+				if (instancePlayer.hasAqueduct) {
+					instancePlayer.resourcesFromTurn = -1;
+				} 
+			}
 			else 
 			{
-				player.GetComponent<GamePlayer> ().gotNoResources = true;
+				player.GetComponent<GamePlayer> ().resourcesFromTurn = 0;
 			}
 		}
+
 		return true;
 	}
 

@@ -117,6 +117,20 @@ public class GUIInterface : MonoBehaviour {
 		return popup;
 	}
 
+	public GameObject ShowAqueductPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("AqueductPopup").gameObject;
+		popup.GetComponent<UIWindow> ().Show();
+
+		return popup;
+	}
+
+	public GameObject HideAqueductPopup() {
+		GameObject popup = guiCanvas.transform.FindChild ("AqueductPopup").gameObject;
+		popup.GetComponent<UIWindow> ().Hide();
+
+		return popup;
+	}
+
 	public GameObject ShowFishPopup() {
 		GameObject popup = guiCanvas.transform.FindChild ("FishActionMenu").gameObject;
 		popup.GetComponent<UIWindow> ().Show();
