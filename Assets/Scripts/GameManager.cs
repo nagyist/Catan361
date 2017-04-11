@@ -166,6 +166,8 @@ public class GameManager : Singleton<GameManager> {
 					foreach (Vec3 hex in adjHexes)
 					{
 						HexTile tile = GameManager.Instance.GetCurrentGameState().CurrentBoard[hex];
+						RobberPiratePlacement robberPlacement = GameManager.Instance.GetCurrentGameState ().CurrentRobberPosition;
+
 						int newAmount = amountToAdd;
 
 						// continue if the tile number's don't match the rolled number
@@ -173,6 +175,10 @@ public class GameManager : Singleton<GameManager> {
 						if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
 
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
+						if (robberPlacement.PlacementPos.Equals(hex)) 
+						{ 
+							continue; 
+						}
 
 						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
 							newAmount = playerResources [tile.Resource] + amountToAdd;
