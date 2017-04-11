@@ -31,6 +31,11 @@ public class UIProgressCardWindow : MonoBehaviour {
 
 	public void ClickUseProgressCard() {
 		SelectedCard.ExecuteCardEffect ();
+		getCardPreview ().GetComponent<UIProgressCardFront> ().CurrentCard = null;
+		getCardPreview ().GetComponent<UIProgressCardFront> ().Turned = false;
+		getCardPreview ().GetComponent<UIProgressCardFront> ().CardSelected = false;
+
+		GetComponent<UIWindow> ().Hide ();
 	}
 
 	public void ClickSelectedCard() {

@@ -18,6 +18,9 @@ public class GamePlayer : NetworkBehaviour {
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
 
+	// progress card
+	public bool craneProgressCardDiscount = false;
+
 	//can promote strong knights to mighty knights
 	public bool hasFortress = false;
 
