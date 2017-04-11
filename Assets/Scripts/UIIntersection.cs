@@ -449,11 +449,21 @@ public class UIIntersection : MonoBehaviour
             return;
         }
        
-        // cosume resources
-        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                                    {StealableType.Resource_Ore, 3},
-                                    {StealableType.Resource_Grain, 2}
-                                };
+		Dictionary<StealableType, int> requiredRes;
+		bool discountUsed = false;
+		if (!localPlayer.medicineProgressCardDiscount) {
+			// cosume resources
+			requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 3 },
+				{ StealableType.Resource_Grain, 2 }
+			};
+		} else {
+			requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 1 },
+				{ StealableType.Resource_Grain, 2 }
+			};
+			discountUsed = true;
+		}
 
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
@@ -464,6 +474,10 @@ public class UIIntersection : MonoBehaviour
     
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgraded your settlement."));
+		if (discountUsed) {
+			GameManager.GUI.PostStatusMessage ("Medicine progress card used.");
+			localPlayer.medicineProgressCardDiscount = false;
+		}
         localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;

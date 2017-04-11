@@ -23,6 +23,7 @@ public class GamePlayer : NetworkBehaviour {
 	public bool craneProgressCardDiscount = false;
 	public bool engineerProgressCardDiscount = false;
 	public bool inventorProgressCardInUse = false;
+	public bool medicineProgressCardDiscount = false;
 
 	//can promote strong knights to mighty knights
 	public bool hasFortress = false;
