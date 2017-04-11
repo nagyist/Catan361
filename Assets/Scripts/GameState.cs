@@ -53,7 +53,7 @@ public class GameState : NetworkBehaviour {
 	public BarbarianEvent CurrentBarbarianEvent = new BarbarianEvent();
 	public ProgressCardDeck CurrentProgressCardDeck = ProgressCardDeck.InitialDeck();
 	public ProgressCardCollection CurrentProgressCardHands = new ProgressCardCollection();
-
+	public PlayerImprovementCollection CurrentPlayerImprovements = new PlayerImprovementCollection();
 
     // called once for initialization
     void Start() {
@@ -253,6 +253,12 @@ public class GameState : NetworkBehaviour {
 		GateEvent currentGateEvent = (GateEvent)SerializationUtils.ByteArrayToObject (gateEventSerialized);
 
 		GameManager.GUI.ShowGateEvent (currentGateEvent);
+	}
+
+	[ClientRpc]
+	public void RpcClientPublishPlayerImprovement(byte[] improv) {
+		PlayerImprovementCollection newCollection = (PlayerImprovementCollection)SerializationUtils.ByteArrayToObject (improv);
+		GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements = newCollection;
 	}
 
     // this function si used to sync the gameboard

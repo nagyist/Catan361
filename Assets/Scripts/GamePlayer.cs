@@ -466,6 +466,13 @@ public class GamePlayer : NetworkBehaviour {
 		GameEventManager.Instance.TriggerNewGateEvent (gateEventOutcome);
 	}
 
+	[Command]
+	public void CmdChangeImprovement(string name, byte[] newImprovementSerialized) {
+		PlayerImprovement newImprov = (PlayerImprovement)SerializationUtils.ByteArrayToObject (newImprovementSerialized);
+		GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.ChangePlayerImprovementForPlayer (name, newImprov);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPublishPlayerImprovement (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState().CurrentPlayerImprovements));
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
