@@ -134,17 +134,17 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void RpcUpdatePlayerKnights(byte[] name, byte[] knight)
+	public void RpcUpdatePlayerKnights(byte[] name, byte[] position, byte[] knight)
 	{
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         String localPlayerName = localPlayer.myName;
 		String oldOwnerName = SerializationUtils.ByteArrayToObject(name) as String;
+		Vec3[] knightLocation = SerializationUtils.ByteArrayToObject(position) as Vec3[];
+		Knight displacedKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
 
 		if (localPlayerName == oldOwnerName)
-		{
-            Knight newKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
-            localPlayer.knightsToMove.Enqueue(newKnight);
-        }
+            localPlayer.knightsToMove.Enqueue(new KeyValuePair<Vec3[], Knight>(knightLocation, displacedKnight));
+        
     }
 
     // this rcp function is to publish edges to clients

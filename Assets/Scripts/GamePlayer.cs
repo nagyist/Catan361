@@ -41,7 +41,7 @@ public class GamePlayer : NetworkBehaviour {
 	public UIEdge uiEdgeToMove = null;
 
 	// queue to hold all knights the player must move 
-    public Queue<Knight> knightsToMove = new Queue<Knight>();
+    public Queue<KeyValuePair<Vec3[], Knight>> knightsToMove = new Queue<KeyValuePair<Vec3[], Knight>>();
 
 
     // dictionary containing playe colors
@@ -323,7 +323,8 @@ public class GamePlayer : NetworkBehaviour {
         Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
 
 		// dequeue a knight and add it to the new intersection
-        Knight newKnight = knightsToMove.Dequeue();
+        KeyValuePair<Vec3[], Knight> pair = this.knightsToMove.Dequeue();
+        Knight newKnight = pair.Value;
         newIntersection.Owner = this.myName;
         newIntersection.unit = newKnight;
 
@@ -374,7 +375,7 @@ public class GamePlayer : NetworkBehaviour {
                 GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
 
 				// adds the knight to the appropriate player's queue
-                GameManager.Instance.GetCurrentGameState().RpcUpdatePlayerKnights(name, knight);
+                GameManager.Instance.GetCurrentGameState().RpcUpdatePlayerKnights(name, newvec3, knight);
             }
         }
     }

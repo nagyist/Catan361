@@ -13,32 +13,41 @@ public class UnitMoveButton : MonoBehaviour {
     {
         // get local player and current intersection selection
         GamePlayer localPlayer = getLocalPlayer();
-        UIIntersection newUIIntersection = localPlayer.selectedUIIntersection;
-        Vec3[] newPos = new Vec3[] { newUIIntersection.HexPos1, newUIIntersection.HexPos2, newUIIntersection.HexPos3 };
-        Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
+        UIIntersection selectedUIIntersection = localPlayer.selectedUIIntersection;
+        Vec3[] selectedPos = new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 };
+        Intersection selectedIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(selectedPos));
         
         // check if player has knights he must reposition
         if (localPlayer.knightsToMove.Count != 0)
         {
             // game rules checks 
-            if (newUIIntersection == null)
+            if (selectedUIIntersection == null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Please select an intersection to move to."));
                 return;
             }
-            else if (newIntersection.Owner != localPlayer.myName && newIntersection.Owner != "")
+            else if (selectedIntersection.Owner != localPlayer.myName && selectedIntersection.Owner != "")
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("You do not own that intersection."));
                 return;
             }
-            else if (newIntersection.unit != null)
+            else if (selectedIntersection.unit != null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("This intersection already contains a unit."));
                 return;
             }
-            
+
+            // check for valid path
+            KeyValuePair<Vec3[], Knight> pair = localPlayer.knightsToMove.Peek();
+            Vec3[] oldPos = pair.Key;
+            if (!Intersection.checkForPath(oldPos, selectedPos))
+            {
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
+                return;
+            }
+
             // call command to replace knight and reset the button
-            localPlayer.CmdReplaceKnight(SerializationUtils.ObjectToByteArray(newPos));
+            localPlayer.CmdReplaceKnight(SerializationUtils.ObjectToByteArray(selectedPos));
             StartCoroutine(GameManager.GUI.ShowMessage("You have repositioned your knight."));
             inUse = false;
         }
@@ -46,19 +55,19 @@ public class UnitMoveButton : MonoBehaviour {
         else if (!inUse)
         {
             // invalid selection checks 
-            if (newIntersection.unit == null)
+            if (selectedIntersection.unit == null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
             }
-            else if (newIntersection.unit.GetType() != typeof(Knight))
+            else if (selectedIntersection.unit.GetType() != typeof(Knight))
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
             }
             else
             {
-                Knight k = (Knight)newIntersection.unit;
+                Knight k = (Knight)selectedIntersection.unit;
 
                 if (!k.active)
                 {
@@ -80,39 +89,32 @@ public class UnitMoveButton : MonoBehaviour {
             Vec3[] oldPos = new Vec3[] { oldUIIntersection.HexPos1, oldUIIntersection.HexPos2, oldUIIntersection.HexPos3 };
             Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
 
-            if (!Intersection.checkForPath(oldIntersection, newIntersection))
+            // check for a valid path
+            if (!Intersection.checkForPath(oldPos, selectedPos))
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
                 inUse = false;
                 return;
             }
-
-            // test road connection
-            if (!newUIIntersection.isConnectedToOwnedUnit())
-            {
-                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
-                inUse = false;
-                return;
-            }
             // check for owned intersection
-            else if (newIntersection.Owner != "")
+            else if (selectedIntersection.Owner != "")
             {
                 // throw error if local player already owns selected intersection
-                if (newIntersection.Owner == localPlayer.myName)
+                if (selectedIntersection.Owner == localPlayer.myName)
                 {
                     StartCoroutine(GameManager.GUI.ShowMessage("You already own a unit at the selected location."));
                     inUse = false;
                     return;
                 }
                 // check for a knight in the selected intersection
-                else if (newIntersection.unit != null)
+                else if (selectedIntersection.unit != null)
                 {
-                    if (newIntersection.unit.GetType() == typeof(Knight))
+                    if (selectedIntersection.unit.GetType() == typeof(Knight))
                     {
                         // get the knights and the other owner's knight
                         Knight localPlayerKnight = (Knight)oldIntersection.unit;
-                        Knight replacedKnight = (Knight)newIntersection.unit;
-                        String oldOwnerName = GameManager.ConnectedPlayersByName[newIntersection.Owner].GetComponent<GamePlayer>().myName;
+                        Knight replacedKnight = (Knight)selectedIntersection.unit;
+                        String oldOwnerName = GameManager.ConnectedPlayersByName[selectedIntersection.Owner].GetComponent<GamePlayer>().myName;
 
                         // compare the knight's levels 
                         if (localPlayerKnight.level <= replacedKnight.level)
@@ -125,7 +127,7 @@ public class UnitMoveButton : MonoBehaviour {
                         // moves knight and calls rpc function to add replaced knight to queue for the previous owner
                         localPlayer.CmdMoveUnitWithReplacement(
                             SerializationUtils.ObjectToByteArray(oldPos),
-                            SerializationUtils.ObjectToByteArray(newPos),
+                            SerializationUtils.ObjectToByteArray(selectedPos),
                             SerializationUtils.ObjectToByteArray(oldOwnerName),
                             SerializationUtils.ObjectToByteArray(replacedKnight));
 
@@ -145,7 +147,7 @@ public class UnitMoveButton : MonoBehaviour {
             else
             {
                 // move the knight and reset the button
-                localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(newPos));
+                localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(selectedPos));
                 StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
                 inUse = false;
                 return;

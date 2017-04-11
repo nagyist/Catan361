@@ -95,17 +95,19 @@ public class Intersection {
 	}
 
 	// function that checks for a path of owned edges between two intersections
-	public static bool checkForPath(Intersection start, Intersection end)
+	public static bool checkForPath(Vec3[] start, Vec3[] end)
     {
+
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         String localPlayerName = localPlayer.myName;
         List<Intersection> visitedIntersections = new List<Intersection>();
         Queue<Intersection> intersectionQueue = new Queue<Intersection>();
-        Intersection current = start;
-        Intersection goal = end;
-        
-        visitedIntersections.Add(current);
-        intersectionQueue.Enqueue(current);
+		Intersection initialIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(start));
+		Intersection goal = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(end));
+        Intersection current;
+
+        visitedIntersections.Add(initialIntersection);
+        intersectionQueue.Enqueue(initialIntersection);
 
         while (intersectionQueue.Count != 0)
         {
@@ -138,24 +140,18 @@ public class Intersection {
                 List<Intersection> adjIntersections = new List<Intersection>();
 
                 // add the intersections of the first adjacent hex to a buffer list
-                // this excludes the current intersection
                 foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionPos1)
                 {
                     Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
-
-                    if (!hexIntersection.Equals(current))
-                        intersectionBuffer.Add(hexIntersection);
+					intersectionBuffer.Add(hexIntersection);
                 }
 
                 // add the intersections of the second adjacent hex to the final list if the buffer contains them
-                // this excludes the current intersection
                 foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionsPos2)
                 {
                     Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
-
-                    if (!hexIntersection.Equals(current))
-                        if (intersectionBuffer.Contains(hexIntersection))
-                            adjIntersections.Add(hexIntersection);
+					if (intersectionBuffer.Contains(hexIntersection))
+						adjIntersections.Add(hexIntersection);
                 }
 
 
