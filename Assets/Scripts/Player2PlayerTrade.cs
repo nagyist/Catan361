@@ -14,7 +14,10 @@ public class Player2PlayerTrade : MonoBehaviour {
 		{"Ore", StealableType.Resource_Ore},
 		{"Brick", StealableType.Resource_Brick},
 		{"Grain", StealableType.Resource_Grain},
-		{"Fish", StealableType.Resource_Fish}
+		{"Fish", StealableType.Resource_Fish},
+		{"Cloth", StealableType.Commodity_Cloth},
+		{"Coin", StealableType.Commodity_Coin},
+		{"Paper", StealableType.Commodity_Paper}
 	};
 
 

@@ -19,7 +19,11 @@ public class PlayerResourcePanel : MonoBehaviour {
 		resourcesGameObjs.Add (StealableType.Resource_Brick, transform.FindChild ("Brick").gameObject);
 		resourcesGameObjs.Add (StealableType.Resource_Grain, transform.FindChild ("Grain").gameObject);
 		resourcesGameObjs.Add (StealableType.Resource_Fish, transform.FindChild ("Fish").gameObject);
-		//resourcesGameObjs.Add (StealableType.Resource_Gold, transform.FindChild ("Gold").gameObject);
+
+		resourcesGameObjs.Add (StealableType.Commodity_Cloth, transform.FindChild ("Cloth").gameObject);
+		resourcesGameObjs.Add (StealableType.Commodity_Coin, transform.FindChild ("Coin").gameObject);
+		resourcesGameObjs.Add (StealableType.Commodity_Paper, transform.FindChild ("Paper").gameObject);
+
 
 		transform.FindChild ("Header").gameObject.GetComponentInChildren<Text> ().text = this.getPlayer ().myName;
 	}
