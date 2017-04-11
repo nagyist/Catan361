@@ -32,6 +32,13 @@ public class HexGrid : MonoBehaviour {
 		{6, StealableType.Resource_Gold}
 	};
 
+	public Dictionary<int, StealableType> commodityType = new Dictionary<int, StealableType>()
+	{
+		{1, StealableType.Commodity_Cloth},
+		{2, StealableType.Commodity_Coin},
+		{3, StealableType.Commodity_Paper},
+	};
+
 	private void setHexSizes () 
 	{
 		hexWidth = Hex.GetComponent<RectTransform> ().rect.size.x;
@@ -159,6 +166,7 @@ public class HexGrid : MonoBehaviour {
 				HexTile refTile = new HexTile ();
 
 				int resourceTypeNum = Random.Range (1, 6);
+				int commodityTypeNum = Random.Range (1, 4);
 
 				int randomNumTile1 = Random.Range (2, 7);
 				int randomNumTile2 = Random.Range (8, 13);
@@ -172,6 +180,7 @@ public class HexGrid : MonoBehaviour {
 					{
 						refTile.Resource = resourceType [resourceTypeNum];
 						resourceLandTiles [resourceTypeNum]--;
+
 					} 
 					else 
 					{
@@ -190,6 +199,7 @@ public class HexGrid : MonoBehaviour {
 						{
 							resourceLandTiles [entry.Key]--;
 						}
+
 					}
 					if (y % 2 == 1) 
 					{
@@ -197,6 +207,7 @@ public class HexGrid : MonoBehaviour {
 						{
 							refTile.SelectedNum = randomNumTile1;
 							landNums [randomNumTile1]--;
+
 						} 
 						else if (landNums [randomNumTile2] > 0) 
 						{
@@ -252,6 +263,16 @@ public class HexGrid : MonoBehaviour {
 								landNums [entry.Key]--;
 							}
 						}
+					}
+
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
 					}
 				} 
 				else if (x == 4 && y > 1 && y < 7) 
@@ -342,6 +363,16 @@ public class HexGrid : MonoBehaviour {
 							}
 						}
 					}
+
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 5 && y > 1 && y < 7 && y != 4) 
 				{
@@ -430,6 +461,16 @@ public class HexGrid : MonoBehaviour {
 								landNums [entry.Key]--;
 							}
 						}
+					}
+
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
 					}
 				} 
 				else if (x == 5 && y == 4) 
@@ -529,6 +570,15 @@ public class HexGrid : MonoBehaviour {
 							}
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 6 && y > 3 && y < 7) 
 				{
@@ -618,6 +668,15 @@ public class HexGrid : MonoBehaviour {
 							}
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 7 && y > 3 && y < 5) 
 				{
@@ -706,6 +765,15 @@ public class HexGrid : MonoBehaviour {
 								landNums [entry.Key]--;
 							}
 						}
+					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
 					}
 				} 
 
@@ -802,6 +870,15 @@ public class HexGrid : MonoBehaviour {
 
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 8 && y == 7) 
 				{
@@ -894,6 +971,15 @@ public class HexGrid : MonoBehaviour {
 
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 8 && y == 8) 
 				{
@@ -985,6 +1071,15 @@ public class HexGrid : MonoBehaviour {
 							}
 
 						}
+					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
 					}
 				} 
 				else if (x == 9 && y == 7) 
@@ -1218,6 +1313,15 @@ public class HexGrid : MonoBehaviour {
 
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x == 8 && y == 1) 
 				{
@@ -1310,6 +1414,15 @@ public class HexGrid : MonoBehaviour {
 
 						}
 					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
+					}
 				} 
 				else if (x < 4 && x > 1 && y == 8) 
 				{
@@ -1401,6 +1514,15 @@ public class HexGrid : MonoBehaviour {
 							}
 
 						}
+					}
+					if (refTile.Resource == StealableType.Resource_Lumber) {
+						refTile.Commodity = StealableType.Commodity_Paper;
+					} else if (refTile.Resource == StealableType.Resource_Ore) {
+						refTile.Commodity = StealableType.Commodity_Coin;
+					} else if (refTile.Resource == StealableType.Resource_Wool) {
+						refTile.Commodity = StealableType.Commodity_Cloth;
+					} else {
+						refTile.Commodity = StealableType.None;
 					}
 				}
 
