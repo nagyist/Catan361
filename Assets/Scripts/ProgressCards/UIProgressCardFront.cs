@@ -11,7 +11,7 @@ public class UIProgressCardFront : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		CurrentCard = new BishopCard();
+		CurrentCard = new BishopCard(-1);
 		CardSelected = false;
 	}
 

@@ -1610,6 +1610,11 @@ public class HexGrid : MonoBehaviour {
 	private Dictionary<Edge, GameObject> instanciatedUiEdges = new Dictionary<Edge, GameObject>();
 	private Dictionary<Intersection, GameObject> instanciatedUiIntersections = new Dictionary<Intersection, GameObject>();
 	private static int order = 0;
+    public void resetDicts()
+    {
+        instanciatedUiEdges = new Dictionary<Edge, GameObject>();
+        instanciatedUiIntersections = new Dictionary<Intersection, GameObject>();
+    }
 	public void CreateUIHexGrid()
 	{
 		cubeHexes = new Dictionary<Vec3, GameObject> ();

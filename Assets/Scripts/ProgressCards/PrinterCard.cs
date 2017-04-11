@@ -3,13 +3,19 @@
 [Serializable]
 public class PrinterCard : AbstractProgressCard
 {
-	public PrinterCard ()
+	public PrinterCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Science;
 	}
 
 	public override void ExecuteCardEffect() {
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		localPlayer.CmdAddVictoryPoint (1);
 
+		localPlayer.StartCoroutine (GameManager.GUI.ShowMessage("Printer card used. You got 1 victory point!"));
+		GameManager.Instance.GetCurrentGameState().RpcClientPostStatusMessage (localPlayer.myName + " used printer card. He got 1 victory point!");
+
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

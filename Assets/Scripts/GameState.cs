@@ -25,6 +25,14 @@ public class GameboardSyncMessage {
 	public Dictionary<Vec3, HexTile> CurrentBoard;
 	public EdgeCollection CurrentEdges;
 	public IntersectionCollection CurrentIntersections;
+    public ResourceCollection CurrentResources;
+    public RobberPiratePlacement CurrentRobberPosition;
+    public RobberPiratePlacement CurrentPiratePosition;
+    public VictoryPointsCollection CurrentVictoryPoints;
+    public BarbarianEvent CurrentBarbarianEvent;
+    public ProgressCardDeck CurrentProgressCardDeck;
+    public ProgressCardCollection CurrentProgressCardHands;
+    public PlayerImprovementCollection CurrentPlayerImprovements;
 }
 
 // this class is used to define the game's state
@@ -109,9 +117,18 @@ public class GameState : NetworkBehaviour {
 		CurrentBoard = syncMsg.CurrentBoard;
 		CurrentEdges = syncMsg.CurrentEdges;
 		CurrentIntersections = syncMsg.CurrentIntersections;
+        CurrentResources = syncMsg.CurrentResources;
+        CurrentRobberPosition = syncMsg.CurrentRobberPosition;
+        CurrentPiratePosition = syncMsg.CurrentPiratePosition;
+        CurrentVictoryPoints = syncMsg.CurrentVictoryPoints;
+        CurrentBarbarianEvent = syncMsg.CurrentBarbarianEvent;
+        CurrentProgressCardDeck = syncMsg.CurrentProgressCardDeck;
+        CurrentProgressCardHands = syncMsg.CurrentProgressCardHands;
+        CurrentPlayerImprovements = syncMsg.CurrentPlayerImprovements;
 
-        // create the UI map based on teh values received
-		GetComponent<HexGrid>().CreateUIHexGrid();
+        // create the UI map based on the values received
+        GetComponent<HexGrid>().resetDicts();
+        GetComponent<HexGrid>().CreateUIHexGrid();
         // set the game status as grid created
 		CurrentStatus = GameStatus.GRID_CREATED;
 	}
@@ -295,9 +312,17 @@ public class GameState : NetworkBehaviour {
 		syncMsg.CurrentBoard = CurrentBoard;
 		syncMsg.CurrentEdges = CurrentEdges;
 		syncMsg.CurrentIntersections = CurrentIntersections;
+        syncMsg.CurrentResources = CurrentResources;
+        syncMsg.CurrentRobberPosition = CurrentRobberPosition;
+        syncMsg.CurrentPiratePosition = CurrentPiratePosition;
+        syncMsg.CurrentVictoryPoints = CurrentVictoryPoints;
+        syncMsg.CurrentBarbarianEvent = CurrentBarbarianEvent;
+        syncMsg.CurrentProgressCardDeck = CurrentProgressCardDeck;
+        syncMsg.CurrentProgressCardHands = CurrentProgressCardHands;
+        syncMsg.CurrentPlayerImprovements = CurrentPlayerImprovements;
 
         // send the message to the clients
-		networkTransmitter.SendBytesToClients (++transId, SerializationUtils.ObjectToByteArray (syncMsg));
+        networkTransmitter.SendBytesToClients (++transId, SerializationUtils.ObjectToByteArray (syncMsg));
 	}
 
     // this function is used to synchronize game turns

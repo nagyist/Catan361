@@ -30,11 +30,10 @@ public class SelectionTooltip : MonoBehaviour {
 			{
                 Knight k = (Knight)i.unit;
                 body.text = "\n  Selected Unit:\n"
-					+ "\n\tKnight" 
-					+ "\n\tOwner: " + i.Owner 
-					+ "\n\tLevel: " + k.level 
-					+ "\n\tHas been promoted this turn: " + k.hasBeenPromotedThisTurn 
-					+ "\n\tHas been moved this turn: " + k.hasMovedThisTurn;
+                    + "\n\tKnight"
+                    + "\n\tOwner: " + i.Owner
+                    + "\n\tLevel: " + k.level
+                    + "\n\tHas been promoted this turn: " + k.hasBeenPromotedThisTurn;
             }
 			else if (i.unit.GetType() == typeof(Village))
 			{

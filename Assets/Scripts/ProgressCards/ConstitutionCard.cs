@@ -3,13 +3,19 @@
 [Serializable]
 public class ConstitutionCard : AbstractProgressCard
 {
-	public ConstitutionCard ()
+	public ConstitutionCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
 
 	public override void ExecuteCardEffect() {
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		localPlayer.CmdAddVictoryPoint (1);
 
+		localPlayer.StartCoroutine (GameManager.GUI.ShowMessage("Constitution card used. You got 1 victory point!"));
+		GameManager.Instance.GetCurrentGameState().RpcClientPostStatusMessage (localPlayer.myName + " used constitution card. He got 1 victory point!");
+
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

@@ -3,13 +3,17 @@
 [Serializable]
 public class BishopCard : AbstractProgressCard
 {
-	public BishopCard ()
+	public BishopCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
 
 	public override void ExecuteCardEffect() {
+		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (localPlayer.myName + " used Bishop card.");
+		GameManager.GUI.ShowMoveRobberPiratePopup ();
 
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

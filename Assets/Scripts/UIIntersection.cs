@@ -212,16 +212,25 @@ public class UIIntersection : MonoBehaviour
             return;
         }
 
-        // check resources
-        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-            {StealableType.Resource_Ore, 1},
-            {StealableType.Resource_Wool, 1},
-        };
-        if (!localPlayer.HasEnoughResources(requiredRes))
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
-            return;
-        }
+		if (!localPlayer.smithProgressCardDiscount) {
+			// check resources
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 1 },
+				{ StealableType.Resource_Wool, 1 },
+			};
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				StartCoroutine (GameManager.GUI.ShowMessage ("Does not have enough resource to upgrade knight"));
+				return;
+			}
+
+			localPlayer.CmdConsumeResources(requiredRes);
+		} else {
+			GameManager.GUI.PostStatusMessage ("You promoted this knight for free (smith progress card).");
+			localPlayer.smithProgressCardUsed++;
+			if (localPlayer.smithProgressCardUsed == 2) {
+				localPlayer.smithProgressCardDiscount = false;
+			}
+		}
 
         if (knight.level == 2)
         {
@@ -252,7 +261,7 @@ public class UIIntersection : MonoBehaviour
             localPlayer.numStrongKnights++;
         }
 
-        localPlayer.CmdConsumeResources(requiredRes);
+        
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
         localPlayer.CmdUpgradeKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
@@ -388,7 +397,7 @@ public class UIIntersection : MonoBehaviour
             }
             if (!distanceRuleCheck())
             {
-                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot own a settlement or city."));
+                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot have a settlement or city."));
                 return;
             }
         }
@@ -449,11 +458,21 @@ public class UIIntersection : MonoBehaviour
             return;
         }
        
-        // cosume resources
-        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-                                    {StealableType.Resource_Ore, 3},
-                                    {StealableType.Resource_Grain, 2}
-                                };
+		Dictionary<StealableType, int> requiredRes;
+		bool discountUsed = false;
+		if (!localPlayer.medicineProgressCardDiscount) {
+			// cosume resources
+			requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 3 },
+				{ StealableType.Resource_Grain, 2 }
+			};
+		} else {
+			requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 1 },
+				{ StealableType.Resource_Grain, 2 }
+			};
+			discountUsed = true;
+		}
 
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
@@ -464,6 +483,10 @@ public class UIIntersection : MonoBehaviour
     
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgraded your settlement."));
+		if (discountUsed) {
+			GameManager.GUI.PostStatusMessage ("Medicine progress card used.");
+			localPlayer.medicineProgressCardDiscount = false;
+		}
         localPlayer.CmdUpgradeSettlement(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 
         return;
@@ -606,11 +629,12 @@ public class UIIntersection : MonoBehaviour
 
             // check for a settlement in the adjacent intersections 
             foreach (Intersection testIntersection in adjIntersections)
+            {
+                if (testIntersection.unit != null)
                     if (testIntersection.unit.GetType() == typeof(Village))
-                        return false;
-            
+                            return false;
+            }
         }
-
         return true;
     }
 }

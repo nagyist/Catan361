@@ -70,43 +70,41 @@ public class UIEdge : MonoBehaviour
         }
 
 		// only consume resources if not in setup phase
-        if (!setupPhase)
-        {
-            Dictionary<StealableType, int> requiredRes;
+		if (!setupPhase || !(localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2)) {
+			Dictionary<StealableType, int> requiredRes;
 
-            if (currentEdge.IsShip())
-            {
-                requiredRes = new Dictionary<StealableType, int>() {
-                    { StealableType.Resource_Wool, 1 },
-                    { StealableType.Resource_Lumber, 1 }
-                };
-            }
-            else
-            {
-                requiredRes = new Dictionary<StealableType, int>() {
-                    { StealableType.Resource_Brick, 1 },
-                    { StealableType.Resource_Lumber, 1 }
-                };
-            }
+			if (currentEdge.IsShip ()) {
+				requiredRes = new Dictionary<StealableType, int> () {
+					{ StealableType.Resource_Wool, 1 },
+					{ StealableType.Resource_Lumber, 1 }
+				};
+			} else {
+				requiredRes = new Dictionary<StealableType, int> () {
+					{ StealableType.Resource_Brick, 1 },
+					{ StealableType.Resource_Lumber, 1 }
+				};
+			}
 
-            if (!localPlayer.HasEnoughResources(requiredRes))
-            {
-                StartCoroutine(GameManager.GUI.ShowMessage("You don't have enough resources."));
-                return;
-            }
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough resources."));
+				return;
+			}
 
-            localPlayer.CmdConsumeResources(requiredRes);
-        }
+			localPlayer.CmdConsumeResources (requiredRes);
+		} else if (localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2) {
+			localPlayer.roadBuildingProgressCardUsed++;
+
+			GameManager.GUI.PostStatusMessage ("You built this road for free (road building card). You have " + localPlayer.roadBuildingProgressCardUsed + " free road left.");
+
+			if (localPlayer.roadBuildingProgressCardUsed == 2) {
+				localPlayer.roadBuildingProgressCardDiscount = false;
+			}
+		}
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a road."));
         // localPlayer.placedRoad = true;
         localPlayer.CmdBuildRoad(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2 }));
         GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject.SetActive(true);
-
-		
-		
-
-        
     }
 
     private bool isConnectedToOwnedUnit()
