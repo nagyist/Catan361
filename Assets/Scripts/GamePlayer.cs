@@ -18,6 +18,7 @@ public class GamePlayer : NetworkBehaviour {
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
 
+	public bool gotNoResources = true;
 	// progress card
 	public bool craneProgressCardDiscount = false;
 	public bool engineerProgressCardDiscount = false;
@@ -334,6 +335,47 @@ public class GamePlayer : NetworkBehaviour {
         return;
     }
 
+    // command used to move a knight unit
+    [Command]
+    public void CmdMoveUnitWithReplacement(byte[] oldvec3, byte[] newvec3, byte[] name, byte[] knight)
+    {
+        // get the positions and intersections from the arguments
+        Vec3[] oldPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
+        Vec3[] newPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
+		String oldOwnerName = SerializationUtils.ByteArrayToObject(name) as String;
+		Knight replacedKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
+
+        Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
+        Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
+
+        if (oldIntersection.unit != null)
+        {
+            if (oldIntersection.unit.GetType() == typeof(Knight))
+            {
+                // store the knight 
+                Knight k = (Knight)oldIntersection.unit;
+
+                // update the old intersection
+                oldIntersection.Owner = "";
+                oldIntersection.unit = null;
+
+                // set and publish the old intersection
+                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(oldPos, oldIntersection);
+                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(oldvec3, SerializationUtils.ObjectToByteArray(oldIntersection));
+
+                // update the new intersection
+                newIntersection.Owner = this.myName;
+                newIntersection.unit = k;
+
+                // set and publish the new intersection
+                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
+                GameManager.Instance.GetCurrentGameState().RpcUpdatePlayerKnights(name, knight);
+                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
+            }
+        }
+
+    }
+
 	// command used to move a knight unit
 	[Command]
 	public void CmdMoveUnit(byte[] oldvec3, byte[] newvec3)
@@ -368,7 +410,6 @@ public class GamePlayer : NetworkBehaviour {
                 GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
             }
 		}
-        
 	}
 
 	[Command]

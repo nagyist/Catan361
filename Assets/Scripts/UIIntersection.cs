@@ -219,7 +219,6 @@ public class UIIntersection : MonoBehaviour
         };
         if (!localPlayer.HasEnoughResources(requiredRes))
         {
-            Debug.Log("Does not have enough resource to upgrade knight");
             StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
             return;
         }
