@@ -8,14 +8,15 @@ public class SaveAndLoad {
     
     static SerializableGameState savedState = null;
 
-    public static void save()
+    public static void save(string filename)
     {
+
         GameState current = GameObject.Find("GameState").GetComponent<GameState>();
         savedState = new SerializableGameState(current);
         savedState.timestamp = Time.time;
         Debug.Log("Saved at timestamp: " + savedState.timestamp);
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/save.CoCsave");
+        FileStream file = File.Create(Application.persistentDataPath + "/" + filename + ".CoCSave");
         bf.Serialize(file, savedState);
         file.Close();
     }
