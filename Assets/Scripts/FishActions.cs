@@ -43,10 +43,12 @@ public class FishActions : MonoBehaviour {
 
 		else if (actionSelected.Equals("StealResource"))
 		{
-			//TODO: mimick the stealing of resources from robber - player to steal from is completely random
 			bool stolenRobber = false;
-			foreach (GameObject playerToSteal in GameManager.ConnectedPlayers) {
-				if (!stolenRobber) {
+			playerResources [StealableType.Resource_Fish] = playerResources [StealableType.Resource_Fish] - 3;
+			foreach (GameObject playerToSteal in GameManager.ConnectedPlayers) 
+			{
+				if (!stolenRobber) 
+				{
 					GamePlayer instancePlayerToSteal = playerToSteal.GetComponent<GamePlayer> ();
 					GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 					if (instancePlayerToSteal != localPlayer) {
@@ -82,63 +84,11 @@ public class FishActions : MonoBehaviour {
 
 		else if (actionSelected.Equals("BuildRoadShip"))
 		{
-			StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
-			Edge currentEdge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(HexPos1, HexPos2);
-			bool setupPhase = GameManager.Instance.GetCurrentGameState().CurrentTurn.IsInSetupPhase();
-
-			player.placedRoad = false;
+			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+			localPlayer.fishBuild = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("This is the local player's name, and fish build status: " + localPlayer + " " + localPlayer.fishBuild));
 			GameManager.GUI.HideFishPopup ();
-
-			if (player.placedRoad)
-			{
-				StartCoroutine(GameManager.GUI.ShowMessage("You already placed a road."));
-				return;
-			}
-
-			/*
-			if (!isConnectedToOwnedUnit())
-			{
-				StartCoroutine(GameManager.GUI.ShowMessage("You must place a road adjacent to any intersection!"));
-				return;
-			}
-			*/
-
-			// only consume resources if not in setup phase
-			if (!setupPhase)
-			{
-				Dictionary<StealableType, int> requiredRes;
-
-				if (currentEdge.IsShip())
-				{
-					requiredRes = new Dictionary<StealableType, int>() {
-						{ StealableType.Resource_Fish, 5}
-					};
-				}
-				else
-				{
-					requiredRes = new Dictionary<StealableType, int>() {
-						{ StealableType.Resource_Fish, 5}
-					};
-				}
-
-				if (!player.HasEnoughResources(requiredRes))
-				{
-					StartCoroutine(GameManager.GUI.ShowMessage("You don't have enough fish."));
-					return;
-				}
-
-				player.CmdConsumeResources(requiredRes);
-			}
-
-			if (currentEdge.IsShip())
-				StartCoroutine(GameManager.GUI.ShowMessage("You have placed a ship."));
-			else
-				StartCoroutine(GameManager.GUI.ShowMessage("You have placed a road."));
-
-			GameManager.GUI.guiCanvas.transform.FindChild("SelectionTooltip").gameObject.SetActive(true);
-
-			// player.placedRoad = true;
-			player.CmdBuildRoad(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2 }));
+			//StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
 		}
 
 		/*

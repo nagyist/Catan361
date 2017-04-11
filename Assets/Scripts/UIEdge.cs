@@ -70,35 +70,68 @@ public class UIEdge : MonoBehaviour
         }
 
 		// only consume resources if not in setup phase
-		if (!setupPhase || !(localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2)) {
+		if (!setupPhase && localPlayer.fishBuild != true &&
+			!(localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2)) 
+		{
 			Dictionary<StealableType, int> requiredRes;
 
-			if (currentEdge.IsShip ()) {
-				requiredRes = new Dictionary<StealableType, int> () {
+			if (currentEdge.IsShip ()) 
+			{
+				requiredRes = new Dictionary<StealableType, int> () 
+				{
 					{ StealableType.Resource_Wool, 1 },
 					{ StealableType.Resource_Lumber, 1 }
 				};
-			} else {
-				requiredRes = new Dictionary<StealableType, int> () {
+			} 
+			else 
+			{
+				requiredRes = new Dictionary<StealableType, int> () 
+				{
 					{ StealableType.Resource_Brick, 1 },
 					{ StealableType.Resource_Lumber, 1 }
 				};
 			}
 
-			if (!localPlayer.HasEnoughResources (requiredRes)) {
+			if (!localPlayer.HasEnoughResources (requiredRes)) 
+			{
 				StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough resources."));
 				return;
 			}
 
 			localPlayer.CmdConsumeResources (requiredRes);
-		} else if (localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2) {
+
+		} 
+		else if (localPlayer.roadBuildingProgressCardDiscount && localPlayer.roadBuildingProgressCardUsed < 2) 
+		{
 			localPlayer.roadBuildingProgressCardUsed++;
 
 			GameManager.GUI.PostStatusMessage ("You built this road for free (road building card). You have " + localPlayer.roadBuildingProgressCardUsed + " free road left.");
 
-			if (localPlayer.roadBuildingProgressCardUsed == 2) {
+			if (localPlayer.roadBuildingProgressCardUsed == 2) 
+			{
 				localPlayer.roadBuildingProgressCardDiscount = false;
 			}
+		} 
+		else if (!setupPhase && localPlayer.fishBuild == true) 
+		{
+			Dictionary<StealableType, int> requiredRes;
+
+			requiredRes = new Dictionary<StealableType, int> () 
+			{
+				{ StealableType.Resource_Fish, 5 }
+			};
+
+			StartCoroutine (GameManager.GUI.ShowMessage ("You paid in fish!"));
+
+			if (!localPlayer.HasEnoughResources (requiredRes)) 
+			{
+				StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough resources."));
+				return;
+			}
+
+			localPlayer.CmdConsumeResources (requiredRes);
+
+			localPlayer.fishBuild = false;
 		}
 
         StartCoroutine(GameManager.GUI.ShowMessage("You have placed a road."));

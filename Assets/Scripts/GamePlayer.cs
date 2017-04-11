@@ -17,10 +17,12 @@ public class GamePlayer : NetworkBehaviour {
 	public int numStrongKnights = 0;
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
+	public bool fishBuild = false;
 
 	public bool hasFortress;
 	public bool hasTradingHouse;
 	public bool hasAqueduct;
+
 
 	public int resourcesFromTurn;
 	// progress card
@@ -42,7 +44,6 @@ public class GamePlayer : NetworkBehaviour {
 
 	// queue to hold all knights the player must move 
     public Queue<KeyValuePair<Vec3[], Knight>> knightsToMove = new Queue<KeyValuePair<Vec3[], Knight>>();
-
 
     // dictionary containing playe colors
     private static Dictionary<string, Color> playerColors = new Dictionary<string, Color>() {
