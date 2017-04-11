@@ -308,12 +308,15 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcPublishEdge (vec3Serialized, SerializationUtils.ObjectToByteArray (currentEdge));
 	}
 
+	// command used to reposition a replaced knight
 	[Command]
-	public void CmdReplaceKnight()
+	public void CmdReplaceKnight(byte[] vec3pos)
 	{
-		Vec3[] newPos = new Vec3[] { selectedUIIntersection.HexPos1, selectedUIIntersection.HexPos2, selectedUIIntersection.HexPos3 };
+		// get position and intersection
+		Vec3[] newPos = SerializationUtils.ByteArrayToObject(vec3pos) as Vec3[];
         Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
 
+		// dequeue a knight and add it to the new intersection
         Knight newKnight = knightsToMove.Dequeue();
         newIntersection.Owner = this.myName;
         newIntersection.unit = newKnight;
@@ -326,9 +329,11 @@ public class GamePlayer : NetworkBehaviour {
         return;
     }
 
+	// command used to move a knight unit
 	[Command]
 	public void CmdMoveUnit(byte[] oldvec3, byte[] newvec3)
 	{
+		// get the positions and intersections from the arguments
 		Vec3[] oldPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
 		Vec3[] newPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
 		Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));

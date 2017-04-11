@@ -10,14 +10,16 @@ public class UnitMoveButton : MonoBehaviour {
 
     public void ClickBuild()
     {
+        // get local player and current intersection selection
         GamePlayer localPlayer = getLocalPlayer();
         UIIntersection newUIIntersection = localPlayer.selectedUIIntersection;
         Vec3[] newPos = new Vec3[] { newUIIntersection.HexPos1, newUIIntersection.HexPos2, newUIIntersection.HexPos3 };
         Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
         
+        // check if player has knights he must reposition
         if (localPlayer.knightsToMove.Count != 0)
         {
-            // player must move his knight first 
+            // game rules checks 
             if (newUIIntersection == null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Please select an intersection to move to."));
@@ -35,15 +37,14 @@ public class UnitMoveButton : MonoBehaviour {
             }
             
             // call command to replace knight and reset the button
-            localPlayer.CmdReplaceKnight();
+            localPlayer.CmdReplaceKnight(SerializationUtils.ObjectToByteArray(newPos));
             StartCoroutine(GameManager.GUI.ShowMessage("You have repositioned your knight."));
             inUse = false;
-            return;
-
         }
         // if the local player hasn't selected a unit to move
         else if (!inUse)
         {
+            // invalid selection checks 
             if (newIntersection.unit == null)
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
@@ -54,6 +55,8 @@ public class UnitMoveButton : MonoBehaviour {
                 StartCoroutine(GameManager.GUI.ShowMessage("Knight must be selected for movement."));
                 return;
             }
+
+            // set the local player's move selection and set the button to in use
             localPlayer.SetMoveSelection();
             StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
             inUse = true;
@@ -65,6 +68,7 @@ public class UnitMoveButton : MonoBehaviour {
             Vec3[] oldPos = new Vec3[] { oldUIIntersection.HexPos1, oldUIIntersection.HexPos2, oldUIIntersection.HexPos3 };
             Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
 
+            // test road connection
             if (!newUIIntersection.isConnectedToOwnedUnit())
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be connected by an owned road."));
@@ -73,8 +77,10 @@ public class UnitMoveButton : MonoBehaviour {
                 inUse = false;
                 return;
             }
-            if (newIntersection.Owner != "")
+            // check for owned intersection
+            else if (newIntersection.Owner != "")
             {
+                // throw error if local player already owns selected intersection
                 if (newIntersection.Owner == localPlayer.myName)
                 {
                     StartCoroutine(GameManager.GUI.ShowMessage("You already own a unit at the selected location."));
@@ -83,15 +89,17 @@ public class UnitMoveButton : MonoBehaviour {
                     inUse = false;
                     return;
                 }
+                // check for a knight in the selected intersection
                 else if (newIntersection.unit != null)
                 {
                     if (newIntersection.unit.GetType() == typeof(Knight))
                     {
-                        
+                        // get the knight to be replaced, add it to the queue for that player
                         Knight replaced = (Knight)newIntersection.unit;
                         GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName[newIntersection.Owner].GetComponent<GamePlayer>();
                         intersectionOwner.knightsToMove.Enqueue(replaced);
 
+                        // move the knight and reset button
                         localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(newPos));
                         StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
                         localPlayer.ResetMoveSelection();
@@ -109,8 +117,10 @@ public class UnitMoveButton : MonoBehaviour {
                     }
                 }
             }
+            // if selection is empty intersection
             else
             {
+                // move the knight and reset the button
                 localPlayer.CmdMoveUnit(SerializationUtils.ObjectToByteArray(oldPos), SerializationUtils.ObjectToByteArray(newPos));
                 StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
                 localPlayer.ResetMoveSelection();
