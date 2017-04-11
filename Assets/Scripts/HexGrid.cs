@@ -1951,7 +1951,7 @@ public class HexGrid : MonoBehaviour {
 
 		//change harbour text
 		TextMesh harbour2Text = newHarbour2.GetComponentInChildren<TextMesh>();
-		harbour2Text.text = harbourScript2.exchangeRate + ":" + harbourScript2.returnedAmount + " Any";
+		harbour2Text.text = harbourScript2.exchangeRate + ":" + harbourScript2.returnedAmount + " ?";
 		harbourCollection.Add("2", newHarbour2);
 
 
@@ -2099,7 +2099,7 @@ public class HexGrid : MonoBehaviour {
 
 		//change harbour text
 		TextMesh harbour4Text = newHarbour4.GetComponentInChildren<TextMesh>();
-		harbour4Text.text = harbourScript4.exchangeRate + ":" + harbourScript4.returnedAmount + " Any";
+		harbour4Text.text = harbourScript4.exchangeRate + ":" + harbourScript4.returnedAmount + " ?";
 		harbourCollection.Add("4", newHarbour4);
 
 
@@ -2239,7 +2239,7 @@ public class HexGrid : MonoBehaviour {
 
 		//change harbour text
 		TextMesh harbour6Text = newHarbour6.GetComponentInChildren<TextMesh>();
-		harbour6Text.text = harbourScript6.exchangeRate + ":" + harbourScript6.returnedAmount + " Any";
+		harbour6Text.text = harbourScript6.exchangeRate + ":" + harbourScript6.returnedAmount + " ?";
 		harbourCollection.Add("6", newHarbour6);
 
 
@@ -2386,7 +2386,7 @@ public class HexGrid : MonoBehaviour {
 
 		//change harbour text
 		TextMesh harbour8Text = newHarbour8.GetComponentInChildren<TextMesh>();
-		harbour8Text.text = harbourScript8.exchangeRate + ":" + harbourScript8.returnedAmount + " Any";
+		harbour8Text.text = harbourScript8.exchangeRate + ":" + harbourScript8.returnedAmount + " ?";
 		harbourCollection.Add("8", newHarbour8);
 
 
