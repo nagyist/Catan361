@@ -473,6 +473,10 @@ public class GamePlayer : NetworkBehaviour {
 		GameManager.Instance.GetCurrentGameState ().RpcClientPublishPlayerImprovement (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState().CurrentPlayerImprovements));
 	}
 
+	public void CmdChangeImprovement(PlayerImprovement newImprov) {
+		CmdChangeImprovement (myName, SerializationUtils.ObjectToByteArray (newImprov));
+	}
+
 	// NOT A COMMAND per say
 	public void CmdConsumeResources(Dictionary<StealableType, int> requiredRes) {
 		CmdConsumeResources(SerializationUtils.ObjectToByteArray(requiredRes));
