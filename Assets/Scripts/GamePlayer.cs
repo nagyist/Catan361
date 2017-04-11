@@ -18,7 +18,11 @@ public class GamePlayer : NetworkBehaviour {
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
 
-	public bool gotNoResources = true;
+	public bool hasFortress;
+	public bool hasTradingHouse;
+	public bool hasAqueduct;
+
+	public int resourcesFromTurn;
 	// progress card
 	public bool craneProgressCardDiscount = false;
 	public bool engineerProgressCardDiscount = false;
@@ -30,17 +34,7 @@ public class GamePlayer : NetworkBehaviour {
 	public int smithProgressCardUsed = 0;
 	public bool deserterProgressCardUsed = false;
 
-	//can promote strong knights to mighty knights
-	public bool hasFortress = false;
-
-	//2:1 on all maritime trade
-	public bool hasTradingHouse = false;
-
-	//take a resource / commodity of your choice from the bank when you miss out on resources from 
-	//dice roll
-	public bool hasAqueduct = false;
-
-    public UIIntersection selectedUIIntersection = null;
+	public UIIntersection selectedUIIntersection = null;
 	public UIEdge selectedUIEdge = null;
 
 	public UIIntersection uiIntersectionToMove = null;
@@ -574,6 +568,41 @@ public class GamePlayer : NetworkBehaviour {
 	}
 	
 	void Update () {
-		 
+
+		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
+			return;
+		}
+
+		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
+		int tradeLevel = ((int) currentImprovements.CurrentTradeImprovement);
+		int politicsLevel = ((int)currentImprovements.CurrentPoliticsImprovement);
+		int scienceLevel = ((int)currentImprovements.CurrentScienceImprovement);
+
+
+		//can promote strong knights to mighty knights
+		if (tradeLevel >= 3)
+			hasTradingHouse = true;
+		else
+			hasTradingHouse = false;
+		
+		//2:1 on all maritime trade
+		if (politicsLevel >= 3)
+			hasFortress = true;
+		else
+			hasFortress = false;
+
+
+		//take a resource / commodity of your choice from the bank when you miss out on resources from 
+		//dice roll
+		if (scienceLevel >= 3)
+			hasAqueduct = true;
+		else
+			hasAqueduct = false;
+		/*
+		if (resourcesFromTurn == -1) {
+			GameManager.GUI.ShowAqueductPopup ();
+			resourcesFromTurn = 0;
+		}
+		*/
 	}
 }

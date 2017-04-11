@@ -21,6 +21,13 @@ public class SerializableGameState {
     public ResourceCollection CurrentResources;
     public GameTurn CurrentTurn;
     public GameStatus CurrentStatus;
+    public RobberPiratePlacement CurrentRobberPosition;
+    public RobberPiratePlacement CurrentPiratePosition;
+    public VictoryPointsCollection CurrentVictoryPoints;
+    public BarbarianEvent CurrentBarbarianEvent;
+    public ProgressCardDeck CurrentProgressCardDeck;
+    public ProgressCardCollection CurrentProgressCardHands;
+    public PlayerImprovementCollection CurrentPlayerImprovements;
 
     public SerializableGameState(GameState curr)
     {
@@ -30,6 +37,13 @@ public class SerializableGameState {
         CurrentResources = curr.CurrentResources;
         CurrentTurn = curr.CurrentTurn;
         CurrentStatus = (GameStatus)curr.CurrentStatus;
+        CurrentRobberPosition = curr.CurrentRobberPosition;
+        CurrentPiratePosition = curr.CurrentPiratePosition;
+        CurrentVictoryPoints = curr.CurrentVictoryPoints;
+        CurrentBarbarianEvent = curr.CurrentBarbarianEvent;
+        CurrentProgressCardDeck = curr.CurrentProgressCardDeck;
+        CurrentProgressCardHands = curr.CurrentProgressCardHands;
+        CurrentPlayerImprovements = curr.CurrentPlayerImprovements;
     }
 
 }

@@ -399,7 +399,7 @@ public class UIIntersection : MonoBehaviour
             }
             if (!distanceRuleCheck())
             {
-                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot own a settlement or city."));
+                StartCoroutine(GameManager.GUI.ShowMessage("Adjacent intersections cannot have a settlement or city."));
                 return;
             }
         }
@@ -639,11 +639,12 @@ public class UIIntersection : MonoBehaviour
 
             // check for a settlement in the adjacent intersections 
             foreach (Intersection testIntersection in adjIntersections)
+            {
+                if (testIntersection.unit != null)
                     if (testIntersection.unit.GetType() == typeof(Village))
-                        return false;
-            
+                            return false;
+            }
         }
-
         return true;
     }
 }

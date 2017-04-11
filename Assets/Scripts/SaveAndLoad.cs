@@ -10,7 +10,6 @@ public class SaveAndLoad {
 
     public static void save(string filename)
     {
-
         GameState current = GameObject.Find("GameState").GetComponent<GameState>();
         savedState = new SerializableGameState(current);
         savedState.timestamp = Time.time;
@@ -39,6 +38,13 @@ public class SaveAndLoad {
             current.CurrentResources = savedState.CurrentResources;
             current.CurrentTurn = savedState.CurrentTurn;
             current.CurrentStatus = (GameState.GameStatus) savedState.CurrentStatus;
+            current.CurrentRobberPosition = savedState.CurrentRobberPosition;
+            current.CurrentPiratePosition = savedState.CurrentPiratePosition;
+            current.CurrentVictoryPoints = savedState.CurrentVictoryPoints;
+            current.CurrentBarbarianEvent = savedState.CurrentBarbarianEvent;
+            current.CurrentProgressCardDeck = savedState.CurrentProgressCardDeck;
+            current.CurrentProgressCardHands = savedState.CurrentProgressCardHands;
+            current.CurrentPlayerImprovements = savedState.CurrentPlayerImprovements;
             current.SyncGameBoard();
             current.SyncGameTurns();
         }
