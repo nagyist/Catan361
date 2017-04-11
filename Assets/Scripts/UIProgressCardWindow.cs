@@ -29,6 +29,10 @@ public class UIProgressCardWindow : MonoBehaviour {
 		GetComponent<UIWindow> ().Hide ();
 	}
 
+	public void ClickUseProgressCard() {
+		SelectedCard.ExecuteCardEffect ();
+	}
+
 	public void ClickSelectedCard() {
 		ToggleGroup toggles = gameObject.GetComponentInChildren<ToggleGroup>();
 		IEnumerator<Toggle> togglesEnum = toggles.ActiveToggles().GetEnumerator();
