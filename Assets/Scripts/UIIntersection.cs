@@ -212,16 +212,25 @@ public class UIIntersection : MonoBehaviour
             return;
         }
 
-        // check resources
-        Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int>() {
-            {StealableType.Resource_Ore, 1},
-            {StealableType.Resource_Wool, 1},
-        };
-        if (!localPlayer.HasEnoughResources(requiredRes))
-        {
-            StartCoroutine(GameManager.GUI.ShowMessage("Does not have enough resource to upgrade knight"));
-            return;
-        }
+		if (!localPlayer.smithProgressCardDiscount) {
+			// check resources
+			Dictionary<StealableType, int> requiredRes = new Dictionary<StealableType, int> () {
+				{ StealableType.Resource_Ore, 1 },
+				{ StealableType.Resource_Wool, 1 },
+			};
+			if (!localPlayer.HasEnoughResources (requiredRes)) {
+				StartCoroutine (GameManager.GUI.ShowMessage ("Does not have enough resource to upgrade knight"));
+				return;
+			}
+
+			localPlayer.CmdConsumeResources(requiredRes);
+		} else {
+			GameManager.GUI.PostStatusMessage ("You promoted this knight for free (smith progress card).");
+			localPlayer.smithProgressCardUsed++;
+			if (localPlayer.smithProgressCardUsed == 2) {
+				localPlayer.smithProgressCardDiscount = false;
+			}
+		}
 
         if (knight.level == 2)
         {
@@ -252,7 +261,7 @@ public class UIIntersection : MonoBehaviour
             localPlayer.numStrongKnights++;
         }
 
-        localPlayer.CmdConsumeResources(requiredRes);
+        
         StartCoroutine(GameManager.GUI.ShowMessage("You have upgrade your knight."));
         localPlayer.CmdUpgradeKnight(SerializationUtils.ObjectToByteArray(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
 

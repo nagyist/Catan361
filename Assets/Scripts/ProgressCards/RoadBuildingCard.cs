@@ -12,7 +12,7 @@ public class RoadBuildingCard : AbstractProgressCard
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 
 		localPlayer.roadBuildingProgressCardDiscount = true;
-		localPlayer.roadBuildingProgressCardUsed = 2;
+		localPlayer.roadBuildingProgressCardUsed = 0;
 
 		localPlayer.StartCoroutine (GameManager.GUI.ShowMessage(localPlayer.myName + " used road building card."));
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (localPlayer.myName + " used road building card. He gets to build 2 road/ship construction for free.");
