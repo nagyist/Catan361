@@ -42,6 +42,9 @@ public class UIInventorProgressCard : MonoBehaviour
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateHexTile (SerializationUtils.ObjectToByteArray (FirstTile), SerializationUtils.ObjectToByteArray (t1));
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdUpdateHexTile (SerializationUtils.ObjectToByteArray (SecondTile), SerializationUtils.ObjectToByteArray (t2));
 
+			GameManager.Instance.GetCurrentGameState ().RpcClientShowMessage (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName + " swapped two tiles!", 2.75f);
+			GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName + " used his inventory card!");
+
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().inventorProgressCardInUse = false;
 			Destroy (gameObject);
 		}
