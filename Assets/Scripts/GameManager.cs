@@ -143,7 +143,7 @@ public class GameManager : Singleton<GameManager> {
 		 * 
          */
 
-		int aqueductCounter = 0;
+
 		GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
         // go through all the intersections
 		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
@@ -164,7 +164,6 @@ public class GameManager : Singleton<GameManager> {
 
 					GamePlayer intersectionOwner = GameManager.ConnectedPlayersByName [i.Owner].GetComponent<GamePlayer>();
 
-
 					List<Vec3> adjHexes = new List<Vec3>(new Vec3[] { i.adjTile1, i.adjTile2, i.adjTile3 });
 					foreach (Vec3 hex in adjHexes)
 					{
@@ -175,55 +174,64 @@ public class GameManager : Singleton<GameManager> {
 						int newAmountCommodity = 1;
 
 						// continue if the tile number's don't match the rolled number
-						if (tile.IsWater) { continue; }
+						// if (tile.IsWater) { continue; }
 						if (tile.SelectedNum != roll && tile.SelectedNum2 != roll && tile.SelectedNum3 != roll && tile.SelectedNum4 != roll && tile.SelectedNum5 != roll) { continue; }
 
 						ResourceCollection.PlayerResourcesCollection playerResources = intersectionOwner.GetPlayerResources ();
-						if (robberPlacement.PlacementPos.Equals(hex)) 
-						{ 
-							continue; 
-						}
 
-						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) {
+						if (robberPlacement.PlacementPos.Equals(hex)) 
+						{ continue; }
+
+						if (playerResources.ContainsKey (tile.Resource) && tile.Resource != StealableType.Resource_Gold) 
+						{
 							newAmountResource = playerResources [tile.Resource] + amountToAdd;
-							if (intersectionOwner == localPlayer) {
-								aqueductCounter++;
+
+							if (intersectionOwner == localPlayer) 
+							{
+								intersectionOwner.gotNoResources = false;
 							}
 								
 						} else if (playerResources.ContainsKey (tile.Resource) && tile.IsFishingGround == true) {
 							newAmountResource = playerResources [tile.Resource] + tile.FishingReturnNum;
-							if (intersectionOwner == localPlayer) {
-								aqueductCounter++;
+
+							if (intersectionOwner == localPlayer) 
+							{
+								intersectionOwner.gotNoResources = false;
 							}
 						} else if (tile.Resource == StealableType.Resource_Gold) {
 							GameManager.GUI.ShowGoldPopup ();
-							if (intersectionOwner == localPlayer) {
-								aqueductCounter++;
+
+							if (intersectionOwner == localPlayer) 
+							{
+								intersectionOwner.gotNoResources = false;
 							}
 						} 
 
-						if (tile.Commodity == StealableType.None) 
-						{
-							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
-						}
-
-						else if (playerResources.ContainsKey (tile.Commodity) && tile.Commodity != StealableType.None && currentVillage.myKind == Village.VillageKind.City) 
-						{
+						if (playerResources.ContainsKey (tile.Commodity) && tile.Commodity != StealableType.None && currentVillage.myKind == Village.VillageKind.City) {
 							newAmountResource = playerResources [tile.Resource] + 1;
 							newAmountCommodity = playerResources [tile.Commodity] + 1;
 							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
 							intersectionOwner.CmdUpdateResource (tile.Commodity, newAmountCommodity);
 							if (intersectionOwner == localPlayer) {
-								aqueductCounter++;
+								intersectionOwner.gotNoResources = false;
 							}
+						} else {
+							intersectionOwner.CmdUpdateResource (tile.Resource, newAmountResource);
 						}
 					}
                 }
             }
 		}
+
 		foreach (GameObject player in ConnectedPlayers) {
-			if (aqueductCounter == 0 && player.GetComponent<GamePlayer>().hasAqueduct) {
+			if (player.GetComponent<GamePlayer> ().gotNoResources && player.GetComponent<GamePlayer> ().hasAqueduct) 
+			{
 				//Player gets to pick a resource or commodity of their choice
+
+			} 
+			else 
+			{
+				player.GetComponent<GamePlayer> ().gotNoResources = true;
 			}
 		}
 		return true;

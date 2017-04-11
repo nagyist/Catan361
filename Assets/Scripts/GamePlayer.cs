@@ -18,9 +18,11 @@ public class GamePlayer : NetworkBehaviour {
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
 
+	public bool gotNoResources = true;
 	// progress card
 	public bool craneProgressCardDiscount = false;
 	public bool engineerProgressCardDiscount = false;
+	public bool inventorProgressCardInUse = false;
 
 	//can promote strong knights to mighty knights
 	public bool hasFortress = false;
@@ -539,6 +541,11 @@ public class GamePlayer : NetworkBehaviour {
 		PlayerImprovement newImprov = (PlayerImprovement)SerializationUtils.ByteArrayToObject (newImprovementSerialized);
 		GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.ChangePlayerImprovementForPlayer (name, newImprov);
 		GameManager.Instance.GetCurrentGameState ().RpcClientPublishPlayerImprovement (SerializationUtils.ObjectToByteArray (GameManager.Instance.GetCurrentGameState().CurrentPlayerImprovements));
+	}
+
+	[Command]
+	public void CmdUpdateHexTile(byte[] tilePositionSerialized, byte[] newHexTileSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostHexTileUpdate (tilePositionSerialized, newHexTileSerialized);
 	}
 
 	public void CmdChangeImprovement(PlayerImprovement newImprov) {
