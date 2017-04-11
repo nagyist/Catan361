@@ -21,23 +21,62 @@ public class UIPlayerImprovements : MonoBehaviour {
 
 	public void ClickImproveTrade() {
 		PlayerImprovement newImprov = getImprovement ();
-		newImprov.ImproveTrade ();
+		int nextLevel = (int)newImprov.CurrentTradeImprovement + 1;
 
+		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
+			{StealableType.Commodity_Cloth, nextLevel}
+		};
+
+		if (!GameManager.LocalPlayer.GetComponent<GamePlayer> ().HasEnoughResources (reqRes)) {
+			StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enought cloth to upgrade to level " + nextLevel));
+			return;
+		}
+
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
+
+		newImprov.ImproveTrade ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (getPlayerName() + " improved his trade.");
 	}
 
 	public void ClickImprovePolitics() {
 		PlayerImprovement newImprov = getImprovement ();
-		newImprov.ImprovePolitics ();
+		int nextLevel = (int)newImprov.CurrentPoliticsImprovement + 1;
 
+		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
+			{StealableType.Commodity_Coin, nextLevel}
+		};
+
+		if (!GameManager.LocalPlayer.GetComponent<GamePlayer> ().HasEnoughResources (reqRes)) {
+			StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enought coin to upgrade to level " + nextLevel));
+			return;
+		}
+
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
+
+		newImprov.ImprovePolitics ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (getPlayerName() + " improved his politic.");
 	}
 
 	public void ClickImproveScience() {
 		PlayerImprovement newImprov = getImprovement ();
-		newImprov.ImproveScience ();
+		int nextLevel = (int)newImprov.CurrentScienceImprovement + 1;
 
+		Dictionary<StealableType, int> reqRes = new Dictionary<StealableType, int> () {
+			{StealableType.Commodity_Paper, nextLevel}
+		};
+
+		if (!GameManager.LocalPlayer.GetComponent<GamePlayer> ().HasEnoughResources (reqRes)) {
+			StartCoroutine (GameManager.GUI.ShowMessage ("You don't have enough paper to upgrade to level " + nextLevel));
+			return;
+		}
+
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
+
+		newImprov.ImproveScience ();
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdChangeImprovement (newImprov);
+		GameManager.Instance.GetCurrentGameState ().RpcClientPostStatusMessage (getPlayerName() + " improved his science.");
 	}
 
 	PlayerImprovement getImprovement() {
