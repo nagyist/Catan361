@@ -20,6 +20,7 @@ public class GamePlayer : NetworkBehaviour {
 
 	// progress card
 	public bool craneProgressCardDiscount = false;
+	public bool engineerProgressCardDiscount = false;
 
 	//can promote strong knights to mighty knights
 	public bool hasFortress = false;

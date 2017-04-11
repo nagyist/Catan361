@@ -12,8 +12,8 @@ public class ProgressCardDeck
 		ProgressCardDeck newDeck = new ProgressCardDeck ();
 		newDeck.CurrentDeck = new List<AbstractProgressCard>() {
 			//new AlchemistCard(), new AlchemistCard(),
-			new CraneCard(++CC), new CraneCard(++CC),
-			//new EngineerCard(),
+			//new CraneCard(++CC), new CraneCard(++CC),
+			new EngineerCard(++CC),
 			//new InventorCard(), new InventorCard(),
 			//new IrrigationCard(), new IrrigationCard(),
 			//new MedicineCard(), new MedicineCard(),

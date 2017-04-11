@@ -31,6 +31,13 @@ public abstract class AbstractProgressCard
 		return "No Description";
 	}
 
+	public void RemoveFromPlayerHand() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdRemoveProgressCard (
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName,
+			SerializationUtils.ObjectToByteArray (this)
+		);
+	}
+
 	public override bool Equals(Object obj) {
 		if(obj == null || GetType() != obj.GetType()) {
 			return false;

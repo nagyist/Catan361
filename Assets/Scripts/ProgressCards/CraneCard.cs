@@ -10,13 +10,10 @@ public class CraneCard : AbstractProgressCard
 
 	public override void ExecuteCardEffect() {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().craneProgressCardDiscount = true;
-		GameManager.GUI.ShowMessage ("Crane Progress Card used. Next city improvement will be discounted.");
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().StartCoroutine(GameManager.GUI.ShowMessage ("Crane Progress Card used. Next city improvement will be discounted."));
 		GameManager.GUI.PostStatusMessage ("Next city improvement will be discounted by 1 commodity.");
 
-		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdRemoveProgressCard (
-			GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName,
-			SerializationUtils.ObjectToByteArray (this)
-		);	
+		this.RemoveFromPlayerHand ();
 	}
 
 	public override string GetTitle ()

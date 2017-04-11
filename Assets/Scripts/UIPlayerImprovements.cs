@@ -44,7 +44,7 @@ public class UIPlayerImprovements : MonoBehaviour {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
 
 		if (craneApplied) {
-			GameManager.GUI.ShowMessage ("Crane progress card applied.");
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
 			getPlayer ().craneProgressCardDiscount = false;
 		}
 
@@ -74,7 +74,7 @@ public class UIPlayerImprovements : MonoBehaviour {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
 
 		if (craneApplied) {
-			GameManager.GUI.ShowMessage ("Crane progress card applied.");
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
 			getPlayer ().craneProgressCardDiscount = false;
 		}
 
@@ -104,7 +104,7 @@ public class UIPlayerImprovements : MonoBehaviour {
 		GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdConsumeResources (SerializationUtils.ObjectToByteArray (reqRes));
 
 		if (craneApplied) {
-			GameManager.GUI.ShowMessage ("Crane progress card applied.");
+			StartCoroutine(GameManager.GUI.ShowMessage ("Crane progress card applied."));
 			getPlayer ().craneProgressCardDiscount = false;
 		}
 
