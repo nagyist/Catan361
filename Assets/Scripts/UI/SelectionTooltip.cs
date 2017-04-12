@@ -34,6 +34,7 @@ public class SelectionTooltip : MonoBehaviour {
                     + "\n\tOwner: " + i.Owner
                     + "\n\tLevel: " + k.level
                     + "\n\tActive: " + k.active
+                    + "\n\tExhausted: " + k.exhausted
                     + "\n\tCan be promoted: " + !k.hasBeenPromotedThisTurn;
             }
 			else if (i.unit.GetType() == typeof(Village))

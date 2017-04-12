@@ -43,7 +43,7 @@ public class UnitMoveButton : MonoBehaviour {
             Vec3[] oldPos = pair.Key;
             if (!checkForPath(oldPos, selectedPos, localPlayerName))
             {
-                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on valid path from previous Knight location."));
                 return;
             }
             // remove entry from the queue
@@ -78,6 +78,11 @@ public class UnitMoveButton : MonoBehaviour {
                     StartCoroutine(GameManager.GUI.ShowMessage("Only active knights may move."));
                     return;
                 }
+                else if (k.exhausted)
+                {
+                    StartCoroutine(GameManager.GUI.ShowMessage("This knight has already completed an action on the current turn."));
+                    return;
+                }
                 // set the local player's move selection and set the button to in use
                 localPlayer.SetMoveSelection();
                 StartCoroutine(GameManager.GUI.ShowMessage("Set the unit to move."));
@@ -96,7 +101,7 @@ public class UnitMoveButton : MonoBehaviour {
             // check for a valid path
             if (!checkForPath(oldPos, selectedPos, localPlayerName))
             {
-                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
+                StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on a valid path."));
                 inUse = false;
                 return;
             }
