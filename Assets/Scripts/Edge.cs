@@ -27,6 +27,10 @@ public class Edge {
 		Edge e = obj as Edge;
 		return computeKey (this.adjTile1, this.adjTile2) == computeKey (e.adjTile1, e.adjTile2);
 	}
+
+	public string getKey() {
+		return this.computeKey (this.adjTile1, this.adjTile2);
+	}
 	
 	private string computeKey(Vec3 hex1, Vec3 hex2) {
 		// apply simple heuristic : "flatten" xyz coords of both coords and take the lowest one

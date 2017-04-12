@@ -3,13 +3,15 @@
 [Serializable]
 public class DiplomatCard : AbstractProgressCard
 {
-	public DiplomatCard ()
+	public DiplomatCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
 
 	public override void ExecuteCardEffect() {
-
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().diplomatProgressCardUsed = true;
+		UIDiplomatProgressCard obj = GameManager.LocalPlayer.AddComponent<UIDiplomatProgressCard> ();
+		obj.CurrentCard = this;
 	}
 
 	public override string GetTitle ()

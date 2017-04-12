@@ -301,6 +301,12 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
+	public void RpcClientUpdateEdge(string edgeKey, byte[] newEdgeSerialized) {
+		Edge newEdge = (Edge)SerializationUtils.ByteArrayToObject (newEdgeSerialized);
+		CurrentEdges.Edges [edgeKey] = newEdge;
+	}
+
+	[ClientRpc]
 	public void RpcClientPublishBarbarianInvasion(byte[] barbarianInvasionSerialized) {
 		BarbarianInvasion invasion = (BarbarianInvasion)SerializationUtils.ByteArrayToObject (barbarianInvasionSerialized);
 

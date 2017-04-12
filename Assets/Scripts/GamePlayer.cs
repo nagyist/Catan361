@@ -37,6 +37,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool smithProgressCardDiscount = false;
 	public int smithProgressCardUsed = 0;
 	public bool deserterProgressCardUsed = false;
+	public bool diplomatProgressCardUsed = false;
+	public bool diplomatCanPlaceRoadForFree = false;
 
 	public UIIntersection selectedUIIntersection = null;
 	public UIEdge selectedUIEdge = null;
@@ -639,6 +641,11 @@ public class GamePlayer : NetworkBehaviour {
 	[Command]
 	public void CmdUpdateIntersection(string key, byte[] newIntersectionSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateIntersection (key, newIntersectionSerialized);
+	}
+
+	[Command]
+	public void CmdUpdateEdge(string key, byte[] newEdgeSerialized) {
+		GameManager.Instance.GetCurrentGameState ().RpcClientUpdateEdge (key, newEdgeSerialized);
 	}
 
 	[Command]
