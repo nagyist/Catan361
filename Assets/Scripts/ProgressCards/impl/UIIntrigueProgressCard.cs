@@ -44,7 +44,10 @@ public class UIIntrigueProgressCard : MonoBehaviour
 
 		Vec3[] oldPos = new Vec3[] { toMoveKnight.adjTile1, toMoveKnight.adjTile2, toMoveKnight.adjTile3 };
 		Vec3[] selectedPos = new Vec3[] { moveSelection.adjTile1, moveSelection.adjTile2, moveSelection.adjTile3 };
+		String owner = toMoveKnight.Owner;
 		Knight replacedKnight = (Knight)toMoveKnight.unit;
+		
+		
 		if (UnitMoveButton.checkKnightRemoval(oldPos, toMoveKnight.Owner))
 		{
 			// moves knight by overriding old position
@@ -57,6 +60,13 @@ public class UIIntrigueProgressCard : MonoBehaviour
 
 			StartCoroutine(GameManager.GUI.ShowMessage("You have removed " + toMoveKnight.Owner + "'s knight."));
 		} else {
+
+			if (!UnitMoveButton.checkForPath(oldPos, selectedPos, owner))
+			{
+				StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must be on valid path."));
+				return;
+			}
+			
 			// moves knight and calls rpc function to add replaced knight to queue for the previous owner
 			GameManager.LocalPlayer.GetComponent<GamePlayer>().CmdMoveUnitWithReplacement(
 				SerializationUtils.ObjectToByteArray(oldPos),

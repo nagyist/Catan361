@@ -269,7 +269,7 @@ public class UnitMoveButton : MonoBehaviour {
     }
 
     // function that checks for a path of owned edges and owned intersections between a start and end position
-    private bool checkForPath(Vec3[] start, Vec3[] end, String name)
+    public static bool checkForPath(Vec3[] start, Vec3[] end, String name)
     {
 
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
