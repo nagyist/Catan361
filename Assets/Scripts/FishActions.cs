@@ -92,10 +92,10 @@ public class FishActions : MonoBehaviour {
 			ResourceCollection.PlayerResourcesCollection localPlayerResources = localPlayer.GetPlayerResources ();
 
 			int payment = localPlayerResources [StealableType.Resource_Fish] - 7;
+
 			AbstractProgressCard randomCard = GameManager.CurrentGameState.CurrentProgressCardDeck.DrawRandomCard();
 			localPlayer.CmdAddProgressCard (localPlayer.myName, SerializationUtils.ObjectToByteArray(randomCard));
 
-			//Draw progress card
 			localPlayer.CmdUpdateResource (StealableType.Resource_Fish, payment);
 
 			GameManager.GUI.HideFishPopup ();
