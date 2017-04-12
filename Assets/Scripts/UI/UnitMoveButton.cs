@@ -179,7 +179,7 @@ public class UnitMoveButton : MonoBehaviour {
 
     // function that checks if a knight can be repositioned
     // if the knight will be removed from play, the function will return true
-    private bool checkKnightRemoval(Vec3[] position, String name)
+	public static bool checkKnightRemoval(Vec3[] position, String name)
     {
         String ownerName = name;
         List<Intersection> visitedIntersections = new List<Intersection>();
