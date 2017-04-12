@@ -144,7 +144,47 @@ public class UIIntersection : MonoBehaviour
         return true;
     }
 
-    
+    public void chaseAwayRobber()
+    {
+        if (!IsLocalPlayerMainPhase())
+            return;
+
+        if (!OwnsKnight())
+            return;
+
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        string localPlayerName = localPlayer.myName;
+        Vec3[] position = new Vec3[] { HexPos1, HexPos2, HexPos3 };
+        byte[] positionSerialized = SerializationUtils.ObjectToByteArray(position);
+        Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(position));
+
+        Knight knight = (Knight)intersection.unit;
+        if (knight.exhausted)
+        {
+            Debug.Log("Knight was already active.");
+            StartCoroutine(GameManager.GUI.ShowMessage("Knight has already completed an action this turn."));
+            return;
+        }
+
+        if (!isNextToRobber())
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Current knight is not next to the robber/pirate."));
+            return;
+        }
+
+        // String entityType = GameEventManager.Instance.EventMoveRobberPirateEntityType;
+        // Vec3 newPosition = new Vec3(0, 0, 0);
+        // byte[] newPositionSerialized = SerializationUtils.ObjectToByteArray(newPosition);
+        // localPlayer.CmdHandleMoveRobberPirateEntity(entityType, newPositionSerialized);
+
+        
+        localPlayer.CmdChaseAwayRobber(positionSerialized);
+
+
+        StartCoroutine(GameManager.GUI.ShowMessage("Your knight has chased away the robber."));
+
+
+    }
 
     public void ActivateKnight()
     {
@@ -606,6 +646,26 @@ public class UIIntersection : MonoBehaviour
         Edge roadTest3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(i.adjTile2, i.adjTile3);
 
         if (roadTest1.Owner == localPlayer.myName || roadTest2.Owner == localPlayer.myName || roadTest3.Owner == localPlayer.myName)
+            return true;
+        else
+            return false;
+    }
+
+    public bool isNextToRobber()
+    {
+        Intersection currentIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+
+        if (!GameManager.Instance.GetCurrentGameState().CurrentRobberPosition.IsPlaced)
+        {
+            StartCoroutine(GameManager.GUI.ShowMessage("Robber has not been placed."));
+            return false;
+        }
+
+        if (RobberUnit.Instance.HexGridCubePosition.Equals(HexPos1))
+            return true;
+        else if (RobberUnit.Instance.HexGridCubePosition.Equals(HexPos2))
+            return true;
+        else if (RobberUnit.Instance.HexGridCubePosition.Equals(HexPos3))
             return true;
         else
             return false;

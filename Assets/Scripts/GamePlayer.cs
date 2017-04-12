@@ -363,19 +363,32 @@ public class GamePlayer : NetworkBehaviour {
         ResetBuildSelection();
 		ResetMoveSelection();
 
+		// now we also have to reset the knights of the player who's taking their turn
         // go through all the intersections
         foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys)
         {
-            Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections[key];
-            // check to see if it isn't empty
-            if (i.Owner == myName && i.unit.GetType() == typeof(Knight))
-            {
-                Knight k = (Knight)i.unit;
-                k.hasBeenPromotedThisTurn = false;
-            }
+            Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections[key];
+
+            // check for a knight that the local player owns
+			if (intersection.unit != null)
+			{
+				if (intersection.Owner == this.myName && intersection.unit.GetType() == typeof(Knight))
+                {
+					// the knight can now complete a new action and can be promoted again
+                    Knight k = (Knight)intersection.unit;
+                    k.hasBeenPromotedThisTurn = false;
+                    k.exhausted = false;
+
+					// get the position of the current intersection
+					Vec3[] position = new Vec3[] { intersection.adjTile1, intersection.adjTile2, intersection.adjTile3 };
+                    byte[] vec3sSerialized = SerializationUtils.ObjectToByteArray(position);
+
+                    // set and publish the intersection
+                    GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(position, intersection);
+                    GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
+                }
+			}
         }
-
-
         // synchronize game turns
         GameManager.Instance.GetCurrentGameState ().SyncGameTurns ();
 	}
@@ -478,7 +491,7 @@ public class GamePlayer : NetworkBehaviour {
 		// activate the knight
         Knight knight = (Knight)intersection.unit;
         knight.active = true;
-    
+
         // set and publish the intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(vec3Pos, intersection);
         GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3sSerialized, SerializationUtils.ObjectToByteArray(intersection));
@@ -567,7 +580,8 @@ public class GamePlayer : NetworkBehaviour {
 		// update the new intersection
 		newIntersection.Owner = this.myName;
 		k.active = false;
-		newIntersection.unit = k;
+        k.exhausted = true;
+        newIntersection.unit = k;
 
 		// adds the knight to the appropriate player's queue
 		GameManager.Instance.GetCurrentGameState().RpcEnqueueKnightToMove(name, newvec3, knight);
@@ -608,6 +622,7 @@ public class GamePlayer : NetworkBehaviour {
                 // update the new intersection
                 newIntersection.Owner = this.myName;
                 k.active = false;
+                k.exhausted = true;
                 newIntersection.unit = k;
 
                 // set and publish the new intersection
@@ -649,6 +664,7 @@ public class GamePlayer : NetworkBehaviour {
                 // update the new intersection
                 newIntersection.Owner = this.myName;
                 k.active = false;
+                k.exhausted = true;
                 newIntersection.unit = k;
 
                 // set and publish the new intersection
@@ -703,6 +719,27 @@ public class GamePlayer : NetworkBehaviour {
 	public void CmdHandleMoveRobberPirateEntity(string entityType, byte[] moveToPosSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientMoveRobberPirateEntity (entityType, moveToPosSerialized);
 	}
+
+	[Command]
+	public void CmdChaseAwayRobber(byte[] knightPositionSerialized)
+	{
+		String entityType = GameEventManager.Instance.EventMoveRobberPirateEntityType;
+        Vec3[] position = SerializationUtils.ByteArrayToObject(knightPositionSerialized) as Vec3[];
+		Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(position));
+
+		// the knight is now exhausted for the remainder of the turn
+        Knight knight = (Knight)intersection.unit;
+        knight.exhausted = true;
+
+		// set the robber to the new position
+        Vec3 newRobberPosition = new Vec3(0, 0, 0);
+        byte[] newRobberPositionSerialized = SerializationUtils.ObjectToByteArray(newRobberPosition);
+		GameManager.Instance.GetCurrentGameState().RpcClientMoveRobberPirateEntity(entityType, newRobberPositionSerialized);
+
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(position, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(knightPositionSerialized, SerializationUtils.ObjectToByteArray(intersection));
+    }
 
 	[Command]
 	public void CmdSendTradeRequest(byte[] tradeSerialized) {

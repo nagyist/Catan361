@@ -150,6 +150,28 @@ public class GameState : NetworkBehaviour {
         
     }
 
+	// // function that resets the knights of a player
+	// [ClientRpc]
+    // public void RpcResetKnightsOnPlayerTurn(byte[] name)
+    // {
+    //     String ownerName = SerializationUtils.ByteArrayToObject(name) as String;
+    //     // go through all the intersections
+    //     foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys)
+    //     {
+    //         Intersection i = GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections[key];
+    //         // check to see if it isn't empty
+	// 		if (i.unit != null)
+	// 		{
+	// 			if (i.Owner == ownerName && i.unit.GetType() == typeof(Knight))
+    //             {
+    //                 Knight k = (Knight)i.unit;
+    //                 k.hasBeenPromotedThisTurn = false;
+    //                 k.exhausted = false;
+    //             }
+	// 		}
+    //     }
+    // }
+
 	// this function lowers the knight count of a player
 	// called when a knight is removed from play
     [ClientRpc]
@@ -265,7 +287,7 @@ public class GameState : NetworkBehaviour {
 		TradeManager.Instance.ReceivedAnswerForTradeRequest (currentTrade, answer);
 	}
 
-	[ClientRpc]
+    [ClientRpc]
 	public void RpcClientUpdateTradeOffer(byte[] tradeObjSerialized) {
 		Trade currentTrade = (Trade)SerializationUtils.ByteArrayToObject (tradeObjSerialized);
 		string localPlayerName = GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName;

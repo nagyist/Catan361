@@ -43,7 +43,7 @@ public class GameTurn
 		}
 	}
 
-    // this function is used when a player can take their turn
+    // this function is used to check whether a player can take their turn
 	public bool PlayerTakeTurn(string name) {
 
         // only execute if the player is allowed to take their turn
