@@ -765,15 +765,17 @@ public class GamePlayer : NetworkBehaviour {
 
 	[Command]
 	public void CmdAddVictoryPoint(int amount) {
-		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.AddVictoryPointsForPlayer (myName, amount);
 		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
+		victoryPts.AddVictoryPointsForPlayer (myName, amount);
+
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
 	}
 
 	[Command]
 	public void CmdRemoveVictoryPoint(int amount) {
-		GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.RemoveVictoryPointsForPlayer (myName, amount);
 		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
+		victoryPts.RemoveVictoryPointsForPlayer (myName, amount);
+
 		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
 	}
 
@@ -933,9 +935,11 @@ public class GamePlayer : NetworkBehaviour {
 		int diff = syncedVictoryPoints - victoryPoints;
 
 		if (diff < 0) {
-			CmdRemoveVictoryPoint (Math.Abs(diff));
+			Debug.Log ("decrease diff = " + diff);
+			CmdRemoveVictoryPoint ((int)(diff * -1));
 		} else if (diff > 0) {
-			CmdAddVictoryPoint (Math.Abs(diff));
+			Debug.Log ("increase diff = " + diff);
+			CmdAddVictoryPoint ((int)(diff));
 		}
 	}
 }
