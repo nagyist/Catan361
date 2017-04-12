@@ -23,6 +23,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasOldBootToGive = true;
 	public bool gotOldBoot = false;
 
+	public bool justSyncedVp = false;
+
 
 	public bool firstToFourTrade = false;
 	public bool firstToFiveTrade = false;
@@ -765,18 +767,12 @@ public class GamePlayer : NetworkBehaviour {
 
 	[Command]
 	public void CmdAddVictoryPoint(int amount) {
-		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
-		victoryPts.AddVictoryPointsForPlayer (myName, amount);
-
-		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
+		GameManager.Instance.GetCurrentGameState ().RpcClientAddVictoryPoint (myName, amount);
 	}
 
 	[Command]
 	public void CmdRemoveVictoryPoint(int amount) {
-		VictoryPointsCollection victoryPts = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints;
-		victoryPts.RemoveVictoryPointsForPlayer (myName, amount);
-
-		GameManager.Instance.GetCurrentGameState ().RpcClientPostVictoryPointUpdate (SerializationUtils.ObjectToByteArray(victoryPts));
+		GameManager.Instance.GetCurrentGameState ().RpcClientAddVictoryPoint (myName, amount);
 	}
 
 	[Command]
@@ -930,16 +926,24 @@ public class GamePlayer : NetworkBehaviour {
 		this.syncVictoryPoints ();
 	}
 
+	public void clearSyncVp() {
+		justSyncedVp = false;
+	}
+
 	public void syncVictoryPoints() {
 		int syncedVictoryPoints = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.GetVictoryPointsForPlayer (myName);
 		int diff = syncedVictoryPoints - victoryPoints;
 
-		if (diff < 0) {
-			Debug.Log ("decrease diff = " + diff);
-			CmdRemoveVictoryPoint ((int)(diff * -1));
-		} else if (diff > 0) {
-			Debug.Log ("increase diff = " + diff);
-			CmdAddVictoryPoint ((int)(diff));
+		if (!justSyncedVp) {
+			if (diff < 0) {
+				Debug.Log ("decrease diff = " + diff);
+				CmdRemoveVictoryPoint ((int)(diff * -1));
+				justSyncedVp = true;
+			} else if (diff > 0) {
+				Debug.Log ("increase diff = " + diff);
+				CmdAddVictoryPoint ((int)(diff));
+				justSyncedVp = true;
+			}
 		}
 	}
 }

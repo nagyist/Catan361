@@ -299,9 +299,15 @@ public class GameState : NetworkBehaviour {
 	}
 
 	[ClientRpc]
-	public void RpcClientPostVictoryPointUpdate(byte[] victoryPointSerialized) {
-		VictoryPointsCollection newVictoryPoints = (VictoryPointsCollection)SerializationUtils.ByteArrayToObject (victoryPointSerialized);
-		CurrentVictoryPoints = newVictoryPoints;
+	public void RpcClientAddVictoryPoint(string player, int amount) {
+		CurrentVictoryPoints.AddVictoryPointsForPlayer (player, amount);
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().clearSyncVp ();
+	}
+
+	[ClientRpc]
+	public void RpcClientRemoveVictoryPoint(string player, int amount) {
+		CurrentVictoryPoints.RemoveVictoryPointsForPlayer (player, amount);
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().clearSyncVp ();
 	}
 
 	[ClientRpc]
