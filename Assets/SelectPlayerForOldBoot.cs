@@ -31,6 +31,8 @@ public class SelectPlayerForOldBoot : MonoBehaviour {
 				GameManager.GUI.HidePlayerSelectPopup ();
 
 			}
+			GameManager.GUI.HidePlayerSelectPopup ();
+
 		} else if (actionSelected.Equals ("SelectPlayerEntry2")) {
 			string name2 = "Player2";
 			if (name2 == player.myName) 
@@ -45,6 +47,8 @@ public class SelectPlayerForOldBoot : MonoBehaviour {
 				GameManager.GUI.HidePlayerSelectPopup ();
 
 			}
+			GameManager.GUI.HidePlayerSelectPopup ();
+
 		} else if (actionSelected.Equals ("SelectPlayerEntry3")) {
 			string name3 = "Player3";
 			if (name3 == player.myName) 
@@ -59,6 +63,8 @@ public class SelectPlayerForOldBoot : MonoBehaviour {
 				GameManager.GUI.HidePlayerSelectPopup ();
 
 			}
+			GameManager.GUI.HidePlayerSelectPopup ();
+
 		}
 	}
 }

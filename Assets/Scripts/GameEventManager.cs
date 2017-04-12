@@ -154,10 +154,5 @@ public class GameEventManager : Singleton<GameEventManager> {
 		GateEvent newGateEvent = new GateEvent (outcome);
 		GameManager.Instance.GetCurrentGameState ().RpcClientPublishGateEvent (SerializationUtils.ObjectToByteArray (newGateEvent));
 	}
-
-	/*
-	public void TriggerGoldPopup() {
-		GameManager.Instance.GetCurrentGameState ().RpcClientPublishGateEvent (SerializationUtils.ObjectToByteArray (newGateEvent));
-	}
-	*/
+		
 }
