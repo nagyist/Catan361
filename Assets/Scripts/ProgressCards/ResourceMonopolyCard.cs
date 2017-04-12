@@ -3,13 +3,13 @@
 [Serializable]
 public class ResourceMonopolyCard : AbstractProgressCard
 {
-	public ResourceMonopolyCard ()
+	public ResourceMonopolyCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Trade;
 	}
 
 	public override void ExecuteCardEffect() {
-
+		GameManager.GUI.ShowResourceMonopolyPopup(this);
 	}
 
 	public override string GetTitle ()

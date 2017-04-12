@@ -9,6 +9,9 @@ public class SpyCard : AbstractProgressCard
 	}
 
 	public override void ExecuteCardEffect() {
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().spyProgressCardUsed = true;
+		UISpryProgressCard card = GameManager.LocalPlayer.AddComponent<UISpryProgressCard> ();
+		card.CurrentCard = this;
 
 	}
 

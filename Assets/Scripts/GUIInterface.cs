@@ -180,6 +180,14 @@ public class GUIInterface : MonoBehaviour {
 		return window;
 	}
 
+	public GameObject ShowResourceMonopolyPopup(AbstractProgressCard currentCard) {
+		GameObject window = guiCanvas.transform.FindChild ("ResourceMonopolyPopup").gameObject;
+		window.GetComponent<ResourceMonopolyPopup> ().CurrentCard = currentCard;
+		window.GetComponent<UIWindow> ().Show ();
+
+		return window;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();

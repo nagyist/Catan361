@@ -28,14 +28,14 @@ public class ProgressCardDeck
 			//new DiplomatCard(++CC), new DiplomatCard(++CC),
 			//new IntrigueCard(++CC), new IntrigueCard(++CC),
 			//new SaboteurCard(), new SaboteurCard(),
-			new SpyCard(++CC), new SpyCard(++CC), new SpyCard(++CC),
-			//new WarlordCard(), new WarlordCard(),
+			//new SpyCard(++CC), new SpyCard(++CC), new SpyCard(++CC),
+			//new WarlordCard(++CC), new WarlordCard(++CC),
 			//new WeddingCard(), new WeddingCard(),
 			//new CommercialHarborCard(), new CommercialHarborCard(),
 			//new MasterMerchantCard(), new MasterMerchantCard(),
 			//new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(),
 			//new MerchantFleetCard(), new MerchantFleetCard(),
-			//new ResourceMonopolyCard(), new ResourceMonopolyCard(), new ResourceMonopolyCard(), new ResourceMonopolyCard(),
+			new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC),
 			//new TradeMonopolyCard(), new TradeMonopolyCard()
 		};
 
