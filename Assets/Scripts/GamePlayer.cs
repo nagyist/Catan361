@@ -18,6 +18,14 @@ public class GamePlayer : NetworkBehaviour {
 	public int numMightyKnights = 0;
     public int numCityWalls = 0;
 	public bool fishBuild = false;
+	public int victoryPoints;
+
+	public bool firstToFourTrade = false;
+	public bool firstToFiveTrade = false;
+	public bool firstToFourScience = false;
+	public bool firstToFiveScience = false;
+	public bool firstToFourPolitics = false;
+	public bool firstToFivePolitics = false;
 
 	public bool hasFortress;
 	public bool hasTradingHouse;
@@ -143,27 +151,36 @@ public class GamePlayer : NetworkBehaviour {
 	{ 
 		int amountToAdd = 0;
 		// go through all the intersections
-		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
+		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) 
+		{
 			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
 
 			// check to see if it isn't empty
-			if (i.unit != null && i.Owner == myName) {
+			if (i.unit != null && i.Owner == myName) 
+			{
 				// check to see if its a village
-				if (i.unit.GetType () == typeof(Village)) {
+				if (i.unit.GetType () == typeof(Village)) 
+				{
 					Village currentVillage = (Village)(i.unit);
+
 					if (currentVillage.myKind == Village.VillageKind.Settlement)
 						amountToAdd += 1;
 					else if (currentVillage.myKind == Village.VillageKind.City)
 						amountToAdd += 2;
-					else if (currentVillage.myKind == Village.VillageKind.TradeMetropole)
-						amountToAdd += 4;
-					else if (currentVillage.myKind == Village.VillageKind.ScienceMetropole)
-						amountToAdd += 4;
-					else if (currentVillage.myKind == Village.VillageKind.PoliticsMetropole)
-						amountToAdd += 4;
 				}
 			}
 		}
+
+		if (hasFortressMetro()) {
+			amountToAdd += 4;
+		}
+		if (hasTradingHouseMetro()) {
+			amountToAdd += 4;
+		}
+		if (hasAqueductMetro()) {
+			amountToAdd += 4;
+		}
+
 		return amountToAdd;
 	}
 
@@ -191,38 +208,121 @@ public class GamePlayer : NetworkBehaviour {
 			return false;
 	}
 
-	public bool hasFortressMetro (){
+	public bool hasFortressMetro () {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int politicsLevel = ((int)currentImprovements.CurrentPoliticsImprovement);
+		bool hasHigherPoliticLevel = false;
+		int politicsCount = 0;
+		foreach (GameObject player in GameManager.ConnectedPlayers) 
+		{
+			GamePlayer instancePlayer = player.GetComponent<GamePlayer> ();
+			if (instancePlayer.myName != myName) 
+			{
+				PlayerImprovement opponentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (instancePlayer.myName);
+				int opponentPoliticsLevel = ((int)opponentImprovements.CurrentPoliticsImprovement);
+				if (politicsLevel > opponentPoliticsLevel) 
+				{
+					politicsCount++;
+				}
+			}
+		}
 
-		if (hasCities() && politicsLevel >= 4 //&& hasMorePoliticsLevel == true
-		) {
+		if (politicsCount == (GameManager.ConnectedPlayers.Count - 1) && politicsLevel == 4) 
+		{
+			firstToFourPolitics = true;
+			hasHigherPoliticLevel = true;
+		}
+		if (politicsCount == (GameManager.ConnectedPlayers.Count - 1) && politicsLevel == 5) 
+		{
+			firstToFivePolitics = true;
+			hasHigherPoliticLevel = true;
+		}
+		if ((hasCities() && politicsLevel >= 4 && hasHigherPoliticLevel) || firstToFivePolitics)
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			return false;
 		}
 	}
 
-	public bool hasTradingHouseMetro (){
+	public bool hasTradingHouseMetro () {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int tradeLevel = ((int) currentImprovements.CurrentTradeImprovement);
+		bool hasHigherTradeLevel = false;
+		int tradeCount = 0;
+		foreach (GameObject player in GameManager.ConnectedPlayers) 
+		{
+			GamePlayer instancePlayer = player.GetComponent<GamePlayer> ();
+			if (instancePlayer.myName != myName) 
+			{
+				PlayerImprovement opponentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (instancePlayer.myName);
+				int opponentTradeLevel = ((int)opponentImprovements.CurrentTradeImprovement);
+				if (tradeLevel > opponentTradeLevel) 
+				{
+					tradeCount++;
+				}
+			}
+		}
 
-		if (hasCities() && tradeLevel >= 4 //&& hasMoreTradeLevel == true
-		) {
+		if(tradeCount == (GameManager.ConnectedPlayers.Count - 1) && tradeLevel == 4)
+		{
+			firstToFourTrade = true;
+			hasHigherTradeLevel = true;
+		} 
+		if(tradeCount == (GameManager.ConnectedPlayers.Count - 1) && tradeLevel == 5)
+		{
+			firstToFiveTrade = true;
+			hasHigherTradeLevel = true;
+		} 
+
+		if ((hasCities() && tradeLevel >= 4 && hasHigherTradeLevel) || firstToFiveTrade)
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			return false;
 		}
 	}
 
-	public bool hasAqueductMetro (){
+	public bool hasAqueductMetro () {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int scienceLevel = ((int)currentImprovements.CurrentScienceImprovement);
+		bool hasHigherScienceLevel = false;
+		int scienceCount = 0;
+		foreach (GameObject player in GameManager.ConnectedPlayers) 
+		{
+			GamePlayer instancePlayer = player.GetComponent<GamePlayer> ();
+			if (instancePlayer.myName != myName) 
+			{
+				PlayerImprovement opponentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (instancePlayer.myName);
+				int opponentScienceLevel = ((int)opponentImprovements.CurrentScienceImprovement);
+				if (scienceLevel > opponentScienceLevel) 
+				{
+					scienceCount++;
+				}
+			}
+		}
 
-		if (hasCities() && scienceLevel >= 4 //&& hasMoreScienceLevel == true
-		) {
+		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
+		{
+			firstToFourScience = true;
+			hasHigherScienceLevel = true;
+		} 
+		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
+		{
+			firstToFiveScience = true;
+			hasHigherScienceLevel = true;
+		} 
+
+		if (hasCities() && scienceLevel >= 4 && hasHigherScienceLevel)
+		{
 			return true;
-		} else {
+		} 
+		else 
+		{
 			return false;
 		}
 	}
@@ -731,7 +831,7 @@ public class GamePlayer : NetworkBehaviour {
 			resourcesFromTurn = 0;
 		}
 		*/
-
+		victoryPoints = getSettlementVictoryPoints ();
 
 	}
 }
