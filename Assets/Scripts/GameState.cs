@@ -129,6 +129,7 @@ public class GameState : NetworkBehaviour {
         GetComponent<HexGrid>().resetDicts();
         GetComponent<HexGrid>().CreateUIHexGrid();
 		GetComponent<HexGrid> ().buildHarbours ();
+
         // set the game status as grid created
 		CurrentStatus = GameStatus.GRID_CREATED;
 	}
