@@ -12,7 +12,7 @@ using System;
 public class GameTurn
 {
     // it holds an ordered list of players
-	public List<string> PlayerOrder = new List<string> (new string[] { "Player1", "Player2" }); 
+	public List<string> PlayerOrder = new List<string> (new string[] { "Player1", "Player2", "Player3" }); 
     // holds the current player's index in the list
 	public int CurrentPlayerIndex { get; private set; }
     // also holds boolean values to denote a players turn has ended
