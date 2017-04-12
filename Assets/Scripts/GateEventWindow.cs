@@ -13,10 +13,25 @@ public class GateEventWindow : MonoBehaviour {
 
 	public void ClickRollDice() {
 		// TODO : fix this (levelOfThatColor / trade / science / politics) / 6
-		int rollNum = UnityEngine.Random.Range (1, 4);
-		//AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
-		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawRandomCard();
-		if (drawnProgressCard != null/*rollNum == 1*/) {
+		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
+		List<int> allowedValues = new List<int> ();
+		PlayerImprovement currentImprovement = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName);
+		if (CurrentEvent.CardType == AbstractProgressCard.ProgressCardType.Politic) {
+			for (int i = 0; i < (int)currentImprovement.CurrentPoliticsImprovement; i++) {
+				allowedValues.Add (i);
+			}
+		} else if (CurrentEvent.CardType == AbstractProgressCard.ProgressCardType.Science) {
+			for (int i = 0; i < (int)currentImprovement.CurrentScienceImprovement; i++) {
+				allowedValues.Add (i);
+			}
+		} else if (CurrentEvent.CardType == AbstractProgressCard.ProgressCardType.Trade) {
+			for (int i = 0; i < (int)currentImprovement.CurrentTradeImprovement; i++) {
+				allowedValues.Add (i);
+			}
+		}
+
+		int rollNum = UnityEngine.Random.Range (0, 7);
+		if (allowedValues.Contains(rollNum)) {
 			// get the progress card
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().AddProgressCard (drawnProgressCard);
 		} else {
