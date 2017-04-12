@@ -923,7 +923,7 @@ public class GamePlayer : NetworkBehaviour {
 			victoryPointsTotal = 11;
 		}
 
-		this.syncVictoryPoints ();
+		//this.syncVictoryPoints ();
 	}
 
 	public void clearSyncVp() {
