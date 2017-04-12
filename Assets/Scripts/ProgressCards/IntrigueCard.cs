@@ -3,13 +3,15 @@
 [Serializable]
 public class IntrigueCard : AbstractProgressCard
 {
-	public IntrigueCard ()
+	public IntrigueCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
 
 	public override void ExecuteCardEffect() {
-
+		GameManager.LocalPlayer.GetComponent<GamePlayer> ().intrigueProgressCardUsed = true;
+		UIIntrigueProgressCard pCardUi = GameManager.LocalPlayer.AddComponent<UIIntrigueProgressCard> ();
+		pCardUi.CurrentCard = this;
 	}
 
 	public override string GetTitle ()

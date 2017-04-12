@@ -47,6 +47,7 @@ public class GamePlayer : NetworkBehaviour {
 	public bool deserterProgressCardUsed = false;
 	public bool diplomatProgressCardUsed = false;
 	public bool diplomatCanPlaceRoadForFree = false;
+	public bool intrigueProgressCardUsed = false;
 
 	public UIIntersection selectedUIIntersection = null;
 	public UIEdge selectedUIEdge = null;

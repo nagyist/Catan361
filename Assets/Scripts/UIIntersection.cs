@@ -545,6 +545,12 @@ public class UIIntersection : MonoBehaviour
 			return;
 		}
 
+		if (GameManager.LocalPlayer.GetComponent<GamePlayer> ().intrigueProgressCardUsed) {
+			Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(new Vec3[] { HexPos1, HexPos2, HexPos3 }));
+			GameManager.LocalPlayer.GetComponent<UIIntrigueProgressCard> ().ClickChooseIntersection (intersection);
+			return;
+		}
+
         if (localPlayer.selectedUIIntersection == this)
             localPlayer.ResetBuildSelection();
         else
