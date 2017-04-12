@@ -45,9 +45,12 @@ public class UnitMoveButton : MonoBehaviour {
                 StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
                 return;
             }
+            // remove entry from the queue
+            pair = localPlayer.knightsToMove.Dequeue();
+            Knight k = pair.Value;
 
             // call command to replace knight and reset the button
-            localPlayer.CmdReplaceKnight(SerializationUtils.ObjectToByteArray(selectedPos));
+            localPlayer.CmdReplaceKnight(SerializationUtils.ObjectToByteArray(selectedPos), SerializationUtils.ObjectToByteArray(k));
             StartCoroutine(GameManager.GUI.ShowMessage("You have repositioned your knight."));
             inUse = false;
         }

@@ -408,15 +408,13 @@ public class GamePlayer : NetworkBehaviour {
 
 	// command used to reposition a replaced knight
 	[Command]
-	public void CmdReplaceKnight(byte[] vec3pos)
+	public void CmdReplaceKnight(byte[] vec3pos, byte[] knight)
 	{
 		// get position and intersection
 		Vec3[] newPos = SerializationUtils.ByteArrayToObject(vec3pos) as Vec3[];
         Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
-
-		// dequeue a knight and add it to the new intersection
-        KeyValuePair<Vec3[], Knight> pair = this.knightsToMove.Dequeue();
-        Knight newKnight = pair.Value;
+        Knight newKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
+        
         newIntersection.Owner = this.myName;
         newIntersection.unit = newKnight;
 

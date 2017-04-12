@@ -33,21 +33,21 @@ public class SelectionTooltip : MonoBehaviour {
                     + "\n\tKnight"
                     + "\n\tOwner: " + i.Owner
                     + "\n\tLevel: " + k.level
-                    + "\n\tHas been promoted this turn: " + k.hasBeenPromotedThisTurn;
+                    + "\n\tActive: " + k.active
+                    + "\n\tCan be promoted: " + !k.hasBeenPromotedThisTurn;
             }
 			else if (i.unit.GetType() == typeof(Village))
 			{
                 Village v = (Village)i.unit;
                 body.text = "\n  Selected Unit:\n"
-                    + "\n\tVillage"
+                    + "\n\t" + v.myKind
                     + "\n\tOwner: " + i.Owner
-                    + "\n\tType: " + v.myKind
-                    + "\n\tHas city wall: " + v.cityWall;
+                    + "\n\tCity wall: " + v.cityWall;
             }
 		}
 		else
 		{
-            body.text = "this shouldn't be showing";
+            body.text = "Please select an edge or intersection to show additional information.";
         }
     }
    
