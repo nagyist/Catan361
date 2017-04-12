@@ -20,8 +20,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool fishBuild = false;
 	public int victoryPoints;
 	public int victoryPointsTotal = 10;
-	public bool hasOldBootToGive = false;
-	public bool gotOldBoot;
+	public bool hasOldBootToGive = true;
+	public bool gotOldBoot = false;
 
 
 	public bool firstToFourTrade = false;
@@ -322,13 +322,13 @@ public class GamePlayer : NetworkBehaviour {
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
 		{
 			firstToFourScience = true;
-			StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have an Aqueduct Metropolis"));
+			//StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have an Aqueduct Metropolis"));
 			hasHigherScienceLevel = true;
 		} 
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 5)
 		{
 			firstToFiveScience = true;
-			StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Aqueduct Metropolis!"));
+			//StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Aqueduct Metropolis!"));
 			hasHigherScienceLevel = true;
 		} 
 

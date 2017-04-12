@@ -26,7 +26,13 @@ public class UnitButton2 : MonoBehaviour {
         if (intersection.unit == null)
             selectedUIIntersection.HireKnight();
         else if (intersection.unit.GetType() == typeof(Knight))
-            selectedUIIntersection.ActivateKnight();
+        {
+            Knight k = (Knight)intersection.unit;
+            if (k.active)
+                selectedUIIntersection.chaseAwayRobber();
+            else
+                selectedUIIntersection.ActivateKnight();
+        }
         else if (intersection.unit.GetType() == typeof(Village))
             selectedUIIntersection.BuildCityWall();
 
@@ -104,8 +110,8 @@ public class UnitButton2 : MonoBehaviour {
                 Knight k = (Knight)intersection.unit;
                 if (k.active)
                 {
-                    GetComponent<Button>().enabled = false;
-                    GetComponentInChildren<Text>().text = "KNIGHT IS ACTIVE";
+                    GetComponent<Button>().enabled = true;
+                    GetComponentInChildren<Text>().text = "CHASE ROBBER";
                     return;
                 }
                 else

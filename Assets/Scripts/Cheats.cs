@@ -42,28 +42,23 @@ public class Cheats : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        // Press G to invoke the gold popup regardless of die roll
-		if (Input.GetKey(KeyCode.G))
-        {
-            goldPopup.SetActive(true);
-        }
         // Press S for quicksave (only invokes if server) and L for quickload (also server-only)
-        if (Input.GetKey(KeyCode.S) && isServer)
+        if (Input.GetKey(KeyCode.F5) && isServer)
         {
             drawTextbox = true;
         }
-        if (Input.GetKey(KeyCode.L) && isServer)
+        if (Input.GetKey(KeyCode.F6) && isServer)
         {
             drawBrowser = true;
         }
-        if (Input.GetKey(KeyCode.Return) && isServer)
+        if (Input.GetKey(KeyCode.Return) && isServer && saveFile.Equals("") && drawTextbox)
         {
-            if (!saveFile.Equals("") && drawTextbox)
-            {
-                Debug.Log("Got here");
-                SaveAndLoad.save(saveFile);
-                drawTextbox = false;
-            }
+            drawTextbox = false;
+        }
+        if (Input.GetKey(KeyCode.Return) && isServer && !saveFile.Equals("") && drawTextbox)
+        {
+            SaveAndLoad.save(saveFile);
+            drawTextbox = false;
         }
 	}
 
