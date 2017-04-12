@@ -115,7 +115,7 @@ public class UnitMoveButton : MonoBehaviour {
                         // get the knights and the other owner's knight
                         Knight localPlayerKnight = (Knight)oldIntersection.unit;
                         Knight replacedKnight = (Knight)selectedIntersection.unit;
-                        String oldOwnerName = GameManager.ConnectedPlayersByName[selectedIntersection.Owner].GetComponent<GamePlayer>().myName;
+                        String oldOwnerName = selectedIntersection.Owner;
 
                         // compare the knight's levels 
                         if (localPlayerKnight.level <= replacedKnight.level)
@@ -125,16 +125,34 @@ public class UnitMoveButton : MonoBehaviour {
                             return;
                         }
 
-                        // moves knight and calls rpc function to add replaced knight to queue for the previous owner
-                        localPlayer.CmdMoveUnitWithReplacement(
-                            SerializationUtils.ObjectToByteArray(oldPos),
-                            SerializationUtils.ObjectToByteArray(selectedPos),
-                            SerializationUtils.ObjectToByteArray(oldOwnerName),
-                            SerializationUtils.ObjectToByteArray(replacedKnight));
+                        // check to see if the displaced knight will be removed from play
+                        if (checkKnightRemoval(selectedPos, oldOwnerName))
+                        {
+                            // moves knight by overriding old position
+                            // also calls rpc function to lower the number of knights owned of the old intersection owner
+                            localPlayer.CmdMoveUnitWithRemoval(
+                                SerializationUtils.ObjectToByteArray(oldPos),
+                                SerializationUtils.ObjectToByteArray(selectedPos),
+                                SerializationUtils.ObjectToByteArray(oldOwnerName),
+                                SerializationUtils.ObjectToByteArray(replacedKnight));
 
-                        StartCoroutine(GameManager.GUI.ShowMessage("Successfully moved the unit."));
-                        inUse = false;
-                        return;
+                            StartCoroutine(GameManager.GUI.ShowMessage("You have removed " + oldOwnerName + "'s knight."));
+                            inUse = false;
+                            return;
+                        }
+                        else
+                        {
+                            // moves knight and calls rpc function to add replaced knight to queue for the previous owner
+                            localPlayer.CmdMoveUnitWithReplacement(
+                                SerializationUtils.ObjectToByteArray(oldPos),
+                                SerializationUtils.ObjectToByteArray(selectedPos),
+                                SerializationUtils.ObjectToByteArray(oldOwnerName),
+                                SerializationUtils.ObjectToByteArray(replacedKnight));
+
+                            StartCoroutine(GameManager.GUI.ShowMessage("You have displaced " + oldOwnerName + "'s knight."));
+                            inUse = false;
+                            return;
+                        }
                     }
                     else
                     {
@@ -154,6 +172,83 @@ public class UnitMoveButton : MonoBehaviour {
                 return;
             }
         }
+    }
+
+    // function that checks if a knight can be repositioned
+    // if the knight will be removed from play, the function will return true
+    private bool checkKnightRemoval(Vec3[] position, String name)
+    {
+        String ownerName = name;
+        List<Intersection> visitedIntersections = new List<Intersection>();
+        Queue<Intersection> intersectionQueue = new Queue<Intersection>();
+        Intersection current = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(position));
+
+        visitedIntersections.Add(current);
+        intersectionQueue.Enqueue(current);
+
+        while (intersectionQueue.Count != 0)
+        {
+            // if we find an empty intersection in the path, then the knight can be repositioned
+            // therefore return false
+            current = intersectionQueue.Dequeue();
+            if (current.Owner == "")
+                return false;
+
+            // now we need to get all the nodes adjacent to the current intersection which are also connected to the current intersection
+
+            // add all the connected edges to a list if the local player owns them
+            List<Edge> ownedConnectedEdges = new List<Edge>();
+            Edge e1 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(current.adjTile1, current.adjTile2);
+            if (e1.Owner == ownerName)
+                ownedConnectedEdges.Add(e1);
+            Edge e2 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(current.adjTile1, current.adjTile3);
+            if (e2.Owner == ownerName)
+                ownedConnectedEdges.Add(e2);
+            Edge e3 = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(current.adjTile2, current.adjTile3);
+            if (e3.Owner == ownerName)
+                ownedConnectedEdges.Add(e3);
+
+            // loop through edges found
+            foreach (Edge e in ownedConnectedEdges)
+            {
+                // get the positions of all the intersections of the two adjacent hexes
+                List<List<Vec3>> adjHexIntersectionPos1 = UIHex.getIntersectionsAdjacentPos(e.adjTile1);
+                List<List<Vec3>> adjHexIntersectionsPos2 = UIHex.getIntersectionsAdjacentPos(e.adjTile2);
+
+                List<Intersection> intersectionBuffer = new List<Intersection>();
+                List<Intersection> adjIntersections = new List<Intersection>();
+
+                // add all the intersections of the first adjacent hex to a buffer list
+                foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionPos1)
+                {
+                    Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
+                    intersectionBuffer.Add(hexIntersection);
+                }
+
+                // add the intersections of the second adjacent hex to the final list if the buffer already contains them
+                foreach (List<Vec3> hexIntersectionPos in adjHexIntersectionsPos2)
+                {
+                    Intersection hexIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(hexIntersectionPos);
+                    if (intersectionBuffer.Contains(hexIntersection))
+                        adjIntersections.Add(hexIntersection);
+                }
+
+                // loop through the found intersections 
+                foreach (Intersection testIntersection in adjIntersections)
+                {
+                    // if we have not visited the intersection, add it to the list and the queue
+                    if (!visitedIntersections.Contains(testIntersection))
+                    {
+                        visitedIntersections.Add(testIntersection);
+                        intersectionQueue.Enqueue(testIntersection);
+                    }
+                }
+
+            }
+        }
+        // we've reached an empty queue, so we haven't found any intersections along any path
+        // knight must be removed
+        return true;
     }
 
     private GamePlayer getLocalPlayer()

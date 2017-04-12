@@ -134,8 +134,10 @@ public class GameState : NetworkBehaviour {
 		CurrentStatus = GameStatus.GRID_CREATED;
 	}
 
+	// this function is used to add a knight to a player's queue of knights to reposition
+	// called when a knight has been removed from it's position and must now be repositioned
 	[ClientRpc]
-	public void RpcUpdatePlayerKnights(byte[] name, byte[] position, byte[] knight)
+	public void RpcEnqueueKnightToMove(byte[] name, byte[] position, byte[] knight)
 	{
         GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
         String localPlayerName = localPlayer.myName;
@@ -147,6 +149,28 @@ public class GameState : NetworkBehaviour {
             localPlayer.knightsToMove.Enqueue(new KeyValuePair<Vec3[], Knight>(knightLocation, displacedKnight));
         
     }
+
+	// this function lowers the knight count of a player
+	// called when a knight is removed from play
+    [ClientRpc]
+    public void RpcLowerPlayerKnightCount(byte[] name, byte[] knight)
+    {
+        GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer>();
+        String localPlayerName = localPlayer.myName;
+        String oldOwnerName = SerializationUtils.ByteArrayToObject(name) as String;
+        Knight removedKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
+
+		// NOTE: a mighty knight cannot be replaced
+		// therefore we don't have to check for a knight.level of 3
+        if (localPlayerName == oldOwnerName)
+		{
+			if (removedKnight.level == 2)
+                localPlayer.numStrongKnights--;
+			else if (removedKnight.level == 1)
+                localPlayer.numBasicKnights--;
+        }
+    }
+
 
     // this rcp function is to publish edges to clients
     [ClientRpc]
