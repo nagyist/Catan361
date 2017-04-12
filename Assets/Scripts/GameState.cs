@@ -79,7 +79,6 @@ public class GameState : NetworkBehaviour {
 			GetComponent<HexGrid> ().CreateHexGrid (this);
 			GetComponent<HexGrid> ().CreateUIHexGrid ();
 			GetComponent<HexGrid> ().buildHarbours ();
-			//GetComponent<HexGrid> ().buildFishingGroundsUI ();
 
             // set the game's status as grid created
 			CurrentStatus = GameStatus.GRID_CREATED;
@@ -129,6 +128,7 @@ public class GameState : NetworkBehaviour {
         // create the UI map based on the values received
         GetComponent<HexGrid>().resetDicts();
         GetComponent<HexGrid>().CreateUIHexGrid();
+		GetComponent<HexGrid> ().buildHarbours ();
         // set the game status as grid created
 		CurrentStatus = GameStatus.GRID_CREATED;
 	}
@@ -178,7 +178,7 @@ public class GameState : NetworkBehaviour {
 		CurrentTurn = SerializationUtils.ByteArrayToObject (gameTurnsSerialized) as GameTurn;
 	}
 	
-    // this rcp function is used when a player rolsl the dice
+    // this rcp function is used when a player rolls the dice
     // doesn't seem to do anything aside from creating a debug message for now 
     // review needed
 	[ClientRpc]

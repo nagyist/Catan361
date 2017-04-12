@@ -23,8 +23,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasTradingHouse;
 	public bool hasAqueduct;
 
-
 	public int resourcesFromTurn;
+
 	// progress card
 	public bool craneProgressCardDiscount = false;
 	public bool engineerProgressCardDiscount = false;
@@ -135,6 +135,35 @@ public class GamePlayer : NetworkBehaviour {
         else {
 			return playerColors [this.myName];
 		}
+	}
+
+	public int getSettlementVictoryPoints () 
+	{ 
+		int amountToAdd = 0;
+		// go through all the intersections
+		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
+			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
+
+			// check to see if it isn't empty
+			if (i.unit != null && i.Owner == myName) {
+				// check to see if its a village
+				if (i.unit.GetType () == typeof(Village)) {
+					Village currentVillage = (Village)(i.unit);
+					if (currentVillage.myKind == Village.VillageKind.Settlement)
+						amountToAdd += 1;
+					else if (currentVillage.myKind == Village.VillageKind.City)
+						amountToAdd += 2;
+					else if (currentVillage.myKind == Village.VillageKind.TradeMetropole)
+						amountToAdd += 4;
+					else if (currentVillage.myKind == Village.VillageKind.ScienceMetropole)
+						amountToAdd += 4;
+					else if (currentVillage.myKind == Village.VillageKind.PoliticsMetropole)
+						amountToAdd += 4;
+				}
+			}
+		}
+		return amountToAdd;
+
 	}
 
 	[Command]
