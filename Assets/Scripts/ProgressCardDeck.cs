@@ -6,7 +6,7 @@ using System.Linq;
 [Serializable]
 public class ProgressCardDeck
 {
-	private List<AbstractProgressCard> createdCards;
+	public List<AbstractProgressCard> createdCards;
 	public List<AbstractProgressCard> CurrentDeck;
 	public static int CC = 0;
 

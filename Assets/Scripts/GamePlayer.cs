@@ -850,7 +850,6 @@ public class GamePlayer : NetworkBehaviour {
 	}
 	
 	void Update () {
-
 		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			return;
 		}
@@ -923,7 +922,7 @@ public class GamePlayer : NetworkBehaviour {
 			victoryPointsTotal = 11;
 		}
 
-		//this.syncVictoryPoints ();
+		this.syncVictoryPoints ();
 	}
 
 	public void clearSyncVp() {

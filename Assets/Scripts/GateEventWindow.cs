@@ -12,6 +12,12 @@ public class GateEventWindow : MonoBehaviour {
 	}
 
 	public void ClickRollDice() {
+		List<AbstractProgressCard> cards = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.createdCards;
+		foreach (AbstractProgressCard c in cards) {
+			GameManager.LocalPlayer.GetComponent<GamePlayer> ().CmdAddProgressCard (GameManager.LocalPlayer.GetComponent<GamePlayer> ().myName, SerializationUtils.ObjectToByteArray (c));
+
+		}
+
 		// TODO : fix this (levelOfThatColor / trade / science / politics) / 6
 		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
 		List<int> allowedValues = new List<int> ();

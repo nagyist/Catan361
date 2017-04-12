@@ -43,9 +43,9 @@ public class Cheats : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
         // Press S for quicksave (only invokes if server) and L for quickload (also server-only)
-        if (Input.GetKey(KeyCode.F5) && isServer)
+		if (Input.GetKey(KeyCode.F5) && isServer)
         {
-            drawTextbox = true;
+			drawTextbox = true;
         }
         if (Input.GetKey(KeyCode.F6) && isServer)
         {
