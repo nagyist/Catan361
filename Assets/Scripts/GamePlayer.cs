@@ -195,7 +195,7 @@ public class GamePlayer : NetworkBehaviour {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int politicsLevel = ((int)currentImprovements.CurrentPoliticsImprovement);
 
-		if (hasCities && politicsLevel >= 4 //&& hasMorePoliticsLevel == true
+		if (hasCities() && politicsLevel >= 4 //&& hasMorePoliticsLevel == true
 		) {
 			return true;
 		} else {
@@ -207,7 +207,7 @@ public class GamePlayer : NetworkBehaviour {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int tradeLevel = ((int) currentImprovements.CurrentTradeImprovement);
 
-		if (hasCities && tradeLevel >= 4 //&& hasMoreTradeLevel == true
+		if (hasCities() && tradeLevel >= 4 //&& hasMoreTradeLevel == true
 		) {
 			return true;
 		} else {
@@ -219,7 +219,7 @@ public class GamePlayer : NetworkBehaviour {
 		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
 		int scienceLevel = ((int)currentImprovements.CurrentScienceImprovement);
 
-		if (hasCities && scienceLevel >= 4 //&& hasMoreScienceLevel == true
+		if (hasCities() && scienceLevel >= 4 //&& hasMoreScienceLevel == true
 		) {
 			return true;
 		} else {
