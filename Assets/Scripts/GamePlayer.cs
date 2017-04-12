@@ -19,6 +19,9 @@ public class GamePlayer : NetworkBehaviour {
     public int numCityWalls = 0;
 	public bool fishBuild = false;
 	public int victoryPoints;
+	public int victoryPointsTotal = 10;
+	public bool hasOldBootToGive = false;
+	public bool gotOldBoot;
 
 	public bool firstToFourTrade = false;
 	public bool firstToFiveTrade = false;
@@ -30,8 +33,6 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasFortress;
 	public bool hasTradingHouse;
 	public bool hasAqueduct;
-
-
 
 	public int resourcesFromTurn;
 
@@ -839,6 +840,11 @@ public class GamePlayer : NetworkBehaviour {
 		}
 		*/
 		victoryPoints = getSettlementVictoryPoints ();
+
+		if (gotOldBoot)
+		{
+			victoryPointsTotal = 11;
+		}
 
 	}
 }
