@@ -343,7 +343,7 @@ public class GamePlayer : NetworkBehaviour {
     {
         // unserialize arguments
         Vec3[] oldPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
-        Vec3[] newPos = SerializationUtils.ByteArrayToObject(oldvec3) as Vec3[];
+        Vec3[] newPos = SerializationUtils.ByteArrayToObject(newvec3) as Vec3[];
 		String oldOwnerName = SerializationUtils.ByteArrayToObject(name) as String;
         Knight replacedKnight = SerializationUtils.ByteArrayToObject(knight) as Knight;
 
