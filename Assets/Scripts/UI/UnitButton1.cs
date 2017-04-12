@@ -68,12 +68,11 @@ public class UnitButton1 : MonoBehaviour
             Edge edge = GameManager.Instance.GetCurrentGameState().CurrentEdges.getEdge(selectedUIEdge.HexPos1, selectedUIEdge.HexPos2);
 
             if (edge.Owner != "")
-                if (edge.Owner != localPlayer.myName)
-                {
-                    GetComponent<Button>().enabled = false;
-                    GetComponentInChildren<Text>().text = "ROAD OWNED";
-                    return;
-                }
+            {
+                GetComponent<Button>().enabled = false;
+                GetComponentInChildren<Text>().text = "ROAD IS OWNED";
+                return;
+            }
 
             GetComponent<Button>().enabled = true;
             if (edge.IsShip())
