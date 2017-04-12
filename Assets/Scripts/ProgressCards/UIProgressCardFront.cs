@@ -59,6 +59,10 @@ public class UIProgressCardFront : MonoBehaviour {
 				transform.FindChild ("Front").FindChild ("CrystalScience").gameObject.SetActive (false);
 				transform.FindChild ("Front").FindChild ("CrystalPolitics").gameObject.SetActive (false);
 				transform.FindChild ("Front").FindChild ("CrystalTrade").gameObject.SetActive (true);
+			} else {
+				transform.FindChild ("Front").FindChild ("CrystalScience").gameObject.SetActive (false);
+				transform.FindChild ("Front").FindChild ("CrystalPolitics").gameObject.SetActive (false);
+				transform.FindChild ("Front").FindChild ("CrystalTrade").gameObject.SetActive (false);
 			}
 		} else {
 			transform.FindChild ("Front").gameObject.SetActive (false);
@@ -79,6 +83,11 @@ public class UIProgressCardFront : MonoBehaviour {
 				transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (true);
+			} else {
+				transform.FindChild ("Back").FindChild ("BackEmpty").gameObject.SetActive (true);
+				transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (false);
+				transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
+				transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (false);
 			}
 		}
 	}

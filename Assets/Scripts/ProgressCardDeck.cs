@@ -6,12 +6,13 @@ using System.Linq;
 [Serializable]
 public class ProgressCardDeck
 {
+	private List<AbstractProgressCard> createdCards;
 	public List<AbstractProgressCard> CurrentDeck;
 	public static int CC = 0;
 
 	public static ProgressCardDeck InitialDeck() {
 		ProgressCardDeck newDeck = new ProgressCardDeck ();
-		newDeck.CurrentDeck = new List<AbstractProgressCard>() {
+		newDeck.createdCards = new List<AbstractProgressCard>() {
 			//new AlchemistCard(), new AlchemistCard(),
 			//new CraneCard(++CC), new CraneCard(++CC),
 			//new EngineerCard(++CC),
@@ -28,16 +29,20 @@ public class ProgressCardDeck
 			//new DiplomatCard(++CC), new DiplomatCard(++CC),
 			//new IntrigueCard(++CC), new IntrigueCard(++CC),
 			//new SaboteurCard(), new SaboteurCard(),
-			//new SpyCard(++CC), new SpyCard(++CC), new SpyCard(++CC),
+			new SpyCard(++CC), new SpyCard(++CC), new SpyCard(++CC),
 			//new WarlordCard(++CC), new WarlordCard(++CC),
 			//new WeddingCard(), new WeddingCard(),
 			//new CommercialHarborCard(), new CommercialHarborCard(),
 			//new MasterMerchantCard(), new MasterMerchantCard(),
 			//new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(), new MerchantCard(),
 			//new MerchantFleetCard(), new MerchantFleetCard(),
-			new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC),
-			//new TradeMonopolyCard(), new TradeMonopolyCard()
+			//new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC), new ResourceMonopolyCard(++CC),
+			//new TradeMonopolyCard(), new TradeMonopolyCard(),
+			new DefenderOfCatanProgressCard(++CC), new DefenderOfCatanProgressCard(++CC), new DefenderOfCatanProgressCard(++CC), new DefenderOfCatanProgressCard(++CC), new DefenderOfCatanProgressCard(++CC), new DefenderOfCatanProgressCard(++CC)
 		};
+
+		newDeck.CurrentDeck = new List<AbstractProgressCard> ();
+		newDeck.CurrentDeck.AddRange (newDeck.createdCards);
 
 		Random rnd = new Random ();
 		newDeck.CurrentDeck = newDeck.CurrentDeck.OrderBy (i => rnd.Next (newDeck.CurrentDeck.Count)).ToList();
@@ -46,20 +51,29 @@ public class ProgressCardDeck
 	}
 
 	public AbstractProgressCard DrawCardOfType(AbstractProgressCard.ProgressCardType type) {
-		/*List<AbstractProgressCard> cardsOfType = CurrentDeck.Where (x => x.CardType == type).ToList ();
+		List<AbstractProgressCard> cardsOfType = CurrentDeck.Where (x => x.CardType == type).ToList ();
 		if (cardsOfType.Count == 0) {
 			return null;
 		}
 
 		AbstractProgressCard card = cardsOfType [0];
-		//CurrentDeck.Remove (card);*/
+		CurrentDeck.Remove (card);
 
-		return CurrentDeck[0]; // TODO : fix
+		return card;
 	}
 
 	public AbstractProgressCard DrawRandomCard() {
-		AbstractProgressCard card = CurrentDeck[UnityEngine.Random.Range (0, CurrentDeck.Count)];
-		//CurrentDeck.Remove (card);
+		List<AbstractProgressCard> cards = CurrentDeck.Where (x => 
+			x.CardType == AbstractProgressCard.ProgressCardType.Politic ||
+		                            x.CardType == AbstractProgressCard.ProgressCardType.Science ||
+		                            x.CardType == AbstractProgressCard.ProgressCardType.Trade ||
+			x.CardType == AbstractProgressCard.ProgressCardType.Barbarian).ToList ();
+		if (cards.Count == 0) {
+			return null;
+		}
+
+		AbstractProgressCard card = cards [UnityEngine.Random.Range(0, cards.Count)];
+		CurrentDeck.Remove (card);
 
 		return card;
 	}

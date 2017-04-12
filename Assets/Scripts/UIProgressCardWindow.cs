@@ -92,8 +92,19 @@ public class UIProgressCardWindow : MonoBehaviour {
 			transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("StealProgressCardBtn").gameObject.GetComponent<Button> ().enabled = false;
 			transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("UseProgressCardBtn").gameObject.GetComponent<Button> ().enabled = false;
 		} else {
-			transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("StealProgressCardBtn").gameObject.GetComponent<Button> ().enabled = true;
-			transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("UseProgressCardBtn").gameObject.GetComponent<Button> ().enabled = true;
+			if (!SelectedCard.IsStealable ()) {
+				transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("StealProgressCardBtn").gameObject.GetComponent<Button> ().enabled = false;
+			} else {
+				transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("StealProgressCardBtn").gameObject.GetComponent<Button> ().enabled = true;
+			}
+
+			if (!SelectedCard.IsConsumable()) {
+				transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("UseProgressCardBtn").gameObject.SetActive (false);
+			} else {
+				transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("UseProgressCardBtn").gameObject.SetActive (true);
+				transform.FindChild ("Content").FindChild ("CardPreview").FindChild ("UseProgressCardBtn").gameObject.GetComponent<Button> ().enabled = true;
+			}
+
 		}
 
 		transform.FindChild ("Header").FindChild ("Text").GetComponent<Text> ().text = getPlayer ().myName + "'s PROGRESS CARD";

@@ -14,7 +14,8 @@ public class GateEventWindow : MonoBehaviour {
 	public void ClickRollDice() {
 		// TODO : fix this (levelOfThatColor / trade / science / politics) / 6
 		int rollNum = UnityEngine.Random.Range (1, 4);
-		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
+		//AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawCardOfType (CurrentEvent.CardType);
+		AbstractProgressCard drawnProgressCard = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardDeck.DrawRandomCard();
 		if (drawnProgressCard != null/*rollNum == 1*/) {
 			// get the progress card
 			GameManager.LocalPlayer.GetComponent<GamePlayer> ().AddProgressCard (drawnProgressCard);

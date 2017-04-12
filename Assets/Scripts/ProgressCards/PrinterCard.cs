@@ -27,4 +27,8 @@ public class PrinterCard : AbstractProgressCard
 	{
 		return "1 Victory Point! Reveal this card immediately when you draw it. This card cannot be stolen by a spy.";
 	}
+
+	public override bool IsConsumable() {
+		return false;
+	}
 }

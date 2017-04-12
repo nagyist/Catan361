@@ -6,7 +6,8 @@ public abstract class AbstractProgressCard
 	public enum ProgressCardType {
 		Science,
 		Politic,
-		Trade
+		Trade,
+		Barbarian
 	}
 
 	public ProgressCardType CardType;
@@ -29,6 +30,14 @@ public abstract class AbstractProgressCard
 
 	public virtual string GetDescription() {
 		return "No Description";
+	}
+
+	public virtual bool IsConsumable() {
+		return true;
+	}
+
+	public virtual bool IsStealable() {
+		return true;
 	}
 
 	public void RemoveFromPlayerHand() {

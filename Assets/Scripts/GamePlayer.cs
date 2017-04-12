@@ -23,6 +23,7 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasOldBootToGive = false;
 	public bool gotOldBoot;
 
+
 	public bool firstToFourTrade = false;
 	public bool firstToFiveTrade = false;
 	public bool firstToFourScience = false;
@@ -888,10 +889,53 @@ public class GamePlayer : NetworkBehaviour {
 		*/
 		victoryPoints = getSettlementVictoryPoints ();
 
+		//if (victoryPointHasConstitutionCard) {
+		//	victoryPoints++;
+		//}
+
+		//if (victoryPointHasPrinterCard) {
+		//	victoryPoints++;
+		//}
+
+		List<AbstractProgressCard> currentHand = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.GetCardsForPlayer (myName);
+		int hasConstitutionCardCounter = 0;
+		int hasPrinterCardCounter = 0;
+		int hasDefenderOfCatanCardCounter = 0;
+
+		foreach (AbstractProgressCard pCard in currentHand) {
+			if (pCard.GetType () == typeof(ConstitutionCard)) {
+				hasConstitutionCardCounter++;
+			}
+
+			if (pCard.GetType () == typeof(PrinterCard)) {
+				hasPrinterCardCounter++;
+			}
+
+			if (pCard.GetType () == typeof(DefenderOfCatanProgressCard)) {
+				hasDefenderOfCatanCardCounter++;
+			}
+		}
+
+		victoryPoints += hasConstitutionCardCounter;
+		victoryPoints += hasPrinterCardCounter;
+		victoryPoints += hasDefenderOfCatanCardCounter;
+
 		if (gotOldBoot)
 		{
 			victoryPointsTotal = 11;
 		}
 
+		this.syncVictoryPoints ();
+	}
+
+	public void syncVictoryPoints() {
+		int syncedVictoryPoints = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.GetVictoryPointsForPlayer (myName);
+		int diff = syncedVictoryPoints - victoryPoints;
+
+		if (diff < 0) {
+			CmdRemoveVictoryPoint (Math.Abs(diff));
+		} else if (diff > 0) {
+			CmdAddVictoryPoint (Math.Abs(diff));
+		}
 	}
 }

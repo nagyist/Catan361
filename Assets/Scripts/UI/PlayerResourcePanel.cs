@@ -25,7 +25,7 @@ public class PlayerResourcePanel : MonoBehaviour {
 		resourcesGameObjs.Add (StealableType.Commodity_Paper, transform.FindChild ("Paper").gameObject);
 
 
-		transform.FindChild ("Header").gameObject.GetComponentInChildren<Text> ().text = this.getPlayer ().myName;
+
 	}
 
 	private void displayPlayerResource(StealableType type) {
@@ -40,7 +40,9 @@ public class PlayerResourcePanel : MonoBehaviour {
 
 	private void updateVictoryPoints() {
 		int curAmount = GameManager.Instance.GetCurrentGameState ().CurrentVictoryPoints.GetVictoryPointsForPlayer (getPlayer ().myName);
-		transform.FindChild ("VictoryPoints").GetComponent<UIProgressBar> ().fillAmount = curAmount;
+		int totalVP = getPlayer ().victoryPointsTotal;
+		transform.FindChild ("VictoryPoints").GetComponent<UIProgressBar> ().steps = totalVP;
+		transform.FindChild ("VictoryPoints").GetComponent<UIProgressBar> ().fillAmount = (float)curAmount / (float)totalVP;
 	}
 
 	private GamePlayer getPlayer() {
@@ -60,6 +62,8 @@ public class PlayerResourcePanel : MonoBehaviour {
 		if(getPlayer() == null || getPlayer().GetPlayerResources() == null) {
 			return;
 		}
+
+		transform.FindChild ("Header").gameObject.GetComponentInChildren<Text> ().text = this.getPlayer ().myName;
 
 		ResourceCollection.PlayerResourcesCollection playerResources = getPlayer ().GetPlayerResources ();
 		if (GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
