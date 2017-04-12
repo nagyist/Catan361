@@ -29,7 +29,8 @@ public class UIProgressCardFront : MonoBehaviour {
 			transform.FindChild ("Front").gameObject.SetActive (false);
 			transform.FindChild ("Back").gameObject.SetActive (true);
 
-			transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (true);
+			transform.FindChild ("Back").FindChild ("BackEmpty").gameObject.SetActive (true);
+			transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (false);
 			transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
 			transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (false);
 			return;
@@ -64,14 +65,17 @@ public class UIProgressCardFront : MonoBehaviour {
 			transform.FindChild ("Back").gameObject.SetActive (true);
 
 			if (currentType == AbstractProgressCard.ProgressCardType.Science) {
+				transform.FindChild ("Back").FindChild ("BackEmpty").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (true);
 				transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (false);
 			} else if (currentType == AbstractProgressCard.ProgressCardType.Politic) {
+				transform.FindChild ("Back").FindChild ("BackEmpty").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (true);
 				transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (false);
 			} else if (currentType == AbstractProgressCard.ProgressCardType.Trade) {
+				transform.FindChild ("Back").FindChild ("BackEmpty").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackScience").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackPolitics").gameObject.SetActive (false);
 				transform.FindChild ("Back").FindChild ("BackTrade").gameObject.SetActive (true);

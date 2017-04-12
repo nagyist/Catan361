@@ -9,7 +9,13 @@ public class UIProgressCardWindow : MonoBehaviour {
 	private Dictionary<AbstractProgressCard, GameObject> displayedHand;
 	private GameObject ProgressCardEntry;
 	private AbstractProgressCard SelectedCard;
-	private int i = 0;
+	public string GamePlayerName;
+	public bool OtherPlayer = false;
+
+	public void Clear() {
+		//displayedHand.Clear ();
+		SelectedCard = null;
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +24,11 @@ public class UIProgressCardWindow : MonoBehaviour {
 	}
 
 	GamePlayer getPlayer() {
-		return GameManager.LocalPlayer.GetComponent<GamePlayer>();
+		if (OtherPlayer == false) {
+			return GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+		} else {
+			return GameManager.ConnectedPlayersByName [GamePlayerName].GetComponent<GamePlayer> ();
+		}
 	}
 
 	GameObject getCardPreview() {
@@ -26,6 +36,8 @@ public class UIProgressCardWindow : MonoBehaviour {
 	}
 
 	public void CloseWindow() {
+		GamePlayerName = "";
+		OtherPlayer = false;
 		GetComponent<UIWindow> ().Hide ();
 	}
 
@@ -35,7 +47,7 @@ public class UIProgressCardWindow : MonoBehaviour {
 		getCardPreview ().GetComponent<UIProgressCardFront> ().Turned = false;
 		getCardPreview ().GetComponent<UIProgressCardFront> ().CardSelected = false;
 
-		GetComponent<UIWindow> ().Hide ();
+		CloseWindow ();
 	}
 
 	public void ClickSelectedCard() {
@@ -59,6 +71,8 @@ public class UIProgressCardWindow : MonoBehaviour {
 		if (!GameManager.Instance.GameStateReadyAtStage (GameState.GameStatus.GRID_CREATED)) {
 			return;
 		}
+
+		transform.FindChild ("Header").FindChild ("Text").GetComponent<Text> ().text = getPlayer ().myName + "'s PROGRESS CARD";
 
 		List<AbstractProgressCard> currentHand = GameManager.Instance.GetCurrentGameState ().CurrentProgressCardHands.GetCardsForPlayer (getPlayer ().myName);
 		List<AbstractProgressCard> removed = displayedHand.Keys.Where (x => !currentHand.Contains (x)).ToList ();

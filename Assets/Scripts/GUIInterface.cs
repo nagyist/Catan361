@@ -169,6 +169,17 @@ public class GUIInterface : MonoBehaviour {
 		notif.GetComponent<UIWindow>().Hide();
 	}
 
+	public GameObject ShowProgressCardWindowOfUser(string playerName) {
+		GameObject window = guiCanvas.transform.FindChild ("ProgressCardsWindow").gameObject;
+		window.GetComponent<UIProgressCardWindow> ().Clear ();
+		window.GetComponent<UIProgressCardWindow> ().OtherPlayer = true;
+		window.GetComponent<UIProgressCardWindow> ().GamePlayerName = playerName;
+
+		window.GetComponent<UIWindow> ().Show ();
+
+		return window;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		GetRoadShipPopup ().GetComponent<RoadShipPopup> ();

@@ -3,7 +3,7 @@
 [Serializable]
 public class SpyCard : AbstractProgressCard
 {
-	public SpyCard ()
+	public SpyCard (int id) : base(id)
 	{
 		CardType = ProgressCardType.Politic;
 	}
