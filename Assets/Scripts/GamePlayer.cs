@@ -321,13 +321,13 @@ public class GamePlayer : NetworkBehaviour {
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
 		{
 			firstToFourScience = true;
-			StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have an Aqueduct Metropolis"));
+			//StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have an Aqueduct Metropolis"));
 			hasHigherScienceLevel = true;
 		} 
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 5)
 		{
 			firstToFiveScience = true;
-			StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Aqueduct Metropolis!"));
+			//StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Aqueduct Metropolis!"));
 			hasHigherScienceLevel = true;
 		} 
 
