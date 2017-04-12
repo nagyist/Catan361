@@ -176,13 +176,13 @@ public class GamePlayer : NetworkBehaviour {
 		}
 
 		if (hasFortressMetro()) {
-			amountToAdd += 4;
+			amountToAdd += 2;
 		}
 		if (hasTradingHouseMetro()) {
-			amountToAdd += 4;
+			amountToAdd += 2;
 		}
 		if (hasAqueductMetro()) {
-			amountToAdd += 4;
+			amountToAdd += 2;
 		}
 
 		return amountToAdd;
@@ -234,11 +234,14 @@ public class GamePlayer : NetworkBehaviour {
 		if (politicsCount == (GameManager.ConnectedPlayers.Count - 1) && politicsLevel == 4) 
 		{
 			firstToFourPolitics = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have a Fortress Metropolis!"));
 			hasHigherPoliticLevel = true;
+
 		}
 		if (politicsCount == (GameManager.ConnectedPlayers.Count - 1) && politicsLevel == 5) 
 		{
 			firstToFivePolitics = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Fortress Metropolis"));
 			hasHigherPoliticLevel = true;
 		}
 		if ((hasCities() && politicsLevel >= 4 && hasHigherPoliticLevel) || firstToFivePolitics)
@@ -273,12 +276,16 @@ public class GamePlayer : NetworkBehaviour {
 		if(tradeCount == (GameManager.ConnectedPlayers.Count - 1) && tradeLevel == 4)
 		{
 			firstToFourTrade = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have a Marketplace Metropolis!"));
+
 			hasHigherTradeLevel = true;
 		} 
 		if(tradeCount == (GameManager.ConnectedPlayers.Count - 1) && tradeLevel == 5)
 		{
 			firstToFiveTrade = true;
 			hasHigherTradeLevel = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Marketplace Marketplace Metropolis!"));
+
 		} 
 
 		if ((hasCities() && tradeLevel >= 4 && hasHigherTradeLevel) || firstToFiveTrade)
@@ -313,11 +320,13 @@ public class GamePlayer : NetworkBehaviour {
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
 		{
 			firstToFourScience = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You're the first to have an Aqueduct Metropolis"));
 			hasHigherScienceLevel = true;
 		} 
 		if(scienceCount == (GameManager.ConnectedPlayers.Count - 1) && scienceLevel == 4)
 		{
 			firstToFiveScience = true;
+			StartCoroutine (GameManager.GUI.ShowMessage ("You are the sole owner of the Aqueduct Metropolis!"));
 			hasHigherScienceLevel = true;
 		} 
 

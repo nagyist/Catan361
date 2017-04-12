@@ -86,7 +86,6 @@ public class FishActions : MonoBehaviour {
 		{
 			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 			localPlayer.fishBuild = true;
-			StartCoroutine (GameManager.GUI.ShowMessage ("This is the local player's name, and fish build status: " + localPlayer + " " + localPlayer.fishBuild));
 			GameManager.GUI.HideFishPopup ();
 			//StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
 		}
@@ -95,10 +94,10 @@ public class FishActions : MonoBehaviour {
 		else if (actionSelected.Equals("OldBoot"))
 		{
 			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
-			if (localPlayer.hasOldBootToGive) {
+			if (localPlayer.hasOldBootToGive == true) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Who would you like to give the boot to? Please click on a player icon."));
 			}
-			if (localPlayer.hasOldBootToGive == false) {
+			else if (localPlayer.hasOldBootToGive == false) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Sorry mate! No one wants your old boots! (Because you don't have any)"));
 			}
 			GameManager.GUI.HideFishPopup ();
