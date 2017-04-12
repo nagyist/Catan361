@@ -26,29 +26,21 @@ public class FishActions : MonoBehaviour {
 		ResourceCollection.PlayerResourcesCollection playerResources = player.GetPlayerResources ();
 
 
-		if (actionSelected.Equals("MoveRobber") && playerResources[StealableType.Resource_Fish] >= 2)
-		{
+		if (actionSelected.Equals ("MoveRobber") && playerResources [StealableType.Resource_Fish] >= 2) {
 			playerResources [StealableType.Resource_Fish] = playerResources [StealableType.Resource_Fish] - 2;
 			entityType = "robber";
 			GameEventManager.Instance.HandleMoveRobberPirateDecision (entityType);
 			GameManager.GUI.HideFishPopup ();
-		}
-		else if (actionSelected.Equals("MovePirate") && playerResources[StealableType.Resource_Fish] >= 2)
-		{
+		} else if (actionSelected.Equals ("MovePirate") && playerResources [StealableType.Resource_Fish] >= 2) {
 			playerResources [StealableType.Resource_Fish] = playerResources [StealableType.Resource_Fish] - 2;
 			entityType = "pirate";
 			GameEventManager.Instance.HandleMoveRobberPirateDecision (entityType);
 			GameManager.GUI.HideFishPopup ();
-		}
-
-		else if (actionSelected.Equals("StealResource"))
-		{
+		} else if (actionSelected.Equals ("StealResource")) {
 			bool stolenRobber = false;
 			playerResources [StealableType.Resource_Fish] = playerResources [StealableType.Resource_Fish] - 3;
-			foreach (GameObject playerToSteal in GameManager.ConnectedPlayers) 
-			{
-				if (!stolenRobber) 
-				{
+			foreach (GameObject playerToSteal in GameManager.ConnectedPlayers) {
+				if (!stolenRobber) {
 					GamePlayer instancePlayerToSteal = playerToSteal.GetComponent<GamePlayer> ();
 					GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 					if (instancePlayerToSteal != localPlayer) {
@@ -80,29 +72,37 @@ public class FishActions : MonoBehaviour {
 					}
 				}
 			}
-		}
-
-		else if (actionSelected.Equals("BuildRoadShip"))
-		{
+		} else if (actionSelected.Equals ("BuildRoadShip") && playerResources [StealableType.Resource_Fish] >= 5) {
 			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 			localPlayer.fishBuild = true;
 			GameManager.GUI.HideFishPopup ();
 			//StartCoroutine(GameManager.GUI.ShowMessage("Please place a road."));
-		}
-
-
-		else if (actionSelected.Equals("OldBoot"))
-		{
+		} else if (actionSelected.Equals ("OldBoot")) {
 			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 			if (localPlayer.hasOldBootToGive == true) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Who would you like to give the boot to? Please click on a player icon."));
-			}
-			else if (localPlayer.hasOldBootToGive == false) {
+			} else if (localPlayer.hasOldBootToGive == false) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Sorry mate! No one wants your old boots! (Because you don't have any)"));
 			}
 			GameManager.GUI.HideFishPopup ();
+		} else if (actionSelected.Equals ("DrawCard") && playerResources [StealableType.Resource_Fish] >= 7) {
+
+			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
+			ResourceCollection.PlayerResourcesCollection localPlayerResources = localPlayer.GetPlayerResources ();
+
+			int payment = localPlayerResources [StealableType.Resource_Fish] - 7;
+
+			localPlayer.CmdUpdateResource (StealableType.Resource_Fish, payment);
+
+			GameManager.GUI.HideFishPopup ();
+
+		} else if (!(actionSelected.Equals ("DrawCard") && playerResources [StealableType.Resource_Fish] >= 7) ||
+		         !(actionSelected.Equals ("MoveRobber") && playerResources [StealableType.Resource_Fish] >= 2) ||
+		         !(actionSelected.Equals ("MovePirate") && playerResources [StealableType.Resource_Fish] >= 2)) 
+		{
+			GameManager.GUI.HideFishPopup ();
+			StartCoroutine (GameManager.GUI.ShowMessage ("Not enough fish for this!"));
 		}
-		
 
 		Debug.Log("Player selected: " + actionSelected);
 
