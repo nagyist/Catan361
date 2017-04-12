@@ -9,7 +9,6 @@ public class Edge {
 	public bool IsOwned = false;
 	public bool isHarbour { get; set; }
 	public string Owner = "";
-	//public bool fishBuild;
 
 	public Vec3 adjTile1 { get; }
 	public Vec3 adjTile2 { get; }

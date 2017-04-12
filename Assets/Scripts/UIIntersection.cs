@@ -494,7 +494,6 @@ public class UIIntersection : MonoBehaviour
         return;
     }
 
-
     // Use this for initialization
     void Start()
     {

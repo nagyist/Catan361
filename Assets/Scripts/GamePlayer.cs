@@ -23,6 +23,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool hasTradingHouse;
 	public bool hasAqueduct;
 
+
+
 	public int resourcesFromTurn;
 
 	// progress card
@@ -163,8 +165,68 @@ public class GamePlayer : NetworkBehaviour {
 			}
 		}
 		return amountToAdd;
-
 	}
+
+	public bool hasCities(){
+		int numCity = 0;
+		foreach (string key in GameManager.Instance.GetCurrentGameState().CurrentIntersections.Intersections.Keys) {
+			Intersection i = GameManager.Instance.GetCurrentGameState ().CurrentIntersections.Intersections [key];
+
+			// check to see if it isn't empty
+			if (i.unit != null && i.Owner == myName) {
+				// check to see if its a village
+				if (i.unit.GetType () == typeof(Village)) 
+				{
+					Village currentVillage = (Village)(i.unit);
+
+					if (currentVillage.myKind == Village.VillageKind.City)
+						numCity += 1;
+				}
+			}
+		}
+
+		if (numCity > 0)
+			return true;
+		else
+			return false;
+	}
+
+	public bool hasFortressMetro (){
+		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
+		int politicsLevel = ((int)currentImprovements.CurrentPoliticsImprovement);
+
+		if (hasCities && politicsLevel >= 4 //&& hasMorePoliticsLevel == true
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public bool hasTradingHouseMetro (){
+		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
+		int tradeLevel = ((int) currentImprovements.CurrentTradeImprovement);
+
+		if (hasCities && tradeLevel >= 4 //&& hasMoreTradeLevel == true
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public bool hasAqueductMetro (){
+		PlayerImprovement currentImprovements = GameManager.Instance.GetCurrentGameState ().CurrentPlayerImprovements.GetImprovementForPlayer (myName);
+		int scienceLevel = ((int)currentImprovements.CurrentScienceImprovement);
+
+		if (hasCities && scienceLevel >= 4 //&& hasMoreScienceLevel == true
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	[Command]
 	public void CmdShowMessage(string message, float delay) {
@@ -665,7 +727,6 @@ public class GamePlayer : NetworkBehaviour {
 		else
 			hasFortress = false;
 
-
 		//take a resource / commodity of your choice from the bank when you miss out on resources from 
 		//dice roll
 		if (scienceLevel >= 3)
@@ -678,5 +739,7 @@ public class GamePlayer : NetworkBehaviour {
 			resourcesFromTurn = 0;
 		}
 		*/
+
+
 	}
 }
