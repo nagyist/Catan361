@@ -422,8 +422,7 @@ public class GamePlayer : NetworkBehaviour {
 
         // set and publish the new intersection
         GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
-        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection
-            (SerializationUtils.ObjectToByteArray(newPos), SerializationUtils.ObjectToByteArray(newIntersection));
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(vec3pos, SerializationUtils.ObjectToByteArray(newIntersection));
 
         return;
     }
@@ -442,34 +441,29 @@ public class GamePlayer : NetworkBehaviour {
         Intersection oldIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(oldPos));
         Intersection newIntersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(newPos));
 
-        if (oldIntersection.unit != null)
-        {
-            if (oldIntersection.unit.GetType() == typeof(Knight))
-            {
-                // store the knight 
-                Knight k = (Knight)oldIntersection.unit;
+		// store the knight 
+		Knight k = (Knight)oldIntersection.unit;
 
-                // update the old intersection
-                oldIntersection.Owner = "";
-                oldIntersection.unit = null;
+		// update the old intersection
+		oldIntersection.Owner = "";
+		oldIntersection.unit = null;
 
-                // set and publish the old intersection
-                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(oldPos, oldIntersection);
-                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(oldvec3, SerializationUtils.ObjectToByteArray(oldIntersection));
+		// set and publish the old intersection
+		GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(oldPos, oldIntersection);
+		GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(oldvec3, SerializationUtils.ObjectToByteArray(oldIntersection));
 
-                // update the new intersection
-                newIntersection.Owner = this.myName;
-                k.active = false;
-                newIntersection.unit = k;
+		// update the new intersection
+		newIntersection.Owner = this.myName;
+		k.active = false;
+		newIntersection.unit = k;
 
-                // set and publish the new intersection
-                GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
-                GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
+		// adds the knight to the appropriate player's queue
+		GameManager.Instance.GetCurrentGameState().RpcEnqueueKnightToMove(name, newvec3, knight);
 
-				// adds the knight to the appropriate player's queue
-                GameManager.Instance.GetCurrentGameState().RpcEnqueueKnightToMove(name, newvec3, knight);
-            }
-        }
+		// set and publish the new intersection
+		GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(newPos, newIntersection);
+		GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(newvec3, SerializationUtils.ObjectToByteArray(newIntersection));
+       
     }
 
     // command used to move a knight unit to empty intersection

@@ -40,7 +40,6 @@ public class UnitMoveButton : MonoBehaviour {
             // check for valid path
             KeyValuePair<Vec3[], Knight> pair = localPlayer.knightsToMove.Peek();
             Vec3[] oldPos = pair.Key;
-            // StartCoroutine(GameManager.GUI.ShowMessage("Vec3[0]: " + oldPos[0] + "Vec3[1]: " + oldPos[1] + "Vec3[2]: " + oldPos[2]));
             if (!Intersection.checkForPath(oldPos, selectedPos))
             {
                 StartCoroutine(GameManager.GUI.ShowMessage("Selected intersection must on the same path."));
