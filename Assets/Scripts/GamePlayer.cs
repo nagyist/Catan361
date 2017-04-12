@@ -721,6 +721,27 @@ public class GamePlayer : NetworkBehaviour {
 	}
 
 	[Command]
+	public void CmdChaseAwayRobber(byte[] knightPositionSerialized)
+	{
+		String entityType = GameEventManager.Instance.EventMoveRobberPirateEntityType;
+        Vec3[] position = SerializationUtils.ByteArrayToObject(knightPositionSerialized) as Vec3[];
+		Intersection intersection = GameManager.Instance.GetCurrentGameState().CurrentIntersections.getIntersection(new List<Vec3>(position));
+
+		// the knight is now exhausted for the remainder of the turn
+        Knight knight = (Knight)intersection.unit;
+        knight.exhausted = true;
+
+		// set the robber to the new position
+        Vec3 newRobberPosition = new Vec3(0, 0, 0);
+        byte[] newRobberPositionSerialized = SerializationUtils.ObjectToByteArray(newRobberPosition);
+		GameManager.Instance.GetCurrentGameState().RpcClientMoveRobberPirateEntity(entityType, newRobberPositionSerialized);
+
+        // set and publish the intersection
+        GameManager.Instance.GetCurrentGameState().CurrentIntersections.setIntersection(position, intersection);
+        GameManager.Instance.GetCurrentGameState().RpcPublishIntersection(knightPositionSerialized, SerializationUtils.ObjectToByteArray(intersection));
+    }
+
+	[Command]
 	public void CmdSendTradeRequest(byte[] tradeSerialized) {
 		GameManager.Instance.GetCurrentGameState ().RpcClientTradeRequest (tradeSerialized);
 	}
