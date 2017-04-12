@@ -20,8 +20,8 @@ public class GamePlayer : NetworkBehaviour {
 	public bool fishBuild = false;
 	public int victoryPoints;
 	public int victoryPointsTotal = 10;
-	public bool hasOldBootToGive = false;
-	public bool gotOldBoot;
+	public bool hasOldBootToGive = true;
+	public bool gotOldBoot = false;
 
 	public bool firstToFourTrade = false;
 	public bool firstToFiveTrade = false;

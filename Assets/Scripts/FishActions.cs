@@ -81,6 +81,7 @@ public class FishActions : MonoBehaviour {
 			GamePlayer localPlayer = GameManager.LocalPlayer.GetComponent<GamePlayer> ();
 			if (localPlayer.hasOldBootToGive == true) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Who would you like to give the boot to? Please click on a player icon."));
+				GameManager.GUI.ShowPlayerSelectPopup ();
 			} else if (localPlayer.hasOldBootToGive == false) {
 				StartCoroutine (GameManager.GUI.ShowMessage ("Sorry mate! No one wants your old boots! (Because you don't have any)"));
 			}
